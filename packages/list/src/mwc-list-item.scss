@@ -17,7 +17,7 @@ limitations under the License.
 
 @import '@material/list/mdc-list.scss';
 @import "@material/ripple/mixins";
-@import '@material/mwc-icon/src/mwc-icon-host.scss';
+@import "@material/mwc-icon/src/_mwc-icon.scss";
 
 .material-icons {
   @extend %material-icons;

@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 @import '@material/textfield/mdc-text-field';
-@import '@material/mwc-icon/src/mwc-icon-host';
+@import "@material/mwc-icon/src/_mwc-icon.scss";
 
 .material-icons {
   @extend %material-icons;
