@@ -1,0 +1,140 @@
+<!doctype html>
+<!--
+@license
+Copyright 2018 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+<head>
+  <title>table demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-table/mwc-table.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
+  <link rel="stylesheet" href="demo-component.css">
+  <style>
+    h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      margin: 0 20px;
+    }
+
+    .demo-container {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body class="unresolved">
+  <header>
+    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
+    <span>Tables</span></a>
+  </header>
+
+  <main>
+    <h3>Simple Table (template markup)</h3>
+    <div class="demo-container">
+      <mwc-table>
+        <template>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Position</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Luis</td>
+                <td>30</td>
+                <td>Software Engineer</td>
+              </tr>
+            </tbody>
+        </template>
+      </mwc-table>
+    </div>
+
+    <h3>Data Table (HTML)</h3>
+    <div class="demo-container">
+      <mwc-table
+        id="table_1"
+        columns='[{"title":"Name","field":"name"},{"title":"Surname","field":"surname"}]'
+        data='[{"name":"Luis","surname":"Sardon"},{"name":"Tim","surname":"Johnson"}]'
+      >
+      </mwc-table>
+    </div>
+
+    <h3>Data Table (JS)</h3>
+    <div class="demo-container">
+      <mwc-table id="table_2"></mwc-table>
+    </div>
+
+    <h3>Data Table (Async)</h3>
+    <div class="demo-container">
+      <mwc-table id="table_3"></mwc-table>
+    </div>
+
+    <h3>Data Table - no columns (JS)</h3>
+    <div class="demo-container">
+      <mwc-table id="table_4"></mwc-table>
+    </div>
+  </main>
+
+  <script>
+    addEventListener('load', () => document.body.classList.remove('unresolved'));
+
+    // Table 2
+
+    table_2.columns = [
+      { title: 'Name', field: 'name' },
+      { title: 'Surname', field: 'surname' },
+      { title: 'Birth Year', field: 'birthYear', align: 'right' }
+    ];
+
+    table_2.data = [
+      { name: 'Luis', surname: 'Sardon', birthYear: '1988' },
+      { name: 'Tim', surname: 'Johnson', birthYear: '1976' }
+    ];
+
+    // Table 3
+
+    table_3.columns = [
+      { title: 'Name', field: 'name' },
+      { title: 'Surname', field: 'surname' },
+      { title: 'Birth Year', field: 'birthYear', align: 'right' }
+    ];
+
+    table_3.data = () => {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve([
+            { name: 'Luis', surname: 'Sardon', birthYear: '1988' },
+            { name: 'Tim', surname: 'Johnson', birthYear: '1976' }
+          ]);
+        }, 3000);
+      });
+    };
+
+    // Table 4
+
+    table_4.data = [
+      { name: 'Luis', surname: 'Sardon', birthYear: '1988' },
+      { name: 'Tim', surname: 'Johnson', birthYear: '1976' }
+    ];
+  </script>
+</body>
+</html>

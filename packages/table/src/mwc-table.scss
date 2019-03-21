@@ -1,0 +1,100 @@
+/**
+@license
+Copyright 2019 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+@import "@material/typography/mixins";
+@import "@material/elevation/mixins";
+@import "@material/mwc-icon/src/mwc-icon";
+@import "./mixins";
+
+:host {
+  display: block;
+  text-align: left;
+}
+
+.material-icons {
+  @extend %material-icons;
+}
+
+@at-root {
+  $border-color: if(
+    mdc-theme-tone($mdc-theme-background) == "dark",
+    $mwc-table-border-color-on-dark-bg,
+    $mwc-table-border-color-on-light-bg
+  );
+
+  @include mwc-table-border-color($border-color);
+  @include mwc-table-head-color(text-secondary-on-background);
+  @include mwc-table-body-color(text-primary-on-background);
+}
+
+.mwc-table {
+  @include mwc-table-fill-color(surface);
+  @include mwc-table-shape-radius(small);
+  @include mdc-elevation(2);
+  @include mdc-typography(caption);
+
+  overflow: hidden;
+  position: relative;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  tbody {
+    font-size: .8125rem;
+  }
+
+  td,
+  th {
+    border-style: solid;
+    border-width: 0;
+    padding: 4px 56px 4px 24px;
+    box-sizing: border-box;
+
+    &:last-child {
+      padding: 4px 24px;
+    }
+  }
+
+  th,
+  tr:not(:last-child) td {
+    border-bottom-width: 1px;
+  }
+
+  th {
+    font-weight: 500;
+    height: 56px;
+  }
+
+  td {
+    height: 48px;
+  }
+}
+
+.mwc-table__loader {
+  background-color: rgba(mdc-theme-prop-value(surface), $mwc-table-loader-bg-color-opacity);
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+}
