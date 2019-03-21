@@ -21,9 +21,10 @@ limitations under the License.
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-card/mwc-card.js"></script>
   <script type="module" src="../node_modules/@material/mwc-table/mwc-table.js"></script>
   <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
-  <link rel="stylesheet" href="demo-component.css">
+<link rel="stylesheet" href="demo-component.css">
   <style>
     h3 {
       text-align: center;
@@ -36,6 +37,10 @@ limitations under the License.
 
     .demo-container {
       margin-bottom: 40px;
+    }
+    mwc-card {
+      width: 100%;
+      transform: translateX(37%);
     }
   </style>
 </head>
@@ -92,6 +97,14 @@ limitations under the License.
     <div class="demo-container">
       <mwc-table id="table_4"></mwc-table>
     </div>
+
+    <h3>In a card</h3>
+    <mwc-card>
+      <div slot="content" class="content">
+        <mwc-table id="table_5"></mwc-table>
+      </div>
+    </mwc-card>
+
   </main>
 
   <script>
@@ -135,6 +148,20 @@ limitations under the License.
       { name: 'Luis', surname: 'Sardon', birthYear: '1988' },
       { name: 'Tim', surname: 'Johnson', birthYear: '1976' }
     ];
+
+    table_5.columns = [
+      { title: 'Name', field: 'name' },
+      { title: 'Surname', field: 'surname' },
+      { title: 'Birth Year', field: 'birthYear', align: 'right' }
+    ];
+
+    table_5.data = [
+      { name: 'Luis', surname: 'Sardon', birthYear: '1988' },
+      { name: 'Tim', surname: 'Johnson', birthYear: '1976' },
+      { name: 'Molly', surname: 'Micheux', birthYear: '1989' },
+      { name: 'Rodrigo', surname: 'Aguilar', birthYear: '1991' }
+    ];
+
   </script>
 </body>
 </html>
