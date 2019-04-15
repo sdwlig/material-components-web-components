@@ -17,3 +17,39 @@ limitations under the License.
 
 @import '@material/dialog/mdc-dialog';
 @import '@material/button/mdc-button';
+
+
+.mdc-dialog {
+  &--popover {
+    align-items: unset;
+    justify-content: unset;
+    width: 100%;
+    height: auto;
+    left: auto;
+    top: auto;
+
+    &-small {
+      max-width: 280px;
+    }
+
+    &-medium {
+      max-width: 410px;
+    }
+
+    &-large {
+      max-width: 560px;
+    }
+
+    &-show {
+      display: block;
+    }
+
+    &-hide {
+      display: none;
+    }
+
+    .mdc-dialog__scrim {
+      display: none;
+    }
+  }
+}

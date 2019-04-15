@@ -10,3 +10,4 @@ node_modules
 /packages/*/src/*-css.ts
 /packages/*/package-lock.json
 !packages/*/custom_types/**
+.vscode

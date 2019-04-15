@@ -48,9 +48,30 @@ limitations under the License.
 
   <main>
     <div class="demo-group">
+      <div>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Enim nec dui nunc <span id="popoverButton">mattis</span>
+      <!-- <mwc-button id="popoverButton" raised label="Popover Dialog"></mwc-button> -->
+        <mwc-dialog for="popoverButton" id="popoverDialog" popover headerLabel="Popover Dialog" acceptLabel="OK" declineLabel="Cancel">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Enim nec dui nunc mattis enim ut tellus elementum. Bibendum enim facilisis gravida neque
+            convallis a cras semper. Posuere ac ut consequat semper viverra nam libero. Arcu ac tortor dignissim
+            convallis aenean et tortor at risus.</p>
+        </mwc-dialog>
+      </div>
+      <script type="module">
+        popoverButton.addEventListener('click', (e) => {
+          popoverDialog.open();
+        });
+
+        popoverDialog.addEventListener('MDCDialog:closed', e => {
+          console.log(e.type, e.detail);
+        });
+      </script>
+
 
       <mwc-button id="button" raised label="Dialog"></mwc-button>
-      <mwc-dialog id="dialog" headerLabel="Dialog Title" acceptLabel="OK" declineLabel="Cancel">
+      <mwc-dialog for="button" id="dialog" popover popoverSize="small" headerLabel="Dialog Title" acceptLabel="OK" declineLabel="Cancel">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
           dolore magna aliqua. Enim nec dui nunc mattis enim ut tellus elementum. Bibendum enim facilisis gravida neque
           convallis a cras semper. Posuere ac ut consequat semper viverra nam libero. Arcu ac tortor dignissim
@@ -69,7 +90,7 @@ limitations under the License.
       </script>
 
       <mwc-button id="scrollingButton" raised label="Scrolling Dialog"></mwc-button>
-      <mwc-dialog id="scrollingDialog" scrollable headerLabel="Scrolling Dialog Title" acceptLabel="OK" declineLabel="Cancel">
+      <mwc-dialog for="scrollingButton" id="scrollingDialog" popover scrollable headerLabel="Scrolling Dialog Title" acceptLabel="OK" declineLabel="Cancel">
         <span slot="header">More header stuff</span>
         <span slot="footer">More footer stuff&nbsp;&nbsp;</span>
         <mwc-button slot="footer" compact ripple label="Button" icon="mail"></mwc-button>

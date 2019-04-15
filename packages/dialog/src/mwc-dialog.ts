@@ -1,18 +1,19 @@
-import { BaseElement, customElement, html, query, property, queryAll, classMap, observer } from '@material/mwc-base/base-element';
-import { emit, findAssignedElements, addHasRemoveClass } from '@material/mwc-base/utils';
-import { MDCDialogFoundation } from '@material/dialog/foundation';
-import { MDCDialogAdapter } from '@material/dialog/adapter';
-import { Button as MWCButton } from '@material/mwc-button';
-import { ripple } from '@material/mwc-ripple/ripple-directive';
-import { closest, matches } from '@material/dom/ponyfill';
-import { strings } from '@material/dialog/constants';
+import { BaseElement, customElement, html, query, property, queryAll, classMap, observer } from '@material/mwc-base/base-element'
+import { emit, findAssignedElements, addHasRemoveClass } from '@material/mwc-base/utils'
+import { MDCDialogFoundation } from '@material/dialog/foundation'
+import { MDCDialogAdapter } from '@material/dialog/adapter'
+import { Button as MWCButton } from '@material/mwc-button'
+import { ripple } from '@material/mwc-ripple/ripple-directive'
+import { closest, matches } from '@material/dom/ponyfill'
+import { strings } from '@material/dialog/constants'
+import { styleMap } from 'lit-html/directives/style-map'
 
 // Temporal solution due to focus-trap incompatibility
-import { areTopsMisaligned, isScrollable } from './util';
+import { areTopsMisaligned, isScrollable } from './util'
 
-import { style } from './mwc-dialog-css';
+import { style } from './mwc-dialog-css'
 
-const LAYOUT_EVENTS = [ 'resize', 'orientationchange' ];
+const LAYOUT_EVENTS = ['resize', 'orientationchange']
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -29,10 +30,9 @@ declare global {
 
 @customElement('mwc-dialog' as any)
 export class Dialog extends BaseElement {
-
-  @query(".mdc-dialog")
+  @query('.mdc-dialog')
   protected mdcRoot!: HTMLElement;
-h
+
   @query('.mdc-dialog__container')
   protected containerEl!: HTMLElement;
 
@@ -63,49 +63,63 @@ h
   @property({ type: Boolean })
   public scrollable = false;
 
+  @property({ type: Boolean })
+  public popover = false;
+
   @property({ type: String })
-  @observer(function(this: Dialog, value: string) {
+  public popoverSize = 'large';
+
+  @property({ type: String })
+  protected popoverStyles = {};
+
+  @property({ type: String })
+  @observer(function (this: Dialog, value: string) {
     if (this.mdcFoundation) {
-      this.mdcFoundation.setEscapeKeyAction(value);
+      this.mdcFoundation.setEscapeKeyAction(value)
     }
   })
   public escapeKeyAction = strings.CLOSE_ACTION;
 
   @property({ type: String })
-  @observer(function(this: Dialog, value: string) {
+  @observer(function (this: Dialog, value: string) {
     if (this.mdcFoundation) {
-      this.mdcFoundation.setScrimClickAction(value);
+      this.mdcFoundation.setScrimClickAction(value)
     }
   })
   public scrimClickAction = strings.CLOSE_ACTION;
 
   @property({ type: Boolean })
-  @observer(function(this: Dialog, value: boolean) {
+  @observer(function (this: Dialog, value: boolean) {
     if (this.mdcFoundation) {
-      this.mdcFoundation.setAutoStackButtons(value);
+      this.mdcFoundation.setAutoStackButtons(value)
     }
   })
   public autoStackButtons = true;
 
+  @property({ type: String })
+  for = '';
+
+  protected controller_: HTMLElement | null = this.mdcRoot;
+
   public get isOpen() {
-    return this.mdcFoundation.isOpen();
+    return this.mdcFoundation.isOpen()
   }
 
   protected get _buttons(): MWCButton[] {
-    const actionButtons = [...this.buttons] || [];
+    const actionButtons = [...this.buttons] || []
     const slottedButtons = this.footerSlot
       ? findAssignedElements(this.footerSlot, '*')
         .filter(node => node instanceof MWCButton)
-      : [];
+      : []
 
     return [
       ...actionButtons,
       ...slottedButtons
-    ] as MWCButton[];
+    ] as MWCButton[]
   }
 
   protected get _defaultButton() {
-    return this._buttons.find(item => item.hasAttribute('data-mdc-dialog-default-action'));
+    return this._buttons.find(item => item.hasAttribute('data-mdc-dialog-default-action'))
   }
 
   // Commented due to focus-trap incompatibility
@@ -125,6 +139,36 @@ h
 
   protected readonly mdcFoundationClass = MDCDialogFoundation;
 
+  protected calcPosition() {
+    const gap = 20;
+    this.controller_ = this.for === '' ? this.parentElement : this.parentElement!.querySelector(`#${this.for}`)
+
+    this.mdcRoot.classList.add('mdc-dialog--popover-show')
+    const rootPosition = this.mdcRoot.getBoundingClientRect()
+    const controllerPosition = this.controller_ != null ? this.controller_.getBoundingClientRect() : {} as DOMRect
+    // console.log(controllerPosition, 'controller_ getBoundingClientRect')
+
+    this.mdcRoot.classList.remove('mdc-dialog--popover-show')
+    const { top, left } = controllerPosition
+
+    const leftMargin = left
+
+    const rightMargin = window.innerWidth - +leftMargin - rootPosition.width
+    
+    console.log(left, 'controller left');
+    console.log(leftMargin, 'leftMargin');
+    console.log(rightMargin, 'rightMargin');
+    console.log(rootPosition.width, 'rootPosition.width');
+
+    if (rightMargin < leftMargin) {
+      console.log(+left - rootPosition.width - gap, 'to the left');
+      return { top: (top + 'px'), left: ((+left - rootPosition.width - gap) + 'px') }
+    } else {
+      console.log(window.innerWidth - rightMargin + gap, 'to the right ');
+      return { top: (top + 'px'), left: ((window.innerWidth - rightMargin + gap) + 'px') }
+    }
+  }
+
   protected createAdapter(): MDCDialogAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -134,10 +178,10 @@ h
       eventTargetMatches: (target, selector) => target ? matches(target as Element, selector) : false,
       getActionFromEvent: (evt: Event) => {
         if (!evt.target) {
-          return '';
+          return ''
         }
-        const element = closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
-        return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
+        const element = closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`)
+        return element && element.getAttribute(strings.ACTION_ATTRIBUTE)
       },
       isContentScrollable: () => isScrollable(this.contentEl) && this.scrollable,
       notifyClosed: action => emit(this, strings.CLOSED_EVENT, action ? { action } : {}),
@@ -145,20 +189,20 @@ h
       notifyOpened: () => emit(this, strings.OPENED_EVENT, {}),
       notifyOpening: () => emit(this, strings.OPENING_EVENT, {}),
       releaseFocus: () => {
-        document.$blockingElements.remove(this);
+        document.$blockingElements.remove(this)
       },
       removeBodyClass: className => document.body.classList.remove(className),
       reverseButtons: () => {
-        this._buttons.reverse();
+        this._buttons.reverse()
         this._buttons.forEach((button) => {
-          button.parentElement!.appendChild(button);
-        });
+          button.parentElement!.appendChild(button)
+        })
       },
       trapFocus: () => {
-        document.$blockingElements.push(this);
+        document.$blockingElements.push(this)
 
         if (this._defaultButton) {
-          this._defaultButton.focus();
+          this._defaultButton.focus()
         }
       }
     }
@@ -170,7 +214,7 @@ h
     const classes = {
       'mdc-button': true,
       'mdc-dialog__button': true
-    };
+    }
 
     return html`
       <button
@@ -182,15 +226,16 @@ h
       >
         <span class="mdc-button__label">${label}</span>
       </button>
-    `;
+    `
   }
 
   render() {
-    const { headerLabel, acceptLabel, declineLabel } = this;
+    const { headerLabel, acceptLabel, declineLabel } = this
 
     return html`
       <aside
-        class="mdc-dialog"
+        class="mdc-dialog ${this.popover ? 'mdc-dialog--popover' : ''} mdc-dialog--popover-${this.popoverSize}"
+        style="${styleMap(this.popoverStyles)}"
         role="alertdialog"
         aria-labelledby="dialog-title"
         aria-describedby="dialog-content"
@@ -213,46 +258,49 @@ h
         </div>
         <div class="mdc-dialog__scrim"></div>
       </aside>
-    `;
+    `
   }
 
   firstUpdated() {
-    super.firstUpdated();
-    
-    this.mdcRoot.addEventListener('click', this._handleInteraction);
-    this.addEventListener('keydown', this._handleInteraction);
-    this.addEventListener(strings.OPENING_EVENT, this._handleOpening);
-    this.addEventListener(strings.CLOSING_EVENT, this._handleClosing);
+    super.firstUpdated()
+
+    if (this.popover) {
+      this.popoverStyles = this.calcPosition()
+    }
+
+    this.mdcRoot.addEventListener('click', this._handleInteraction)
+    this.addEventListener('keydown', this._handleInteraction)
+    this.addEventListener(strings.OPENING_EVENT, this._handleOpening)
+    this.addEventListener(strings.CLOSING_EVENT, this._handleClosing)
   }
 
   open() {
-    this.mdcFoundation.open();
+    this.mdcFoundation.open()
   }
 
   close(action = '') {
-    this.mdcFoundation.close(action);
+    this.mdcFoundation.close(action)
   }
 
   _onInteraction(evt: MouseEvent | KeyboardEvent) {
-    this.mdcFoundation.handleInteraction(evt);
+    this.mdcFoundation.handleInteraction(evt)
   }
 
   _onDocumentKeydown(evt: KeyboardEvent) {
-    this.mdcFoundation.handleDocumentKeydown(evt);
+    this.mdcFoundation.handleDocumentKeydown(evt)
   }
 
   _onLayout() {
-    this.mdcFoundation.layout();
+    this.mdcFoundation.layout()
   }
 
   _onOpening() {
-    LAYOUT_EVENTS.forEach(evtType => window.addEventListener(evtType, this._handleLayout));
-    document.addEventListener('keydown', this._handleDocumentKeydown);
+    LAYOUT_EVENTS.forEach(evtType => window.addEventListener(evtType, this._handleLayout))
+    document.addEventListener('keydown', this._handleDocumentKeydown)
   }
 
   _onClosing() {
-    LAYOUT_EVENTS.forEach(evtType => window.removeEventListener(evtType, this._handleLayout));
-    document.removeEventListener('keydown', this._handleDocumentKeydown);
+    LAYOUT_EVENTS.forEach(evtType => window.removeEventListener(evtType, this._handleLayout))
+    document.removeEventListener('keydown', this._handleDocumentKeydown)
   }
-
 }
