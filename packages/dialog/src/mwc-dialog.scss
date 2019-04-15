@@ -27,6 +27,17 @@ limitations under the License.
     height: auto;
     left: auto;
     top: auto;
+    position: fixed;
+
+    &.mdc-dialog--pre-open {
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      transform: scale(0.7);
+    }
+    &.mdc-dialog--open {
+      opacity: 1;
+      transform: scale(1);
+    }
 
     &-small {
       max-width: 280px;
@@ -48,8 +59,11 @@ limitations under the License.
       display: none;
     }
 
-    .mdc-dialog__scrim {
+    .mdc-dialog__scrim, .mdc-dialog__actions {
       display: none;
+    }
+    .mdc-dialog__surface {
+      max-height: 100%;
     }
   }
 }

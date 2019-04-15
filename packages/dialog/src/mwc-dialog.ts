@@ -97,7 +97,10 @@ export class Dialog extends BaseElement {
   public autoStackButtons = true;
 
   @property({ type: String })
-  for = '';
+  protected for = '';
+
+  @property({ type: Boolean })
+  protected openingPopover = false;
 
   protected controller_: HTMLElement | null = this.mdcRoot;
 
@@ -139,34 +142,44 @@ export class Dialog extends BaseElement {
 
   protected readonly mdcFoundationClass = MDCDialogFoundation;
 
-  protected calcPosition() {
-    const gap = 20;
+  protected calcPopoverPosition() {
+    const gap = 30;
     this.controller_ = this.for === '' ? this.parentElement : this.parentElement!.querySelector(`#${this.for}`)
 
     this.mdcRoot.classList.add('mdc-dialog--popover-show')
-    const rootPosition = this.mdcRoot.getBoundingClientRect()
-    const controllerPosition = this.controller_ != null ? this.controller_.getBoundingClientRect() : {} as DOMRect
-    // console.log(controllerPosition, 'controller_ getBoundingClientRect')
-
+    const rootSettings = this.mdcRoot.getBoundingClientRect()
+    const controllerSettings = this.controller_ != null ? this.controller_.getBoundingClientRect() : {} as DOMRect
     this.mdcRoot.classList.remove('mdc-dialog--popover-show')
-    const { top, left } = controllerPosition
 
-    const leftMargin = left
+    const leftMargin = controllerSettings.left
+    const rightMargin = window.innerWidth - leftMargin
+    const topMargin = controllerSettings.top
+    const bottomMargin = window.innerHeight - topMargin 
 
-    const rightMargin = window.innerWidth - +leftMargin - rootPosition.width
-    
-    console.log(left, 'controller left');
-    console.log(leftMargin, 'leftMargin');
-    console.log(rightMargin, 'rightMargin');
-    console.log(rootPosition.width, 'rootPosition.width');
+    let leftPosition = 0
+    let topPosition = 0
+    let transformOriginX = ''
+    let transformOriginY = ''
 
-    if (rightMargin < leftMargin) {
-      console.log(+left - rootPosition.width - gap, 'to the left');
-      return { top: (top + 'px'), left: ((+left - rootPosition.width - gap) + 'px') }
-    } else {
-      console.log(window.innerWidth - rightMargin + gap, 'to the right ');
-      return { top: (top + 'px'), left: ((window.innerWidth - rightMargin + gap) + 'px') }
+    leftPosition = leftMargin + controllerSettings.width + gap
+    transformOriginX = 'left'
+    if (this.thereIsMoreSpaceOnTheLeftSide(rightMargin, leftMargin)) {
+      leftPosition = +controllerSettings.left - rootSettings.width - gap
+      transformOriginX = 'right'
     }
+
+    topPosition = controllerSettings.top - rootSettings.height / 2 + controllerSettings.height / 2
+    transformOriginY = 'bottom'
+    if (this.halfPopoverDoesntFitOnBottom(bottomMargin, rootSettings.height, gap)) {
+      transformOriginY = 'bottom'
+      topPosition = controllerSettings.bottom - rootSettings.height
+    }
+    if (this.halfPopoverDoesntFitOnTop(topMargin, rootSettings.height, gap)) {
+      transformOriginY = 'top'
+      topPosition = controllerSettings.top
+    }
+
+    return { top: topPosition + 'px', left: leftPosition + 'px', transformOrigin: transformOriginX + ' ' + transformOriginY }
   }
 
   protected createAdapter(): MDCDialogAdapter {
@@ -189,7 +202,7 @@ export class Dialog extends BaseElement {
       notifyOpened: () => emit(this, strings.OPENED_EVENT, {}),
       notifyOpening: () => emit(this, strings.OPENING_EVENT, {}),
       releaseFocus: () => {
-        document.$blockingElements.remove(this)
+        // document.$blockingElements.remove(this)
       },
       removeBodyClass: className => document.body.classList.remove(className),
       reverseButtons: () => {
@@ -199,13 +212,25 @@ export class Dialog extends BaseElement {
         })
       },
       trapFocus: () => {
-        document.$blockingElements.push(this)
+        // document.$blockingElements.push(this)
 
         if (this._defaultButton) {
           this._defaultButton.focus()
         }
       }
     }
+  }
+
+  protected thereIsMoreSpaceOnTheLeftSide(rightMargin: number, leftMargin: number) {
+    return rightMargin < leftMargin;
+  }
+
+  protected halfPopoverDoesntFitOnTop(topMargin: number, rootSettingsHeight: number, gap: number) {
+    return topMargin < ((rootSettingsHeight) / 2 + (gap * 2))
+  }
+
+  protected halfPopoverDoesntFitOnBottom(bottomMargin: number, rootSettingsHeight: number, gap: number) {
+    return bottomMargin < ((rootSettingsHeight / 2) + (gap * 2))
   }
 
   static styles = style;
@@ -234,7 +259,11 @@ export class Dialog extends BaseElement {
 
     return html`
       <aside
-        class="mdc-dialog ${this.popover ? 'mdc-dialog--popover' : ''} mdc-dialog--popover-${this.popoverSize}"
+        class="mdc-dialog
+          ${this.popover ? ' mdc-dialog--popover' : ''}
+          ${this.popover && this.popoverSize ? ` mdc-dialog--popover-${this.popoverSize}` : ''}
+          ${this.openingPopover ? ' mdc-dialog--pre-open' : ''}
+        "
         style="${styleMap(this.popoverStyles)}"
         role="alertdialog"
         aria-labelledby="dialog-title"
@@ -264,10 +293,6 @@ export class Dialog extends BaseElement {
   firstUpdated() {
     super.firstUpdated()
 
-    if (this.popover) {
-      this.popoverStyles = this.calcPosition()
-    }
-
     this.mdcRoot.addEventListener('click', this._handleInteraction)
     this.addEventListener('keydown', this._handleInteraction)
     this.addEventListener(strings.OPENING_EVENT, this._handleOpening)
@@ -275,11 +300,24 @@ export class Dialog extends BaseElement {
   }
 
   open() {
-    this.mdcFoundation.open()
+    if (this.popover) {
+      this.popoverStyles = this.calcPopoverPosition()
+    }
+
+    this.openingPopover = true;
+
+    setTimeout(() => {
+      this.mdcFoundation.open()
+    }, 100);
   }
 
   close(action = '') {
     this.mdcFoundation.close(action)
+    
+    setTimeout(() => {
+      this.openingPopover = false;
+    }, 300);
+
   }
 
   _onInteraction(evt: MouseEvent | KeyboardEvent) {
