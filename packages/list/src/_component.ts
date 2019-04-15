@@ -119,7 +119,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
           [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
     } else if (singleSelectedListItem) {
       if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
-        this.foundation_.setUseActivatedClass(true);
+        // this.foundation_.setUseActivatedClass(true);
       }
 
       this.singleSelection = true;
@@ -146,6 +146,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         }
       },
       inputType: () => "boo",
+      setSelectedAtIndex: (index) => { console.log(index) },
       getAttributeForElementIndex: (index, attr) => this.listElements[index].getAttribute(attr),
       getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,

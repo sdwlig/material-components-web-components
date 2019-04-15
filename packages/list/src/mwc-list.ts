@@ -61,6 +61,9 @@ export class List extends BaseElement {
   @property({type: Boolean})
   nonInteractive = false;
 
+  @property({type: Boolean})
+  useActivated = false;
+
   @property({type: String})
   inputType = 'none';
 
@@ -122,6 +125,7 @@ export class List extends BaseElement {
       ...addHasRemoveClass(this.mdcRoot),
       getListItemCount: () => this.listElements.length,
       inputType: () => this.inputType,
+      setSelectedAtIndex: (index) => { this.listElements[index].selected = true; },
       getFocusedElementIndex: () => {
         return this.listElements.map( (ele, index) => {
           return (ele && Number(ele.getAttribute('tabindex')) >= 0) ? index : -1;
@@ -183,7 +187,6 @@ export class List extends BaseElement {
    * Initialize selectedIndex value based on pre-selected checkbox list items, single selection or radio.
    */
   public initializeListType() {
-    this.mdcFoundation.setUseActivatedClass(this.listElements.filter(e => e.activated).length > 0);
     this.selectedIndex = this.listElements.indexOf(this.listElements.filter(e => e.selected)[0]);
   }
 

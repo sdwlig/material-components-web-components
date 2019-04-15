@@ -62,6 +62,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       setCheckedCheckboxOrRadioAtIndex: () => undefined,
       setTabIndexForListItemChildren: () => undefined,
       inputType: () => 'undefined',
+      setSelectedAtIndex: () => undefined,
     };
   }
 
@@ -70,8 +71,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private isSingleSelectionList_ = false;
   private selectedIndex_: MDCListIndex = numbers.UNSET_INDEX;
   private focusedItemIndex_ = numbers.UNSET_INDEX;
-  private useActivatedClass_ = false;
-  private ariaCurrentAttrValue_: string | null = null;
+  // private ariaCurrentAttrValue_: string | null = null;
   private isCheckboxList_ = false;
   private isRadioList_ = false;
 
@@ -112,12 +112,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.isSingleSelectionList_ = value;
   }
 
-  /**
-   * Sets the useActivatedClass_ private variable.
-   */
-  setUseActivatedClass(useActivated: boolean) {
-    this.useActivatedClass_ = useActivated;
-  }
 
   getSelectedIndex(): MDCListIndex {
     return this.selectedIndex_;
@@ -309,40 +303,30 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       return;
     }
 
-    let selectedClassName = cssClasses.LIST_ITEM_SELECTED_CLASS;
-    if (this.useActivatedClass_) {
-      selectedClassName = cssClasses.LIST_ITEM_ACTIVATED_CLASS;
-    }
-
-    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_ as number, selectedClassName);
-    }
-    this.adapter_.addClassForElementIndex(index, selectedClassName);
-    this.setAriaForSingleSelectionAtIndex_(index);
-
+    this.adapter_.setSelectedAtIndex(index);
     this.selectedIndex_ = index;
   }
 
   /**
    * Sets aria attribute for single selection at given index.
    */
-  private setAriaForSingleSelectionAtIndex_(index: number) {
-    // Detect the presence of aria-current and get the value only during list initialization when it is in unset state.
-    if (this.selectedIndex_ === numbers.UNSET_INDEX) {
-      this.ariaCurrentAttrValue_ =
-            this.adapter_.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
-    }
+  // private setAriaForSingleSelectionAtIndex_(index: number) {
+  //   // Detect the presence of aria-current and get the value only during list initialization when it is in unset state.
+  //   if (this.selectedIndex_ === numbers.UNSET_INDEX) {
+  //     this.ariaCurrentAttrValue_ =
+  //           this.adapter_.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
+  //   }
 
-    const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
-    const ariaAttribute = isAriaCurrent ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
+  //   const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
+  //   const ariaAttribute = isAriaCurrent ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
 
-    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, ariaAttribute, 'false');
-    }
+  //   if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
+  //     this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, ariaAttribute, 'false');
+  //   }
 
-    const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
-    this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue as string);
-  }
+  //   const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
+  //   this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue as string);
+  // }
 
   /**
    * Toggles radio at give index. Radio doesn't change the checked state if it is already checked.

@@ -48,6 +48,9 @@ export class ListItem extends LitElement {
   disabled = false;
 
   @property({type: Boolean})
+  focused = false;
+
+  @property({type: Boolean})
   selected = false;
 
   @property({type: Boolean})
@@ -84,8 +87,16 @@ export class ListItem extends LitElement {
       "mdc-list-item--selected": this.selected,
       "mdc-list-item--activated": this.activated,
     };
+    const arias = {
+      "aria-current" : this.focused,
+      "aria-selected" : this.selected || this.activated,
+
+    }
     return html`
-      <li class="${classMap(classes)}" tabindex="${this.tabindex}">
+      <li
+        class="${classMap(classes)}"
+        tabindex="${this.tabindex}"
+        ${classMap(arias)}>
         ${this.renderGraphic()}
         <span class="mdc-list-item__text">
           ${this._lines === 1 ? this.renderSingleLine() : this.renderDoubleLine()}

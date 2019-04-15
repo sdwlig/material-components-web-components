@@ -192,15 +192,19 @@
         }, false);
       }
       addEvent(window, 'blur', function() {
+        console.log('win->blur');
         return ifvisible.blur();
       });
       addEvent(window, "focus", function() {
+        console.log('win->focus');
         return ifvisible.focus();
       });
       addEvent(doc, 'blur', function() {
+        console.log('doc->blur');
         return ifvisible.blur();
       });
       addEvent(doc, "focus", function() {
+        console.log('doc->focus');
         return ifvisible.focus();
       });
 
@@ -331,17 +335,20 @@ function refreshIn(secs) {
   console.log(`Refreshing in ${secs}s...`)
   setTimeout(function(){ window.location.href = window.location; }, secs*1000);
 }
-if( !ifvisible.now() ){
+if( !document.hasFocus() ){
   console.log('refreshed... not in focus...')
-  refreshIn(10);
+  refreshIn(20);
+
+  ifvisible.on("focus", function(){
+    refreshIn(0);
+  });
+
 } else {
   console.log('in focus.')
   ifvisible.on("blur", function(){
-    console.log("blurred...")
     refreshIn(20);
   });
   ifvisible.on("focus", function(){
-    console.log("refocused...")
     refreshIn(0);
   });
 }
