@@ -1,4 +1,4 @@
-import { BaseElement, customElement, html, query, property, queryAll, classMap, observer } from '@material/mwc-base/base-element'
+import { BaseElement, customElement, html, query, property, queryAll, classMap, observer, TemplateResult } from '@material/mwc-base/base-element'
 import { emit, findAssignedElements, addHasRemoveClass } from '@material/mwc-base/utils'
 import { MDCDialogFoundation } from '@material/dialog/foundation'
 import { MDCDialogAdapter } from '@material/dialog/adapter'
@@ -104,7 +104,7 @@ export class Dialog extends BaseElement {
 
   protected controller_: HTMLElement | null = this.mdcRoot;
 
-  public get isOpen() {
+  public get isOpen(): boolean {
     return this.mdcFoundation.isOpen()
   }
 
@@ -142,7 +142,7 @@ export class Dialog extends BaseElement {
 
   protected readonly mdcFoundationClass = MDCDialogFoundation;
 
-  protected calcPopoverPosition() {
+  protected calcPopoverPosition(): object {
     const gap = 30;
     this.controller_ = this.for === '' ? this.parentElement : this.parentElement!.querySelector(`#${this.for}`)
 
@@ -171,7 +171,6 @@ export class Dialog extends BaseElement {
     topPosition = controllerSettings.top - rootSettings.height / 2 + controllerSettings.height / 2
     transformOriginY = 'bottom'
     if (this.halfPopoverDoesntFitOnBottom(bottomMargin, rootSettings.height, gap)) {
-      transformOriginY = 'bottom'
       topPosition = controllerSettings.bottom - rootSettings.height
     }
     if (this.halfPopoverDoesntFitOnTop(topMargin, rootSettings.height, gap)) {
@@ -179,7 +178,7 @@ export class Dialog extends BaseElement {
       topPosition = controllerSettings.top
     }
 
-    return { top: topPosition + 'px', left: leftPosition + 'px', transformOrigin: transformOriginX + ' ' + transformOriginY }
+    return { top: topPosition + 'px', left: leftPosition + 'px', transformOrigin: `${transformOriginX} ${transformOriginY}` }
   }
 
   protected createAdapter(): MDCDialogAdapter {
@@ -221,21 +220,21 @@ export class Dialog extends BaseElement {
     }
   }
 
-  protected thereIsMoreSpaceOnTheLeftSide(rightMargin: number, leftMargin: number) {
+  protected thereIsMoreSpaceOnTheLeftSide(rightMargin: number, leftMargin: number): boolean {
     return rightMargin < leftMargin;
   }
 
-  protected halfPopoverDoesntFitOnTop(topMargin: number, rootSettingsHeight: number, gap: number) {
+  protected halfPopoverDoesntFitOnTop(topMargin: number, rootSettingsHeight: number, gap: number): boolean {
     return topMargin < ((rootSettingsHeight) / 2 + (gap * 2))
   }
 
-  protected halfPopoverDoesntFitOnBottom(bottomMargin: number, rootSettingsHeight: number, gap: number) {
+  protected halfPopoverDoesntFitOnBottom(bottomMargin: number, rootSettingsHeight: number, gap: number): boolean {
     return bottomMargin < ((rootSettingsHeight / 2) + (gap * 2))
   }
 
   static styles = style;
 
-  _renderButton(label: String, action: String) {
+  protected _renderButton(label: String, action: String): TemplateResult {
     const classes = {
       'mdc-button': true,
       'mdc-dialog__button': true
@@ -254,7 +253,7 @@ export class Dialog extends BaseElement {
     `
   }
 
-  render() {
+  protected render(): TemplateResult {
     const { headerLabel, acceptLabel, declineLabel } = this
 
     return html`
@@ -290,7 +289,7 @@ export class Dialog extends BaseElement {
     `
   }
 
-  firstUpdated() {
+  public firstUpdated(): void {
     super.firstUpdated()
 
     this.mdcRoot.addEventListener('click', this._handleInteraction)
@@ -299,7 +298,7 @@ export class Dialog extends BaseElement {
     this.addEventListener(strings.CLOSING_EVENT, this._handleClosing)
   }
 
-  open() {
+  protected open(): void {
     if (this.popover) {
       this.popoverStyles = this.calcPopoverPosition()
     }
@@ -308,36 +307,36 @@ export class Dialog extends BaseElement {
 
     setTimeout(() => {
       this.mdcFoundation.open()
-    }, 100);
+    }, 100)
   }
 
-  close(action = '') {
+  protected close(action: string = ''): void {
     this.mdcFoundation.close(action)
     
     setTimeout(() => {
       this.openingPopover = false;
-    }, 300);
+    }, 300)
 
   }
 
-  _onInteraction(evt: MouseEvent | KeyboardEvent) {
+  protected _onInteraction(evt: MouseEvent | KeyboardEvent): void {
     this.mdcFoundation.handleInteraction(evt)
   }
 
-  _onDocumentKeydown(evt: KeyboardEvent) {
+  protected _onDocumentKeydown(evt: KeyboardEvent): void {
     this.mdcFoundation.handleDocumentKeydown(evt)
   }
 
-  _onLayout() {
+  protected _onLayout(): void {
     this.mdcFoundation.layout()
   }
 
-  _onOpening() {
+  protected _onOpening(): void {
     LAYOUT_EVENTS.forEach(evtType => window.addEventListener(evtType, this._handleLayout))
     document.addEventListener('keydown', this._handleDocumentKeydown)
   }
 
-  _onClosing() {
+  protected _onClosing(): void {
     LAYOUT_EVENTS.forEach(evtType => window.removeEventListener(evtType, this._handleLayout))
     document.removeEventListener('keydown', this._handleDocumentKeydown)
   }
