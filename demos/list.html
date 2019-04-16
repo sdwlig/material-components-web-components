@@ -45,7 +45,7 @@ limitations under the License.
             <span slot="primary-text" class="primaryText">Texto 1</span>
             <span slot="secondary-text" class="secondary-Text">Texto 2</span>
 
-            <div slot="expanded">
+            <div slot="content">
               <mwc-card outlined aspectRatio="square">
                 <div slot="media" class="my-media"></div>
 
@@ -72,7 +72,7 @@ limitations under the License.
             <span slot="primary-text" class="primaryText">Texto 1</span>
             <span slot="secondary-text" class="secondary-Text">Texto 2</span>
 
-            <div slot="expanded">
+            <div slot="content">
                 <mwc-button label="Normal" icon="explore"></mwc-button>
                 <mwc-button class="light" raised label="raised" icon="code"></mwc-button>
                 <mwc-button unelevated label="unelevated" icon="check"></mwc-button>
@@ -82,14 +82,17 @@ limitations under the License.
                 <mwc-button disabled label="disabled" icon="fingerprint"></mwc-button>
             </div>
           </mwc-list-item>
+        </section>
+          <hr>
 
+        <section>
           <h4>Accordion - Expand and collapse</h4>
 
-          <mwc-list-item expandable>
+          <mwc-list-item accordion>
               <span slot="primary-text" class="primaryText">Texto 1</span>
               <span slot="secondary-text" class="secondary-Text">Texto 2</span>
 
-              <div slot="expanded">
+              <div slot="content">
                 <mwc-list-item>
                   <span slot="primary-text" class="primaryText">List Item</span>
                 </mwc-list-item>
@@ -104,11 +107,11 @@ limitations under the License.
               </div>
             </mwc-list-item>
 
-          <mwc-list-item expandable leading>
+          <mwc-list-item accordion leading>
               <mwc-icon slot="graphic">alarm_on</mwc-icon>
               <span slot="primary-text" class="primaryText">Texto 1</span>
 
-              <div slot="expanded">
+              <div slot="content">
                 <mwc-list-item>
                   <span slot="primary-text" class="primaryText">List Item</span>
                 </mwc-list-item>
@@ -124,6 +127,7 @@ limitations under the License.
             </mwc-list-item>
 
         </section>
+        <hr>
 
         <section>
           <h4>Single-Line</h4>
@@ -140,8 +144,9 @@ limitations under the License.
                 <span slot="primary-text" class="primaryText">List Item</span>
               </mwc-list-item>
             </section>
-            
-            
+            <hr>
+
+            <section>
               <h4>Two-Line</h4>
               <mwc-list-item>
                 <span slot="primary-text" class="primaryText">primary text</span>
@@ -154,10 +159,10 @@ limitations under the License.
               <mwc-list-item>
                 <span slot="primary-text" class="primaryText">primary text</span>
                 <span slot="secondary-text" class="secondary-Text">secondary text</span>
-                </mwc-list-item>
-              
+                </mwc-list-item>              
             </section>
-            
+            <hr>
+
             <section>
             <h4>Leading Icon</h4>
               <mwc-list-item leading>
@@ -176,9 +181,10 @@ limitations under the License.
               </mwc-list-item>
               
             </section>
-            
-            <h4>Trailing Icon</h4>
+            <hr>
+
             <section>
+            <h4>Trailing Icon</h4>
               <mwc-list-item>
               <mwc-icon>alarm_on</mwc-icon>
                 <span slot="primary-text" class="primaryText">List Item</span>
@@ -196,8 +202,6 @@ limitations under the License.
             </section>
             <hr>
             
-            <section>
-      
             <section>
             <h4>Two-Line with Leading and Trailing Icon and Divider</h4>
               <mwc-list-item leading>
@@ -224,9 +228,10 @@ limitations under the License.
                 <mwc-icon>alarm_on</mwc-icon>
                 <span slot="primary-text" class="primaryText">primary text</span>
                 <span slot="secondary-text" class="secondary-Text">secondary text</span>
-              </mwc-list-item>
-              
+              </mwc-list-item>              
             </section>
+            <hr>
+
             <section>
             <h4>List with Trailing Checkbox</h4>
               <mwc-list-item disabled label="Line item" class="primaryText"><mwc-checkbox></mwc-list-item>
@@ -236,6 +241,8 @@ limitations under the License.
               <mwc-list-item disabled label="Line item" class="primaryText"><mwc-checkbox></mwc-list-item>
               
             </section>
+            <hr>
+
             <section>
             <h4>List with Trailing Radio Buttons</h4>
               <mwc-list-item label="Line item" class="primaryText"><mwc-radio></mwc-list-item>

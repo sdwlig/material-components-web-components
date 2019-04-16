@@ -17,9 +17,9 @@ limitations under the License.
 
 @import "@material/list/mdc-list.scss";
 @import "@material/ripple/mixins";
-@import '@authentic/mwc-icon/src/_mwc-icon.scss';
+@import "@authentic/mwc-icon/src/_mwc-icon.scss";
 
-$accordionEase: cubic-bezier(0.865, 0.140, 0.095, 0.870);
+$accordionEase: cubic-bezier(0.865, 0.14, 0.095, 0.87);
 $accordionTiming: 0.4s;
 
 $modalEase: cubic-bezier(0.4, 0, 0.2, 1);
@@ -31,7 +31,6 @@ $modalEase: cubic-bezier(0.4, 0, 0.2, 1);
 :host {
   width: 100%;
 }
-
 :host([aria-disabled="true"]) > .mdc-list-item:focus::before {
   opacity: 0;
 }
@@ -43,7 +42,7 @@ $modalEase: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-:host([expandable]) {
+:host([accordion]) {
   cursor: pointer;
 
   .mdc-list-item {
@@ -51,7 +50,7 @@ $modalEase: cubic-bezier(0.4, 0, 0.2, 1);
     max-height: 55px;
     transition: max-height $accordionEase $accordionTiming;
 
-    &--expanded {
+    &--accordion {
       max-height: 60em;
     }
 
@@ -76,126 +75,146 @@ $modalEase: cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
     right: 16px;
     top: 14px;
+    font-family: "Material Icons" !important;
+  }
+  .mdc-list-item__text {
+    text-align: left;
   }
 
-  &--modal {
-    overflow: visible;
-    white-space: normal;
-    z-index: 10;
+  &__invisible-block {
+    width: 100%;
+    height: 55px;
+    display: none;
 
-    &:before,
-    &:after {
-      background: none;
-    }
-    .mdc-list-item__text {
-      animation: opacityAnimation 0.25s;
-    }
-    .mdc-list-item__close {
+    &--modal {
       display: block;
     }
   }
 
-  &--expanded {
+  &--modal {
+    overflow: hidden;
+    white-space: normal;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+
     &:before,
     &:after {
-      background: none;
+      background: none !important;
+    }
+    .mdc-list-item__text {
+      opacity: 0;
+    }
+    .mdc-list-item__modal-close {
+      display: block;
     }
   }
 
-  &__wrapper {
-    height: 0;
-    position: absolute;
-    top: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background-color 0.3s 0.15s, height 0.2s 0.45s, top 0s 0.95s;
-
-    &--modal {
-      height: 100vh;
-      transition: background-color 0.15s 0.15s;
-      background: rgba(0, 0, 0, 0.5);
-
-      .mdc-list-item__modal-content {
+  &__modal {
+    &-close {
+      display: none;
+      top: 15px;
+      left: 15px;
+      cursor: pointer;
+      z-index: 1;
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      opacity: 0.3;
+      &:hover {
         opacity: 1;
-        height: 100vh;
-        transition: top 0.25s $modalEase 0s, opacity 0.3s 0.1s,
-          height 0.25s $modalEase 0.2s,
-          transform 0.25s $modalEase 0.2s;
+      }
+      &:before,
+      &:after {
+        position: absolute;
+        left: 15px;
+        content: " ";
+        height: 25px;
+        width: 2px;
+        background-color: #797878;
+      }
+      &:before {
+        transform: rotate(45deg);
+      }
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+    &-content {
+      display: flex;
+      justify-content: center;
+      opacity: 0;
+      width: 100%;
+      padding: 0;
+      position: absolute;
+      overflow: hidden;
+      left: 0;
+      top: 0;
+      height: 55px;
+      background: #fff;
+      margin: 0;
+      transition: top 0.15s $modalEase 0.15s, opacity 0.3s 0.25s,
+        height 0.25s $modalEase 0.1s, transform 0.15s $modalEase 0.15s;
 
-        * {
+      * {
+        opacity: 0;
+        transition: opacity 0.15s 0.15s;
+      }
+    }
+    &-wrapper {
+      height: 0;
+      position: absolute;
+      top: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: background-color 0.3s 0.15s, height 0.2s 0.45s, top 0s 0.95s;
+      width: 100%;
+      
+      &--open {
+        height: 100vh;
+        transition: background-color 0.15s 0.15s;
+        background: rgba(0, 0, 0, 0.5);
+
+        .mdc-list-item__modal-content {
           opacity: 1;
-          transition: opacity 0.3s 0.3s;
+          height: 100vh;
+          transition: top 0.25s $modalEase 0s, opacity 0.25s 0.1s,
+            height 0.25s $modalEase 0.2s, transform 0.25s $modalEase 0.2s;
+
+          * {
+            opacity: 1;
+            transition: opacity 0.3s 0.3s;
+          }
         }
       }
     }
   }
 
-  &__modal-content {
-    display: flex;
-    justify-content: center;
-    opacity: 0;
-    width: 100%;
-    padding: 0;
-    position: absolute;
-    overflow: hidden;
-    left: 0;
-    top: 0;
-    height: 55px;
-    background: #fff;
-    margin: 0;
-    transition: top 0.15s $modalEase 0.15s, opacity 0.3s 0.25s,
-      height 0.25s $modalEase 0.1s,
-      transform 0.15s $modalEase 0.15s;
-
-    * {
-      opacity: 0;
-      transition: opacity 0.15s 0.15s;
-    }
-  }
-
-  &__close {
-    display: none;
-    top: 15px;
-    left: 15px;
-    cursor: pointer;
-    z-index: 1;
-
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    opacity: 0.3;
-    &:hover {
-      opacity: 1;
-    }
+  &--accordion {
     &:before,
     &:after {
-      position: absolute;
-      left: 15px;
-      content: " ";
-      height: 25px;
-      width: 2px;
-      background-color: #797878;
-    }
-    &:before {
-      transform: rotate(45deg);
-    }
-    &:after {
-      transform: rotate(-45deg);
+      background: none;
     }
   }
 
-  &__expanded-content {
-    display: block;
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    margin-left: 1px;
-  }
-  &__expanded-content-wrapper {
-    margin-left: -17px;
+  &__accordion {
+    &-content {
+      display: block;
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      margin-left: 1px;
+    }
+    &-content-wrapper {
+      margin-left: -17px;
 
-    &--aligned {
-      margin-left: 39px;
+      &--aligned {
+        margin-left: 39px;
+      }
     }
   }
 }
@@ -204,13 +223,4 @@ $modalEase: cubic-bezier(0.4, 0, 0.2, 1);
 .mdc-list-item--activated {
   @include mdc-list-item-primary-text-ink-color(primary);
   @include mdc-list-item-graphic-ink-color(primary);
-}
-
-@keyframes opacityAnimation {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
 }
