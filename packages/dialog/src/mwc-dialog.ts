@@ -151,6 +151,17 @@ export class Dialog extends BaseElement {
     const controllerSettings = this.controller_ != null ? this.controller_.getBoundingClientRect() : {} as DOMRect
     this.mdcRoot.classList.remove('mdc-dialog--popover-show')
 
+    if (this.isPhone) {
+      return {
+        left: 0,
+        bottom: 0,
+        width: '100%',
+        top: 'auto',
+        right: 'auto',
+        'max-width': '100%'
+      }
+    }
+
     const leftMargin = controllerSettings.left
     const rightMargin = window.innerWidth - leftMargin
     const topMargin = controllerSettings.top
@@ -230,6 +241,10 @@ export class Dialog extends BaseElement {
 
   protected halfPopoverDoesntFitOnBottom(bottomMargin: number, rootSettingsHeight: number, gap: number): boolean {
     return bottomMargin < ((rootSettingsHeight / 2) + (gap * 2))
+  }
+  
+  protected get isPhone(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth <= 479;
   }
 
   static styles = style;
