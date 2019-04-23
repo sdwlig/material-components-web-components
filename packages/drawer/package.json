@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-drawer",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "",
   "main": "mwc-drawer.js",
   "repository": {
@@ -14,7 +14,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
+    "@authentic/mwc-base": "^0.4.6",
     "@material/drawer": "^0.44.0",
     "blocking-elements": "^0.0.2",
     "wicg-inert": "^1.1.6"

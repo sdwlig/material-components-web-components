@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-radio",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "",
   "main": "mwc-radio.js",
   "repository": {
@@ -13,8 +13,8 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
-    "@authentic/mwc-ripple": "^0.4.5",
+    "@authentic/mwc-base": "^0.4.6",
+    "@authentic/mwc-ripple": "^0.4.6",
     "@material/radio": "^0.44.0"
   },
   "publishConfig": {

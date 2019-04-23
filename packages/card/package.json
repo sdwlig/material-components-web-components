@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-card",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "",
   "main": "mwc-card.js",
   "scripts": {
@@ -9,17 +9,16 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
-    "@authentic/mwc-icon": "^0.4.5",
-    "@authentic/mwc-ripple": "^0.4.5",
-    "@authentic/mwc-typography": "^0.4.5",
+    "@authentic/mwc-base": "^0.4.6",
+    "@authentic/mwc-icon": "^0.4.6",
+    "@authentic/mwc-ripple": "^0.4.6",
+    "@authentic/mwc-typography": "^0.4.6",
     "@material/base": "^0.41.0",
     "@material/card": "^0.40.0",
     "@material/typography": "^0.40.1",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0"
   },
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   },
