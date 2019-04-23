@@ -9,9 +9,9 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.6",
-    "@authentic/mwc-icon": "^0.4.6",
-    "@authentic/mwc-ripple": "^0.4.6",
+    "@authentic/mwc-base": "^0.4.7",
+    "@authentic/mwc-icon": "^0.4.7",
+    "@authentic/mwc-ripple": "^0.4.7",
     "@material/list": "^0.40.1",
     "lit-element": "^2.0.1"
   },
