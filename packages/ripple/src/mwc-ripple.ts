@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {LitElement, html, property, customElement, classMap} from '@material/mwc-base/base-element';
+import {LitElement, html, property, customElement, classMap} from '@authentic/mwc-base/base-element';
 import {ripple, RippleOptions} from './ripple-directive.js';
 import {style} from './mwc-ripple-css.js';
 
@@ -42,8 +42,9 @@ export class Ripple extends LitElement {
   static styles = style;
 
   connectedCallback() {
-    super.connectedCallback();
-    this.interactionNode = this.parentNode as HTMLElement;
+    if (this.interactionNode === this) {
+      this.interactionNode = this.parentNode as HTMLElement;
+    }
     super.connectedCallback();
   }
 
