@@ -68,7 +68,12 @@
     @include mdc-feature-targets($feat-structure) {
       @include mdc-list-item-base_;
     }
+
+    a.material-icons {
+      text-decoration: none;
+    }
   }
+
 
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
@@ -128,6 +133,7 @@
 
     @include mdc-feature-targets($feat-structure) {
       display: block;
+      margin-left: -5px;
     }
   }
 
@@ -155,15 +161,30 @@
     }
   }
 
-  .mdc-list-item__two-line .mdc-list-item__text {
+  .mdc-list-item--indented .mdc-list-item__text {
+    @include mdc-feature-targets($feat-structure) {
+      padding-left: 56px;
+    }
+  }
+
+  .mdc-list-item--two-line .mdc-list-item__text {
     @include mdc-feature-targets($feat-structure) {
       align-self: flex-start;
     }
   }
 
-  .mdc-list-item__two-line {
+  .mdc-list-item--two-line:not(.mdc-list-item--expandable) {
     @include mdc-feature-targets($feat-structure) {
       height: 72px;
+    }
+  }
+
+  .mdc-list-item__content {
+    display: none;
+    &.mdc-list-item__content--expanded {
+      display: block;
+      height: auto;
+      max-height: 20rem;
     }
   }
 
@@ -299,6 +320,14 @@
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(color, $color);
     }
+  }
+  .mdc-list-item__meta {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .mdc-list-item[dir=rtl] .mdc-list-item__meta, [dir=rtl] .mdc-list-item .mdc-list-item__meta {
+    margin-left: 0;
+    margin-right: auto;
   }
 }
 

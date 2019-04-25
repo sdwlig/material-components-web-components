@@ -337,18 +337,18 @@ function refreshIn(secs) {
 }
 if( !document.hasFocus() ){
   console.log('refreshed... not in focus...')
-  refreshIn(20);
+  refreshIn(60);
 
-  ifvisible.on("focus", function(){
-    refreshIn(0);
-  });
+  // ifvisible.on("focus", function(){
+  //   refreshIn(0);
+  // });
 
 } else {
   console.log('in focus.')
   ifvisible.on("blur", function(){
-    refreshIn(20);
+    refreshIn(60);
   });
-  ifvisible.on("focus", function(){
-    refreshIn(0);
-  });
+  // ifvisible.on("focus", function(){
+  //   refreshIn(0);
+  // });
 }

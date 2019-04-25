@@ -145,6 +145,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
           element.focus();
         }
       },
+      toggleItemAtIndex: (index) => { console.log(index) },
       inputType: () => "boo",
       setSelectedAtIndex: (index) => { console.log(index) },
       getAttributeForElementIndex: (index, attr) => this.listElements[index].getAttribute(attr),

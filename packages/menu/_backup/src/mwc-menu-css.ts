@@ -83,7 +83,6 @@ limitations under the License.
   margin: 8px 0;
 }
 .mdc-menu .mdc-list-item {
-  cursor: pointer;
   user-select: none;
 }
 .mdc-menu .mdc-list-item--disabled {
@@ -476,6 +475,10 @@ limitations under the License.
   margin-left: 20px;
   /* @noflip */
   margin-right: 0;
+}
+
+:not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+  cursor: pointer;
 }
 
 a.mdc-list-item {

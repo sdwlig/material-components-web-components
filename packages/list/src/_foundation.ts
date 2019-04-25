@@ -49,6 +49,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return {
       addClassForElementIndex: () => undefined,
       focusItemAtIndex: () => undefined,
+      toggleItemAtIndex: () => undefined,
       getAttributeForElementIndex: () => null,
       getFocusedElementIndex: () => 0,
       getListItemCount: () => 0,
@@ -163,6 +164,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Key handler for the list.
    */
   handleKeydown(evt: KeyboardEvent, isRootListItem: boolean, listItemIndex: number) {
+    console.log('handleKeyDown');
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -299,6 +301,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private setSingleSelectionAtIndex_(index: number) {
+    this.adapter_.toggleItemAtIndex(index);
     if (this.selectedIndex_ === index) {
       return;
     }

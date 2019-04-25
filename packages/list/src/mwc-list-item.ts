@@ -68,6 +68,15 @@ export class ListItem extends LitElement {
   @property({type: Number})
   tabindex = -1;
 
+  @property({type: Boolean})
+  expandable = false;
+
+  @property({type: Boolean})
+  expanded = false;
+
+  @property({type: Boolean})
+  indent = false;
+
   protected _lines = 1;
   protected _ripple = false;
   protected _avatarList = false;
@@ -81,32 +90,34 @@ export class ListItem extends LitElement {
     const classes = {
       "mdc-list-item" : true,
       "mdc-list-item__avatar-list": this._avatarList,
-      "mdc-list-item__two-line": this._lines === 2,
+      "mdc-list-item--two-line": this._lines === 2,
       "mdc-list-item--disabled": this.disabled,
       "mdc-list-item--non-interactive": this._nonInteractive,
       "mdc-list-item--selected": this.selected,
       "mdc-list-item--activated": this.activated,
+      "mdc-list-item--expanded": this.expanded,
+      "mdc-list-item--expandable": this.expandable,
+      "mdc-list-item--indented": this.indent,
     };
-    const arias = {
-      "aria-current" : this.focused,
-      "aria-selected" : this.selected || this.activated,
 
-    }
     return html`
       <li
         class="${classMap(classes)}"
         tabindex="${this.tabindex}"
-        ${classMap(arias)}>
+        aria-current="${this.focused}"
+        aria-selected="${this.selected}"
+        >
         ${this.renderGraphic()}
         <span class="mdc-list-item__text">
           ${this._lines === 1 ? this.renderSingleLine() : this.renderDoubleLine()}
         </span>
         ${this.renderMeta()}
       </li>
+      ${this.renderContent()}
     `;
   }
 
-  firstUpdated(changed) {
+  public firstUpdated(changed) {
     super.firstUpdated(changed);
 
     this.updateComplete
@@ -115,31 +126,57 @@ export class ListItem extends LitElement {
       });
   }
 
+  public toggle(): void {
+    this.expanded = this.expandable
+      ? !this.expanded
+      : false
+    console.log("expanded", this.expanded, this)
+    this.requestUpdate();
+  }
 
-  renderSingleLine() {
+  public updated() {
+    this.focused = this.tabindex >= 0;
+  }
+
+  public renderSingleLine() {
     return html`
       <slot></slot>
     `;
   }
 
-  renderDoubleLine() {
+  public renderDoubleLine() {
     return html`
       <span class="mdc-list-item__primary-text"><slot></slot></span>
       <span class="mdc-list-item__secondary-text"><slot name='secondary'></slot></span>
     `;
   }
 
-  renderGraphic() {
+  public renderGraphic() {
     return html`
       <span class="mdc-list-item__graphic"><slot name='graphic'></slot></span>
     `;
   }
 
-  renderMeta() {
+  public renderMeta() {
+    let moreorless = this.expanded ? "expand_less" : "expand_more";
+    return this.expandable
+      ? html`
+        <span class="mdc-list-item__meta"><mwc-icon>${moreorless}</mwc-icon></span>
+      `: html`
+        <span class="mdc-list-item__meta"><slot name='meta'></slot></span>
+      `;
+  }
+
+  public renderContent() {
+    const classes = {
+      "mdc-list-item__content": true,
+      "mdc-list-item__content--expanded": this.expanded,
+    }
     return html`
-      <span class="mdc-list-item__meta"><slot name='meta'></slot></span>
+      <div class="${classMap(classes)}"><slot name='content'></slot></div>
     `;
   }
+
 
   public addClass(className) {
     this.mdcRoot.classList.add(className)
@@ -159,9 +196,11 @@ export class ListItem extends LitElement {
 
   public setFocused(focus:boolean) {
     if (focus) {
-      // TODO: children of this will be focusable with tabindex
+      this.focused = true;
+      this.tabindex = 0;
     } else {
-      // TODO: children need to have their tabindex set to -1
+      this.tabindex = -1;
+      this.focused = false;
     }
   }
 

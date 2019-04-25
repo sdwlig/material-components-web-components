@@ -319,6 +319,10 @@ limitations under the License.
   margin-right: 0;
 }
 
+:not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+  cursor: pointer;
+}
+
 a.mdc-list-item {
   color: inherit;
   text-decoration: none;

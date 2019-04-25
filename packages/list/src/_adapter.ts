@@ -49,6 +49,8 @@ export interface MDCListAdapter {
    */
   focusItemAtIndex(index: number): void;
 
+  toggleItemAtIndex(index: number): void;
+
   inputType(): string;
 
   setSelectedAtIndex(index): void;

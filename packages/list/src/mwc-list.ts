@@ -125,7 +125,13 @@ export class List extends BaseElement {
       ...addHasRemoveClass(this.mdcRoot),
       getListItemCount: () => this.listElements.length,
       inputType: () => this.inputType,
-      setSelectedAtIndex: (index) => { this.listElements[index].selected = true; },
+      setSelectedAtIndex: (index) => {
+        this.listElements.forEach(ele => {
+          ele.selected = false;
+        })
+        this.listElements[index].selected = true;
+      },
+      toggleItemAtIndex: (index) => { this.listElements[index].toggle() },
       getFocusedElementIndex: () => {
         return this.listElements.map( (ele, index) => {
           return (ele && Number(ele.getAttribute('tabindex')) >= 0) ? index : -1;
@@ -149,7 +155,7 @@ export class List extends BaseElement {
       },
       focusItemAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
-        if (ele) ele.focus(); // temp?
+        if (ele) ele.setFocused(true);
       },
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
         return `${listItemIndex} , ${tabIndexValue}`; // TODO

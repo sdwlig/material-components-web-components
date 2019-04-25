@@ -26,3 +26,6 @@ limitations under the License.
 .material-icons {
   @extend %material-icons;
 }
+.mdc-icon-button {
+  text-decoration: none;
+}
