@@ -164,7 +164,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Key handler for the list.
    */
   handleKeydown(evt: KeyboardEvent, isRootListItem: boolean, listItemIndex: number) {
-    console.log('handleKeyDown', evt, isRootListItem, listItemIndex);
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -175,7 +174,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
-    console.log("currentIndex", currentIndex);
     let nextIndex = numbers.UNSET_INDEX;
     if (currentIndex === numbers.UNSET_INDEX) {
       currentIndex = listItemIndex;

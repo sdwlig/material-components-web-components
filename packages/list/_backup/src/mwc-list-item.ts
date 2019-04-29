@@ -20,10 +20,10 @@ import {
   html,
   property,
   observer
-} from "@material/mwc-base/base-element.js";
+} from "@authentic/mwc-base/base-element.js";
 import { LitElement } from "lit-element";
-import "@material/mwc-icon/mwc-icon-font";
-import "@material/mwc-ripple/mwc-ripple";
+import "@authentic/mwc-icon/mwc-icon-font";
+import "@authentic/mwc-ripple/mwc-ripple";
 
 import { style } from "./mwc-list-item-css.js";
 import { TemplateResult } from "lit-html";

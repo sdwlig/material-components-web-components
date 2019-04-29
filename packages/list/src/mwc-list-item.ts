@@ -21,12 +21,8 @@ import {
   query,
   customElement,
   classMap,
-} from '@material/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element.js';
 import { List as MWCList } from './mwc-list';
-
-// import { closest, matches } from '@material/dom/ponyfill';
-// import { ripple } from '@material/mwc-ripple/ripple-directive';
-// import { strings, cssClasses } from '@material/list/constants';
 import { style } from './mwc-list-item-css';
 
 declare global {

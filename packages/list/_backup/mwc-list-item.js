@@ -20,9 +20,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { customElement, query, html, property, observer } from "@material/mwc-base/base-element.js";
+import { customElement, query, html, property, observer } from "@authentic/mwc-base/base-element.js";
 import { LitElement } from "lit-element";
-import { ripple } from "@material/mwc-ripple/ripple-directive";
+import { ripple } from "@authentic/mwc-ripple/ripple-directive";
 import { style } from "./mwc-list-item-css.js";
 let ListItem = class ListItem extends LitElement {
     constructor() {

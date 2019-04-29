@@ -24,10 +24,10 @@ import {
   classMap,
   addHasRemoveClass,
   findAssignedElements,
-} from '@material/mwc-base/base-element.js';
-import { emit } from '@material/mwc-base/utils';
+} from '@authentic/mwc-base/base-element.js';
+import { emit } from '@authentic/mwc-base/utils';
 import { closest, matches } from '@material/dom/ponyfill';
-// import { ripple } from '@material/mwc-ripple/ripple-directive';
+// import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 import MDCListFoundation from './_foundation';
 import { MDCListAdapter } from './_adapter';
 import { strings, cssClasses } from './_constants';
