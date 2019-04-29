@@ -235,7 +235,6 @@ export class List extends BaseElement {
   private handleKeydownEvent_(evt: KeyboardEvent) {
     const index = this.getListItemIndex_(evt);
     const target = evt.target as Element;
-    console.log('keydown', evt, target)
 
     if (index >= 0 && !this.nonInteractive) {
       this.mdcFoundation!.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);

@@ -74,7 +74,9 @@
     }
   }
 
-
+  .mdc-list-item--background-focused{
+    background-color: rgba(0,0,0,0.12);
+  }
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
   .mdc-list-item--selected,

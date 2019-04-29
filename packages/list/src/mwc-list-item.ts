@@ -98,6 +98,9 @@ export class ListItem extends LitElement {
       "mdc-list-item--expanded": this.expanded,
       "mdc-list-item--expandable": this.expandable,
       "mdc-list-item--indented": this.indent,
+      "mdc-ripple-upgraded": this._ripple,
+      "mdc-ripple-upgraded--background-focused": this._ripple && this.focused,
+      "mdc-list-item--background-focused": !this._ripple && this.focused,
     };
 
     return html`
