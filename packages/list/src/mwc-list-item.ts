@@ -15,50 +15,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import {
-  customElement,
-  query,
+  LitElement,
   html,
   property,
-  observer
-} from "@material/mwc-base/base-element.js";
-import { LitElement } from "lit-element";
-import "@material/mwc-icon/mwc-icon-font";
-import "@material/mwc-ripple/mwc-ripple";
+  query,
+  customElement,
+  classMap,
+} from '@material/mwc-base/base-element.js';
+import { List as MWCList } from './mwc-list';
 
-import { style } from "./mwc-list-item-css.js";
-import { TemplateResult } from "lit-html";
+import { style } from './mwc-list-item-css';
 
 declare global {
   interface HTMLElementTagNameMap {
-    "mwc-list-item": ListItem;
+    'mwc-list-item': ListItem;
   }
 }
 
-@customElement("mwc-list-item" as any)
+@customElement('mwc-list-item' as any)
 export class ListItem extends LitElement {
-  protected mdcRootPosition: any;
 
-  @property({ type: Boolean })
-  protected accordionIsOpen = false;
-
-  @query(".mdc-list-item__modal-content")
-  protected modalContent!: HTMLElement;
-
-  @query(".mdc-list-item__modal-wrapper")
-  protected wrapper!: HTMLElement;
-
-  @query(".mdc-list-item__invisible-block")
-  protected invisibleBlock!: HTMLElement;
-
-  @query(".mdc-list-item")
+  @query('.mdc-list-item')
   protected mdcRoot!: HTMLElement;
 
-  @property({ type: Boolean })
-  public accordion = false;
+  @property({type: String})
+  public variant = 'single-line';
 
-  @property({ type: Boolean })
-  public modal = false;
-
+  @property({type: Boolean})
+  public disabled = false;
   @property({ type: String })
   public value = "";
 
@@ -68,11 +52,8 @@ export class ListItem extends LitElement {
   @property({type: Boolean})
   public selected = false;
 
-  @property({ type: String })
-  public label = "";
-
-  @property({ type: String })
-  public icon = "";
+  @property({type: Boolean})
+  public activated = false;
 
   @property({type: Boolean})
   public checkbox = false;
@@ -101,6 +82,8 @@ export class ListItem extends LitElement {
   protected _nonInteractive = false;
   protected _inputType = 'none';
   protected _inputAction = '';
+
+  static styles = style;
 
   render() {
     const classes = {
@@ -139,18 +122,10 @@ export class ListItem extends LitElement {
   public firstUpdated(changed) {
     super.firstUpdated(changed);
 
-      setTimeout(() => {
-        this.modalContent.style.top = "0";
-
-        this.mdcRoot.classList.remove("mdc-list-item--modal");
-        this.invisibleBlock.classList.remove(
-          "mdc-list-item__invisible-block--modal"
-        );
-        this.lockScrollFor("body", false);
-      }, 400);
-    }
-
-    e.stopPropagation();
+    this.updateComplete
+      .then(() => {
+        this.setParentType();
+      });
   }
 
   public toggle(): void {
@@ -209,15 +184,8 @@ export class ListItem extends LitElement {
     this.mdcRoot.classList.add(className)
   }
 
-    if (this.icon) {
-      return html`
-        <span class="mdc-list-item__graphic material-icons">
-          ${this.icon}
-        </span>
-      `;
-    }
-
-    return "";
+  public removeClass(className) {
+    this.mdcRoot.classList.remove(className)
   }
 
   public getAttribute(attr) {
@@ -249,4 +217,5 @@ export class ListItem extends LitElement {
       this.requestUpdate();
     }
   }
+
 }
