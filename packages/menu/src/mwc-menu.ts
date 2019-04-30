@@ -23,9 +23,10 @@ import {
   observer
 } from '@material/mwc-base/base-element.js';
 import { ListItem } from '@material/mwc-list';
-import { MDCList } from '@material/list';
-import { MDCMenuFoundation, Corner } from '@material/menu';
+import { MDCList, MDCListFoundation } from '@material/list';
+import { MDCMenuFoundation } from '@material/menu';
 import { MDCMenuSurface } from '@material/menu-surface';
+import { Corner } from '@material/menu-surface/constants';
 import { AnchorMargin } from '@material/menu-surface/foundation';
 import { emit, addHasRemoveClass } from '@material/mwc-base/utils';
 
@@ -316,20 +317,11 @@ export class Menu extends BaseElement {
     }
   }
 
-  protected _handleKeydown;
-  protected _handleClick;
+  protected _handleKeydown = this._onKeydown.bind(this) as EventListenerOrEventListenerObject;
+  protected _handleClick = this._onClick.bind(this) as EventListenerOrEventListenerObject;
 
   firstUpdated() {
     super.firstUpdated();
-
-    this._handleKeydown = evt => {
-      this.mdcFoundation.handleKeydown(evt);
-      this._list.handleKeydown_(evt);
-    }
-    this._handleClick = evt => {
-      this._preventClose = !this.autoclose;
-      this.mdcFoundation.handleClick(evt)
-    };
 
     this._menuSurface.listen('MDCMenuSurface:opened', () => this._afterOpenedCallback());
     this._menuSurface.listen('MDCMenuSurface:closed', () => this._afterClosedCallback());
@@ -344,6 +336,16 @@ export class Menu extends BaseElement {
           </div>
         </div>
       </div>`;
+  }
+
+  _onKeydown(evt) {
+    this.mdcFoundation.handleKeydown(evt);
+    this._list.handleKeydown_(evt);
+  }
+
+  _onClick(evt) {
+    this._preventClose = !this.autoclose;
+    this.mdcFoundation.handleClick(this.items[evt.detail]);
   }
 
   _notifySelected(data) {
@@ -420,7 +422,7 @@ export class Menu extends BaseElement {
     emit(this, 'MDCMenu:opened');
 
     this.addEventListener('keydown', this._handleKeydown);
-    this.addEventListener('click', this._handleClick);
+    this.addEventListener(MDCListFoundation.strings.ACTION_EVENT, this._handleClick);
   }
 
   _afterClosedCallback() {
@@ -428,7 +430,7 @@ export class Menu extends BaseElement {
     emit(this, 'MDCMenu:closed');
 
     this.removeEventListener('keydown', this._handleKeydown);
-    this.removeEventListener('click', this._handleClick);
+    this.removeEventListener(MDCListFoundation.strings.ACTION_EVENT, this._handleClick);
   }
 
   setFocus() {

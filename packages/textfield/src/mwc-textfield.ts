@@ -53,6 +53,7 @@ import {
 import { MDCTextFieldIcon, MDCTextFieldIconFactory } from '@material/textfield/icon';
 import { MDCTextFieldFoundationMap } from '@material/textfield/types';
 import { ripple } from '@material/mwc-ripple/ripple-directive';
+import { emit } from '@material/mwc-base/utils';
 
 import { style } from './mwc-textfield-css.js';
 
@@ -99,6 +100,9 @@ export class TextField extends FormElement {
   @query(strings.OUTLINE_SELECTOR)
   protected outlineElement!: HTMLElement;
 
+  @query(`.${cssClasses.HELPER_LINE}`)
+  protected helperLine!: HTMLElement;
+
   @queryAll(strings.ICON_SELECTOR)
   protected iconElements!: HTMLElement[];
 
@@ -130,9 +134,6 @@ export class TextField extends FormElement {
   public outlined = false;
 
   @property({ type: String })
-  @observer(function(this: TextField, value: string) {
-    this.mdcFoundation && this.mdcFoundation.setHelperTextContent(value);
-  })
   public helperTextContent = '';
 
   @property({ type: String })
@@ -157,16 +158,13 @@ export class TextField extends FormElement {
   public trailingIconAriaLabel = '';
 
   @property({ type: String })
-  @observer(function(this: TextField, value: string) {
-    this.mdcFoundation && this.mdcFoundation.setLeadingIconContent(value);
-  })
   public leadingIconContent = '';
 
   @property({ type: String })
-  @observer(function(this: TextField, value: string) {
-    this.mdcFoundation && this.mdcFoundation.setTrailingIconContent(value);
-  })
   public trailingIconContent = '';
+
+  @property({ type: Boolean })
+  public trailingIconInteraction = false;
 
   @property({ type: Boolean })
   @observer(function(this: TextField, value: boolean) {
@@ -264,26 +262,21 @@ export class TextField extends FormElement {
     this.mdcFoundation.setUseNativeValidation(value);
   }
 
-  protected get _hasHelperLine() {
-    return !!(
-      this.mdcRoot.nextElementSibling &&
-      this.mdcRoot.nextElementSibling.classList.contains(cssClasses.HELPER_LINE)
-    );
-  }
+  protected _shouldValidate = false;
 
-  private _characterCounter!: MDCTextFieldCharacterCounter | null;
+  protected _characterCounter!: MDCTextFieldCharacterCounter | null;
 
-  private _helperText!: MDCTextFieldHelperText | null;
+  protected _helperText!: MDCTextFieldHelperText | null;
 
-  private _label!: MDCFloatingLabel | null;
+  protected _label!: MDCFloatingLabel | null;
 
-  private _leadingIcon!: MDCTextFieldIcon | null;
+  protected _leadingIcon!: MDCTextFieldIcon | null;
 
-  private _lineRipple!: MDCLineRipple | null;
+  protected _lineRipple!: MDCLineRipple | null;
 
-  private _outline!: MDCNotchedOutline | null;
+  protected _outline!: MDCNotchedOutline | null;
 
-  private _trailingIcon!: MDCTextFieldIcon | null;
+  protected _trailingIcon!: MDCTextFieldIcon | null;
 
   protected _handleInput = this._onInput.bind(this) as EventListenerOrEventListenerObject;
 
@@ -329,8 +322,11 @@ export class TextField extends FormElement {
   protected _getInputAdapterMethods(): MDCTextFieldInputAdapter {
     return {
       getNativeInput: () => this.formElement,
-      isFocused: () => document.activeElement === this.formElement,
-      registerInputInteractionHandler: (evtType, handler) => this.formElement.addEventListener(evtType, handler),
+      isFocused: () => {
+        const activeElement = (this as any).getRootNode().activeElement;
+        return activeElement === this.formElement;
+      },
+      registerInputInteractionHandler: (evtType, handler) => this.formElement.addEventListener(evtType, handler, { passive: true }),
       deregisterInputInteractionHandler: (evtType, handler) => this.formElement.removeEventListener(evtType, handler)
     };
   }
@@ -386,6 +382,8 @@ export class TextField extends FormElement {
           aria-label="${this.label}"
           ?required="${this.required}"
           ?disabled="${this.disabled}"
+          @focus="${evt => this._handleInteractionEvent(evt)}"
+          @blur="${evt => this._handleInteractionEvent(evt)}"
           .value="${this.value}"
         ></textarea>
       `
@@ -398,7 +396,8 @@ export class TextField extends FormElement {
           aria-label="${this.label}"
           ?required="${this.required}"
           ?disabled="${this.disabled}"
-          .ripple="${this.outlined && ripple({ unbounded: false })}"
+          @focus="${evt => this._handleInteractionEvent(evt)}"
+          @blur="${evt => this._handleInteractionEvent(evt)}"
           .value="${this.value}">
       `;
   }
@@ -429,26 +428,38 @@ export class TextField extends FormElement {
     `;
   }
 
-  _renderIcon() {
+  _renderIcon(variant: string) {
+    const isTrailingIcon = variant === 'trailing';
+    const isTrailingIconInteraction = isTrailingIcon && this.trailingIconInteraction;
+    const iconContent = isTrailingIcon ? this.trailingIconContent : this.leadingIconContent;
+
     return html`
-      <i class="material-icons mdc-text-field__icon"></i>
+      <i class="material-icons mdc-text-field__icon mdc-text-field__icon--${variant}" tabindex="${isTrailingIconInteraction ? 0 : -1}">
+        ${iconContent}
+      </i>
     `;
   }
 
   _renderHelperLine() {
     const isTextarea = this.type === 'textarea';
+    const hasCharacterCounter = this.maxLength && this.maxLength > 0;
 
     return html`
       <div class="mdc-text-field-helper-line">
         ${this.helperTextContent || this.validationMessage ? this._renderHelperText() : ''}
-        ${this.maxLength && !isTextarea ? this._renderCharacterCounter() : ''}
+        ${hasCharacterCounter && !isTextarea ? this._renderCharacterCounter() : ''}
       </div>
     `;
   }
 
   _renderHelperText() {
+    const classes = {
+      'mdc-text-field-helper-text': true,
+      'mdc-text-field-helper-text--persistent': this.persistentHelperText
+    };
+
     return html`
-      <div class="mdc-text-field-helper-text"></div>
+      <div class="${classMap(classes)}">${this.helperTextContent}</div>
     `
   }
 
@@ -461,13 +472,14 @@ export class TextField extends FormElement {
   render() {
     const isTextarea = this.type === 'textarea';
     const hasOutline = this.outlined || isTextarea;
-    const hasLabel = this.label && !this.fullWidth;
+    const hasLabel = this.label && (!this.fullWidth || isTextarea);
     const hasLeadingIcon = this.leadingIconContent;
     const hasTrailingIcon = this.trailingIconContent;
+    const hasCharacterCounter = this.maxLength && this.maxLength > 0;
     const hasHelperLine = !!(
       this.helperTextContent || this.validationMessage
     ) || !!(
-      this.maxLength && !isTextarea
+      hasCharacterCounter && !isTextarea
     );
     const classes = {
       'mdc-text-field': true,
@@ -478,15 +490,16 @@ export class TextField extends FormElement {
       'mdc-text-field--disabled': this.disabled,
       'mdc-text-field--with-leading-icon': hasLeadingIcon,
       'mdc-text-field--with-trailing-icon': hasTrailingIcon,
+      'mdc-text-field--with-trailing-icon-interaction' : this.trailingIconInteraction
     };
 
     return html`
-      <div class="${classMap(classes)}">
-        ${this.maxLength && isTextarea ? this._renderCharacterCounter() : ''}
-        ${hasLeadingIcon ? this._renderIcon() : ''}
+      <div class="${classMap(classes)}" .ripple="${!hasOutline && ripple({ unbounded: false })}">
+        ${hasCharacterCounter && isTextarea ? this._renderCharacterCounter() : ''}
+        ${hasLeadingIcon ? this._renderIcon('leading') : ''}
         ${this._renderInput()}
         ${hasLabel && !hasOutline ? this._renderFloatingLabel() : ''}
-        ${hasTrailingIcon ? this._renderIcon() : ''}
+        ${hasTrailingIcon ? this._renderIcon('trailing') : ''}
         ${hasOutline ? this._renderNotchedOutline() : this._renderLineRipple()}
       </div>
       ${hasHelperLine ? this._renderHelperLine() : ''}
@@ -498,12 +511,10 @@ export class TextField extends FormElement {
     this._lineRipple = this.lineRippleElement ? lineRippleFactory(this.lineRippleElement) : null;
     this._outline = this.outlineElement ? outlineFactory(this.outlineElement) : null;
     
-    const nextElementSibling = this.mdcRoot.nextElementSibling;
-    
     // Helper text
     const helperTextStrings = MDCTextFieldHelperTextFoundation.strings;
-    const helperTextEl = this._hasHelperLine && nextElementSibling
-      ? nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR)
+    const helperTextEl = this.helperLine
+      ? this.helperLine.querySelector(helperTextStrings.ROOT_SELECTOR)
       : null;
     this._helperText = helperTextEl ? helperTextFactory(helperTextEl) : null;
 
@@ -511,8 +522,8 @@ export class TextField extends FormElement {
     const characterCounterStrings = MDCTextFieldCharacterCounterFoundation.strings;
     let characterCounterEl = this.mdcRoot.querySelector(characterCounterStrings.ROOT_SELECTOR);
     // If character counter is not found in root element search in sibling element.
-    if (!characterCounterEl && this._hasHelperLine && nextElementSibling) {
-      characterCounterEl = nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    if (!characterCounterEl && this.helperLine) {
+      characterCounterEl = this.helperLine.querySelector(characterCounterStrings.ROOT_SELECTOR);
     }
     this._characterCounter = characterCounterEl ? characterCounterFactory(characterCounterEl) : null;
 
@@ -532,12 +543,17 @@ export class TextField extends FormElement {
       }
     }
 
-    // set intial input props
+    // // set intial input props
     INPUT_PROPS.forEach(prop => {
       const value = this[prop];
 
-      if (value) {
-        this.formElement[prop] = value;
+      switch(prop) {
+        case 'maxLength':
+          if (value && value > 0) this.formElement[prop] = value;
+          break;
+        default:
+          if (value) this.formElement[prop] = value;
+          break;
       }
     });
 
@@ -545,6 +561,11 @@ export class TextField extends FormElement {
 
     this.formElement.addEventListener('input', this._handleInput);
     this.formElement.addEventListener('blur', this._handleBlur);
+
+    if (this._trailingIcon) {
+      this._trailingIcon.listen('click', evt => this._onTrailingIconAction(evt));
+      this._trailingIcon.listen('keydown', evt => this._onTrailingIconAction(evt));
+    }
   }
 
   createFoundation() {
@@ -571,17 +592,42 @@ export class TextField extends FormElement {
     this._setValidity(this.valid);
   }
 
+  /**
+   * Handle trailing icon action event
+   */
+  protected _onTrailingIconAction(evt) {
+    if (evt.type === 'keydown') {
+      const isSpace = evt.key === 'Space' || evt.keyCode === 32;
+      const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+
+      if (!isSpace && !isEnter) return;
+
+      if (isSpace) evt.preventDefault();
+    }
+
+    emit(this, 'MDCTextfield:trailingIconInteraction');
+  }
+
+  /**
+   * Handle formElement interaction event
+   */
+  protected _handleInteractionEvent(evt) {
+    emit(this.mdcRoot, evt.type, {}, true);
+  }
+
   protected _setValidity(isValid: boolean) {
     if (this._helperText && this.validationMessage) {
-      this.mdcFoundation && this.mdcFoundation.setHelperTextContent(isValid ? this.helperTextContent : this.validationMessage);
+      // this.mdcFoundation && this.mdcFoundation.setHelperTextContent(isValid ? this.helperTextContent : this.validationMessage);
+      this._shouldValidate = true;
       this._helperText.foundation.setValidation(!isValid);
+      this.requestUpdate();
     }
   }
 
   /**
    * @return A map of all subcomponents to subfoundations.
    */
-  private _getFoundationMap(): Partial<MDCTextFieldFoundationMap> {
+  protected _getFoundationMap(): Partial<MDCTextFieldFoundationMap> {
     return {
       characterCounter: this._characterCounter ? this._characterCounter.foundation : undefined,
       helperText: this._helperText ? this._helperText.foundation : undefined,

@@ -14,13 +14,31 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { LitElement } from 'lit-element';
-declare global {
-    interface HTMLElementTagNameMap {
-        'mwc-list-item-separator': ListItemSeparator;
-    }
+
+@import '@material/select/mdc-select';
+@import '@material/mwc-icon/src/mwc-icon';
+
+.material-icons {
+  @extend %material-icons;
 }
-export declare class ListItemSeparator extends LitElement {
-    static styles: import("lit-element").CSSResult;
-    render(): import("lit-element").TemplateResult;
+
+:host {
+  display: block;
+  outline: none;
 }
+
+:host([fullwidth]) {
+  width: 100%;
+}
+
+.mdc-select {
+  width: 100%;
+}
+
+::slotted(select) {
+  @extend .mdc-select__native-control;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+

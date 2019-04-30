@@ -102,6 +102,21 @@ export class Chip extends BaseElement {
     return this.avatar && !this.leadingIcon;
   }
 
+  public get ripple() {
+    if (this.preventRipple) return undefined;
+
+    if (!this._ripple) {
+      this._ripple = ripple({
+        adapter: { computeBoundingRect: () => this.mdcFoundation.getDimensions() },
+        unbounded: false
+      });
+    }
+    
+    return this._ripple;
+  }
+
+  protected _ripple;
+
   protected _isChoice = false;
 
   protected _isFilter = false;
@@ -254,7 +269,7 @@ export class Chip extends BaseElement {
     };
 
     return html`
-      <div class="${classMap(classes)}" tabindex="${this.tabIndex}" .ripple="${!this.preventRipple ? ripple({ unbounded: false }) : undefined}">
+      <div class="${classMap(classes)}" tabindex="${this.tabIndex}" .ripple="${this.ripple}">
         ${this._shouldDisplayLeadingIcon ? this._renderLeadingIcon() : ''}
         ${this._shouldDisplayAvatar ? this._renderAvatar() : ''}
         ${this._shouldDisplayCheckmark ? this._renderCheckmark() : ''}
@@ -354,5 +369,10 @@ export class Chip extends BaseElement {
    */
   public beginExit() {
     this.mdcFoundation.beginExit();
+  }
+
+  remove() {
+    this.destroy();
+    super.remove();
   }
 }

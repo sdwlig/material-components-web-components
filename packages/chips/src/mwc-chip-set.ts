@@ -14,20 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { BaseElement, customElement, html, property, classMap, query } from '@material/mwc-base/base-element';
+import { BaseElement, customElement, html, property, classMap, query, queryAll } from '@material/mwc-base/base-element';
 import { MDCChipSetFoundation } from '@material/chips/chip-set/foundation';
 import { MDCChipSetAdapter } from '@material/chips/chip-set/adapter';
 import { MDCChipFoundation } from '@material/chips/chip/foundation';
 import { Chip as MWCChip } from './mwc-chip';
-import { style } from './mwc-chip-set-css';
 import { findAssignedElements } from '@material/mwc-base/utils';
 import { addHasRemoveClass } from '@material/mwc-base/base-element.js';
+
+import { style } from './mwc-chip-set-css';
 
 @customElement('mwc-chip-set' as any)
 export class ChipSet extends BaseElement {
 
   @query(".mdc-chip-set")
   protected mdcRoot!: HTMLElement;
+
+  @queryAll("mwc-chip")
+  protected chipEls!: MWCChip[];
 
   @query("slot")
   protected slotEl!: HTMLSlotElement;
@@ -78,8 +82,9 @@ export class ChipSet extends BaseElement {
         const index = this._findChipIndex(chipId);
         
         if (index >= 0) {
-          this._chips[index].destroy();
+          const chip = this._chips[index];
           this._chips.splice(index, 1);
+          chip.remove();
         }
       },
       setSelected: (chipId, selected) => {
@@ -119,31 +124,24 @@ export class ChipSet extends BaseElement {
   }
 
   protected _initialize() {
-    this._addListeners(this);
+    this.addEventListener(MDCChipFoundation.strings.INTERACTION_EVENT, this._handleChipInteraction);
+    this.addEventListener(MDCChipFoundation.strings.SELECTION_EVENT, this._handleChipSelection);
+    this.addEventListener(MDCChipFoundation.strings.REMOVAL_EVENT, this._handleChipRemoval);
+
     this._updateChips();
-  }
-
-  protected _addListeners(target: HTMLElement) {
-    target.addEventListener(MDCChipFoundation.strings.INTERACTION_EVENT, this._handleChipInteraction);
-    target.addEventListener(MDCChipFoundation.strings.SELECTION_EVENT, this._handleChipSelection);
-    target.addEventListener(MDCChipFoundation.strings.REMOVAL_EVENT, this._handleChipRemoval);
-  }
-
-  protected _removeListeners(target: HTMLElement) {
-    target.removeEventListener(MDCChipFoundation.strings.INTERACTION_EVENT, this._handleChipInteraction);
-    target.removeEventListener(MDCChipFoundation.strings.SELECTION_EVENT, this._handleChipSelection);
-    target.removeEventListener(MDCChipFoundation.strings.REMOVAL_EVENT, this._handleChipRemoval);
   }
 
   /**
    * Updates chips id and foundation selections
    */
   protected _updateChips() {
-    this._chips = this.slottedChips.map(el => {
+    const slottedChips = this.slottedChips.map(el => {
       el.id = el.id || "mdc-chip-" + ++this.idCounter;
       el.tabIndex = 0;
       return el;
     });
+
+    this._chips = [ ...slottedChips, ...this.chipEls ];
 
     this._chips.forEach(chip => {
       const { id, selected } = chip;
@@ -160,10 +158,9 @@ export class ChipSet extends BaseElement {
     chipEl.id = chipEl.id || `mdc-chip-${++this.idCounter}`;
     chipEl.setParentType(this);
 
-    this._addListeners(chipEl);
-
     this.mdcRoot.appendChild(chipEl);
-    this._chips.push(chipEl);
+
+    this._updateChips();
   };
 
   /**
@@ -205,17 +202,6 @@ export class ChipSet extends BaseElement {
       chipId
     } = evt.detail;
 
-    const chipIndex = this._findChipIndex(chipId);
-    const chip = this.chips[chipIndex];
-    const isSlotted = this.slottedChips.includes(chip);
-
-    if (!isSlotted) {
-      this._removeListeners(chip);
-    }
-
-    this._chips.splice(chipIndex, 1);
-    chip.remove();
-
     this.mdcFoundation.handleChipRemoval(chipId);
   }
 
@@ -224,5 +210,12 @@ export class ChipSet extends BaseElement {
    */
   protected _findChipIndex(chipId: string) {
     return this._chips.findIndex(chip => chip.id === chipId);
+  }
+
+  /**
+   * Returns the chip with the given id
+   */
+  public getChipById(chipId: string) {
+    return this._chips[this._findChipIndex(chipId)];
   }
 }

@@ -34,3 +34,24 @@ limitations under the License.
 .mdc-text-field {
   width: 100%;
 }
+
+// Textarea fullWidth placeholder overlap fixed
+.mdc-text-field__input {
+  .mdc-text-field--textarea:not(.mdc-text-field--focused):not(.mdc-text-field--no-label) &::placeholder {
+    opacity: 0;
+  }
+}
+
+.mdc-text-field--with-trailing-icon-interaction {
+  .mdc-text-field__icon--trailing {
+    pointer-events: all;
+    cursor: pointer;
+    outline: none;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+      color: $mdc-text-field-ink-color;
+    }
+  }
+}
