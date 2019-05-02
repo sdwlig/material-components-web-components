@@ -35,12 +35,12 @@ import { MDCSelectHelperText, MDCSelectHelperTextFactory } from '@material/selec
 import { MDCNotchedOutline, MDCNotchedOutlineFactory } from '@material/notched-outline';
 import { MDCFloatingLabel, MDCFloatingLabelFactory } from '@material/floating-label';
 import { MDCLineRipple, MDCLineRippleFactory } from '@material/line-ripple';
+import { findAssignedElement } from '@material/mwc-base/utils';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
 import { emit } from '@material/mwc-base/utils';
 
 import { style } from './mwc-select-css.js';
-import { findAssignedElement } from '@material/mwc-base/utils';
 
 const lineRippleFactory: MDCLineRippleFactory = el => new MDCLineRipple(el);
 const helperTextFactory: MDCSelectHelperTextFactory = el => new MDCSelectHelperText(el);
