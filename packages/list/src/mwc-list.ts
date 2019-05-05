@@ -30,7 +30,7 @@ import { closest, matches } from '@material/dom/ponyfill';
 // import { ripple } from '@material/mwc-ripple/ripple-directive';
 import MDCListFoundation from './_foundation';
 import { MDCListAdapter } from './_adapter';
-import { strings, cssClasses } from './_constants';
+import { strings } from './_constants';
 import { style } from './mwc-list-css';
 import { ListItem } from './mwc-list-item';
 
@@ -237,7 +237,7 @@ export class List extends BaseElement {
     const target = evt.target as Element;
 
     if (index >= 0 && !this.nonInteractive) {
-      this.mdcFoundation!.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
+      this.mdcFoundation!.handleKeydown(evt, target instanceof ListItem, index);
     }
   }
 

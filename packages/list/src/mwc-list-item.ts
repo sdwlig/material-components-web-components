@@ -43,6 +43,7 @@ export class ListItem extends LitElement {
 
   @property({type: Boolean})
   public disabled = false;
+  
   @property({ type: String })
   public value = "";
 
@@ -131,8 +132,7 @@ export class ListItem extends LitElement {
   public toggle(): void {
     this.expanded = this.expandable
       ? !this.expanded
-      : false
-    console.log("expanded", this.expanded, this)
+      : false;
     this.requestUpdate();
   }
 
@@ -216,6 +216,16 @@ export class ListItem extends LitElement {
       this._inputAction = parentElement.inputAction;
       this.requestUpdate();
     }
+  }
+
+  public focus() {
+    this.mdcRoot.focus();
+    this.setFocused(true);
+  }
+
+  public blur() {
+    this.mdcRoot.blur();
+    this.setFocused(false);
   }
 
 }

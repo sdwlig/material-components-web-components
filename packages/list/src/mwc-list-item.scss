@@ -74,7 +74,7 @@
     }
   }
 
-  .mdc-list-item--background-focused{
+  .mdc-list-item--background-focused:not( .mdc-list-item--selected):not( .mdc-list-item--activated) {
     background-color: rgba(0,0,0,0.12);
   }
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
