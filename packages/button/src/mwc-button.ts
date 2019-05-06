@@ -16,6 +16,7 @@ limitations under the License.
 */
 import { LitElement, html, property, customElement, classMap } from '@material/mwc-base/base-element';
 import { ripple } from '@material/mwc-ripple/ripple-directive.js';
+
 import { style } from './mwc-button-css.js';
 
 import '@material/mwc-icon/mwc-icon-font.js';

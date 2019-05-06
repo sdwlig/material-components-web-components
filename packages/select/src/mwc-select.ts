@@ -584,8 +584,6 @@ export class Select extends FormElement {
     this._isMenuOpen = false;
     this._selectedText!.removeAttribute('aria-expanded');
 
-    console.log(activeElement);
-
     if (activeElement !== this) {
       this.mdcFoundation.handleBlur();
     }

@@ -59,4 +59,4 @@ const numbers = {
   UNSET_INDEX: -1,
 };
 
-export {strings, cssClasses, numbers};
+export { strings, cssClasses, numbers };

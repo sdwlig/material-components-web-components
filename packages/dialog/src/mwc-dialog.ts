@@ -1,4 +1,14 @@
-import { BaseElement, customElement, html, query, property, queryAll, classMap, observer, TemplateResult } from '@material/mwc-base/base-element'
+import {
+  BaseElement,
+  customElement,
+  html,
+  query,
+  property,
+  queryAll,
+  classMap,
+  observer,
+  TemplateResult
+} from '@material/mwc-base/base-element'
 import { emit, findAssignedElements, addHasRemoveClass } from '@material/mwc-base/utils'
 import { MDCDialogFoundation } from '@material/dialog/foundation'
 import { MDCDialogAdapter } from '@material/dialog/adapter'

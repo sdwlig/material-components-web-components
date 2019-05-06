@@ -49,49 +49,49 @@ export class List extends BaseElement {
   @query("slot")
   protected slotEl!: HTMLSlotElement;
 
-  @property({type: Number})
+  @property({ type: Number })
   lines = 1;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   ripple = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   avatarList = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   nonInteractive = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   useActivated = false;
 
-  @property({type: String})
+  @property({ type: String })
   inputType = 'none';
 
-  @property({type: String})
+  @property({ type: String })
   inputAction = 'primary';
 
-  @observer(function(this: List, value: boolean) {
+  @observer(function (this: List, value: boolean) {
     this.mdcFoundation && this.mdcFoundation.setVerticalOrientation(!value);
   })
-  @property({type: Boolean})
+  @property({ type: Boolean })
   horizontal = false;
 
-  @observer(function(this: List, value: boolean) {
+  @observer(function (this: List, value: boolean) {
     this.mdcFoundation && this.mdcFoundation.setWrapFocus(value);
   })
-  @property({type: Boolean})
+  @property({ type: Boolean })
   wrapFocus = true;
 
-  @observer(function(this: List, value: boolean) {
+  @observer(function (this: List, value: boolean) {
     this.mdcFoundation && this.mdcFoundation.setSingleSelection(value);
   })
-  @property({type: Boolean})
+  @property({ type: Boolean })
   singleSelection = true;
 
-  @observer(function(this: List, value: number) {
+  @observer(function (this: List, value: number) {
     this.mdcFoundation && this.mdcFoundation.setSelectedIndex(value);
   })
-  @property({type: Number})
+  @property({ type: Number })
   selectedIndex = -1;
 
   protected mdcFoundation!: MDCListFoundation;
@@ -109,13 +109,9 @@ export class List extends BaseElement {
     const classes = {
     };
     return html`
-      <ul class="mdc-list ${classMap(classes)}"
-        @keydown=${this.handleKeydownEvent_}
-        @click=${this.handleClickEvent_}
-        @focusin=${this.handleFocusInEvent_}
-        @focusout=${this.handleFocusOutEvent_}
-      >
-      <slot></slot>
+      <ul class="mdc-list ${classMap(classes)}" @keydown=${this.handleKeydownEvent_} @click=${this.handleClickEvent_}
+        @focusin=${this.handleFocusInEvent_} @focusout=${this.handleFocusOutEvent_}>
+        <slot></slot>
       </ul>
     `;
   }
@@ -133,9 +129,9 @@ export class List extends BaseElement {
       },
       toggleItemAtIndex: (index) => { this.listElements[index].toggle() },
       getFocusedElementIndex: () => {
-        return this.listElements.map( (ele, index) => {
+        return this.listElements.map((ele, index) => {
           return (ele && Number(ele.getAttribute('tabindex')) >= 0) ? index : -1;
-        }).filter( e => e !== -1 )[0];
+        }).filter(e => e !== -1)[0];
       },
       getAttributeForElementIndex: (index, attr) => {
         const ele = this.listElements[index] as ListItem;
@@ -160,7 +156,7 @@ export class List extends BaseElement {
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
         return `${listItemIndex} , ${tabIndexValue}`; // TODO
       },
-      hasRadioAtIndex: (index: number) =>  {
+      hasRadioAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
         return ele ? ele.radio : false;
       },
@@ -177,7 +173,7 @@ export class List extends BaseElement {
         if (ele) ele.selected = true;
       },
       notifyAction: (index: number) => { emit(this, strings.ACTION_EVENT, { listIndex: index }, true) },
-      isFocusInsideList: () :boolean => ( this.mdcRoot.querySelectorAll(":focus").length > 0 ),
+      isFocusInsideList: (): boolean => (this.mdcRoot.querySelectorAll(":focus").length > 0),
     }
   }
 
@@ -220,9 +216,9 @@ export class List extends BaseElement {
     this.mdcFoundation!.handleFocusIn(evt, index);
   }
 
-    /**
-   * Used to figure out which element was clicked before sending the event to the foundation.
-   */
+  /**
+ * Used to figure out which element was clicked before sending the event to the foundation.
+ */
   private handleFocusOutEvent_(evt: FocusEvent) {
     const index = this.getListItemIndex_(evt);
     this.mdcFoundation!.handleFocusOut(evt, index);

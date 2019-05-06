@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/foundation';
-import {MDCListAdapter} from './_adapter';
-import {cssClasses, numbers, strings} from './_constants';
-import {MDCListIndex} from './_types';
+import { MDCFoundation } from '@material/base/foundation';
+import { MDCListAdapter } from './_adapter';
+import { cssClasses, numbers, strings } from './_constants';
+import { MDCListIndex } from './_types';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -77,7 +77,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private isRadioList_ = false;
 
   constructor(adapter?: Partial<MDCListAdapter>) {
-    super({...MDCListFoundation.defaultAdapter, ...adapter});
+    super({ ...MDCListFoundation.defaultAdapter, ...adapter });
   }
 
   layout() {
@@ -164,7 +164,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Key handler for the list.
    */
   handleKeydown(evt: KeyboardEvent, isRootListItem: boolean, listItemIndex: number) {
-    console.log('handleKeyDown', evt, isRootListItem, listItemIndex);
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -175,7 +174,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
-    console.log("currentIndex", currentIndex);
     let nextIndex = numbers.UNSET_INDEX;
     if (currentIndex === numbers.UNSET_INDEX) {
       currentIndex = listItemIndex;

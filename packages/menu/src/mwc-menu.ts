@@ -26,7 +26,7 @@ import {
   findAssignedElement
 } from '@material/mwc-base/base-element.js';
 import { MDCMenuFoundation, MDCMenuAdapter, Corner } from '@material/menu';
-import {cssClasses, DefaultFocusState, strings} from '@material/menu/constants';
+import { cssClasses, DefaultFocusState, strings } from '@material/menu/constants';
 import { MDCMenuSurface, MDCMenuSurfaceFactory } from '@material/menu-surface/component';
 import MDCListFoundation from '@material/list/foundation';
 import MDCMenuSurfaceFoundation from '@material/menu-surface/foundation';
@@ -55,7 +55,7 @@ export class Menu extends BaseElement {
   public open = false;
 
   @property({ type: Boolean })
-  @observer(function(this: Menu, value: boolean) {
+  @observer(function (this: Menu, value: boolean) {
     if (this._menuSurface) {
       this._menuSurface.quickOpen = value;
     }
@@ -131,7 +131,6 @@ export class Menu extends BaseElement {
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
       notifySelected: (evtData) => {
-        console.log(evtData);
         emit(this, strings.SELECTED_EVENT, {
           index: evtData.index,
           item: this.items[evtData.index],

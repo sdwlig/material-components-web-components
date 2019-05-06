@@ -38,43 +38,43 @@ export class ListItem extends LitElement {
   @query('.mdc-list-item')
   protected mdcRoot!: HTMLElement;
 
-  @property({type: String})
+  @property({ type: String })
   public variant = 'single-line';
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public disabled = false;
-  
+
   @property({ type: String })
   public value = "";
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public focused = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public selected = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public activated = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public checkbox = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public radio = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public trailingInput = false;
 
-  @property({type: Number})
+  @property({ type: Number })
   public tabindex = -1;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public expandable = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public expanded = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   public indent = false;
 
   protected _lines = 1;
@@ -88,7 +88,7 @@ export class ListItem extends LitElement {
 
   render() {
     const classes = {
-      "mdc-list-item" : true,
+      "mdc-list-item": true,
       "mdc-list-item__avatar-list": this._avatarList,
       "mdc-list-item--two-line": this._lines === 2,
       "mdc-list-item--disabled": this.disabled,
@@ -104,12 +104,7 @@ export class ListItem extends LitElement {
     };
 
     return html`
-      <li
-        class="${classMap(classes)}"
-        tabindex="${this.tabindex}"
-        aria-current="${this.focused}"
-        aria-selected="${this.selected}"
-        >
+      <li class="${classMap(classes)}" tabindex="${this.tabindex}" aria-current="${this.focused}" aria-selected="${this.selected}">
         ${this.renderGraphic()}
         <span class="mdc-list-item__text">
           ${this._lines === 1 ? this.renderSingleLine() : this.renderDoubleLine()}
@@ -148,14 +143,20 @@ export class ListItem extends LitElement {
 
   public renderDoubleLine() {
     return html`
-      <span class="mdc-list-item__primary-text"><slot></slot></span>
-      <span class="mdc-list-item__secondary-text"><slot name='secondary'></slot></span>
+      <span class="mdc-list-item__primary-text">
+        <slot></slot>
+      </span>
+      <span class="mdc-list-item__secondary-text">
+        <slot name='secondary'></slot>
+      </span>
     `;
   }
 
   public renderGraphic() {
     return html`
-      <span class="mdc-list-item__graphic"><slot name='graphic'></slot></span>
+      <span class="mdc-list-item__graphic">
+        <slot name='graphic'></slot>
+      </span>
     `;
   }
 
@@ -163,9 +164,13 @@ export class ListItem extends LitElement {
     let moreorless = this.expanded ? "expand_less" : "expand_more";
     return this.expandable
       ? html`
-        <span class="mdc-list-item__meta"><mwc-icon>${moreorless}</mwc-icon></span>
+        <span class="mdc-list-item__meta">
+          <mwc-icon>${moreorless}</mwc-icon>
+        </span>
       `: html`
-        <span class="mdc-list-item__meta"><slot name='meta'></slot></span>
+        <span class="mdc-list-item__meta">
+          <slot name='meta'></slot>
+        </span>
       `;
   }
 
@@ -175,7 +180,9 @@ export class ListItem extends LitElement {
       "mdc-list-item__content--expanded": this.expanded,
     }
     return html`
-      <div class="${classMap(classes)}"><slot name='content'></slot></div>
+      <div class="${classMap(classes)}">
+        <slot name='content'></slot>
+      </div>
     `;
   }
 
@@ -196,7 +203,7 @@ export class ListItem extends LitElement {
     this[attr] = value;
   }
 
-  public setFocused(focus:boolean) {
+  public setFocused(focus: boolean) {
     if (focus) {
       this.focused = true;
       this.tabindex = 0;

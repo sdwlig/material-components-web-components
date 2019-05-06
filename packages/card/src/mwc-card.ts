@@ -22,6 +22,7 @@ import {
   classMap
 } from "@material/mwc-base/base-element";
 import { ripple } from  "@material/mwc-ripple/ripple-directive";
+
 import { style } from "./mwc-card-css.js";
 
 import "@material/mwc-icon/mwc-icon-font";

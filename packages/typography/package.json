@@ -9,9 +9,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/typography": "^1.0.0",
-    "@material/mwc-icon": "^0.5.0",
-    "lit-element": "^2.0.1"
+    "@material/typography": "^1.0.0"
   },
   "devDependencies": {},
   "publishConfig": {
