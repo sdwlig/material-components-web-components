@@ -137,7 +137,9 @@ export class Menu extends BaseElement {
         }, true)
       },
       getMenuItemCount: () => this.items.length,
-      focusItemAtIndex: (index) => (this.items[index] as HTMLElement).focus(),
+      focusItemAtIndex: (index) => {
+        this.listEl.focusItemAtIndex(index, true);
+      },
       focusListRoot: () => this.listEl.focus()
     }
   }

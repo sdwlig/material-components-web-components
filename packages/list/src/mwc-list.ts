@@ -125,12 +125,13 @@ export class List extends BaseElement {
       getListItemCount: () => this.listElements.length,
       inputType: () => this.inputType,
       setSelectedAtIndex: (index) => {
-        this.listElements.forEach(ele => {
-          ele.selected = false;
-          ele.setFocused(false);
-        })
-        this.listElements[index].selected = true;
-        this.listElements[index].setFocused(true);
+        this.selectItem(this.listElements[index] as ListItem);
+        // this.listElements.forEach(ele => {
+        //   ele.selected = false;
+        //   ele.setFocused(false);
+        // })
+        // this.listElements[index].selected = true;
+        // this.listElements[index].setFocused(true);
       },
       toggleItemAtIndex: (index) => { this.listElements[index].toggle() },
       getFocusedElementIndex: () => {
@@ -258,6 +259,34 @@ export class List extends BaseElement {
   // NOTE: needed only for ShadyDOM where delegatesFocus is not implemented
   public focus() {
     this.mdcRoot.focus();
+  }
+
+  protected defocusAllItems() {
+    this.listElements.forEach(e => e.setFocused(false))
+  }
+
+  protected focusItem(item: ListItem, hard: boolean = false) {
+    this.defocusAllItems();
+    item.setFocused(true);
+    if (hard) item.focus();
+  }
+
+  protected deselectAllItems() {
+    this.listElements.forEach(e => e.selected = false)
+  }
+
+  protected selectItem(item: ListItem) {
+    this.focusItem(item, false);
+    this.deselectAllItems();
+    item.selected = true;
+  }
+
+  public selectItemAtIndex(index: number) {
+    this.selectItem(this.listElements[index])
+  }
+
+  public focusItemAtIndex(index: number, hard: boolean) {
+    this.focusItem(this.listElements[index], hard);
   }
 
 }
