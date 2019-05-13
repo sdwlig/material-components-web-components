@@ -83,6 +83,10 @@ export class ListItem extends LitElement {
   protected _nonInteractive = false;
   protected _inputType = 'none';
   protected _inputAction = '';
+  protected _slot_graphic = true;
+  protected _slot_content = true;
+  protected _slot_meta = true;
+  protected _slot_secondary = true;
 
   static styles = style;
 
@@ -123,6 +127,7 @@ export class ListItem extends LitElement {
     this.updateComplete
       .then(() => {
         this.setParentType();
+        this.removeEmptySlots();
       });
   }
 
@@ -155,22 +160,22 @@ export class ListItem extends LitElement {
   }
 
   public renderGraphic() {
+    const orNot = this._slot_graphic ? '' : '-empty';
     return html`
-      <span class="mdc-list-item__graphic">
-        <slot name='graphic'></slot>
-      </span>
-    `;
+      <slot class="mdc-list-item__graphic${orNot}" name='graphic'></slot>
+    `
   }
 
   public renderMeta() {
     let moreorless = this.expanded ? "expand_less" : "expand_more";
+    const orNot = this._slot_meta ? '' : '-empty';
     return this.expandable
       ? html`
-        <span class="mdc-list-item__meta">
+        <span class="mdc-list-item__meta${orNot}">
           <mwc-icon>${moreorless}</mwc-icon>
         </span>
       `: html`
-        <span class="mdc-list-item__meta">
+        <span class="mdc-list-item__meta${orNot}">
           <slot name='meta'></slot>
         </span>
       `;
@@ -225,6 +230,22 @@ export class ListItem extends LitElement {
       this._inputAction = parentElement.inputAction;
       this.requestUpdate();
     }
+  }
+
+  public removeEmptySlots() {
+    Array
+      .from( this.shadowRoot!.querySelectorAll( "slot" ) )
+      .forEach( ( slot ) => {
+        console.log('slot loop', slot.name);
+        let nodes = slot.assignedNodes();
+        if (nodes.length) {
+          console.log('has the slot filled', nodes);
+        } else {
+          console.log('has not slot contents')
+          this[ `_slot_${slot.name}` ] = false;
+          this.requestUpdate()
+        }
+      } );
   }
 
   public focus() {

@@ -102,7 +102,8 @@
     @include mdc-list-item-primary-text-ink-color(text-disabled-on-background, $query);
   }
 
-  .mdc-list-item__graphic:has(slot:not(:empty)) {
+  .mdc-list-item__graphic {
+    display: inline;
     @include mdc-feature-targets($feat-structure) {
       @include mdc-list-graphic-size_(24px);
 
@@ -112,18 +113,21 @@
       fill: currentColor;
     }
   }
+  .mdc-list-item__graphic-empty {
+    display: contents;
+  }
 
   // Extra specificity is to override .material-icons display style if used in
   // conjunction with mdc-list-item__graphic
   // stylelint-disable plugin/selector-bem-pattern
-  .mdc-list .mdc-list-item__graphic:has(slot:not(:empty)) {
+  .mdc-list .mdc-list-item__graphic {
     @include mdc-feature-targets($feat-structure) {
       display: inline-flex;
     }
   }
   // stylelint-enable plugin/selector-bem-pattern
 
-  .mdc-list-item__meta:has(slot:not(:empty)) {
+  .mdc-list-item__meta {
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
     }
