@@ -87,20 +87,22 @@ export class ListItem extends LitElement {
   static styles = style;
 
   render() {
+    let inactive = this._nonInteractive || this.disabled;
     const classes = {
       "mdc-list-item": true,
       "mdc-list-item__avatar-list": this._avatarList,
       "mdc-list-item--two-line": this._lines === 2,
       "mdc-list-item--disabled": this.disabled,
       "mdc-list-item--non-interactive": this._nonInteractive,
-      "mdc-list-item--selected": this.selected,
-      "mdc-list-item--activated": this.activated,
+      "mdc-list-item--selected": this.selected && !inactive,
+      "mdc-list-item--activated": this.activated && !inactive,
       "mdc-list-item--expanded": this.expanded,
       "mdc-list-item--expandable": this.expandable,
       "mdc-list-item--indented": this.indent,
       "mdc-ripple-upgraded": this._ripple,
-      "mdc-ripple-upgraded--background-focused": this._ripple && this.focused,
-      "mdc-list-item--background-focused": !this._ripple && this.focused,
+      "mdc-ripple-upgraded--background-focused": this._ripple && this.focused && !inactive,
+      "mdc-list-item--background-focused": !this._ripple && this.focused && !inactive,
+      "mdc-list-item--background-focused-disabled": !this._ripple && this.focused && this.disabled,
     };
 
     return html`

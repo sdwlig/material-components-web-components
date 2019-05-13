@@ -152,9 +152,13 @@ export class List extends BaseElement {
         const ele = this.listElements[index] as ListItem;
         if (ele) ele.removeClass(className); // temp solution
       },
+      isDisabledAtIndex: (index: number) => {
+        const ele = this.listElements[index] as ListItem;
+        return ele && ele.disabled;
+      },
       focusItemAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
-        if (ele) ele.setFocused(true);
+        if (ele && ele.disabled === false) ele.setFocused(true);
       },
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
         return `${listItemIndex} , ${tabIndexValue}`; // TODO
@@ -192,7 +196,7 @@ export class List extends BaseElement {
   }
 
   get listElements(): ListItem[] {
-    return findAssignedElements(this.slotEl, 'mwc-list-item') as ListItem[];
+    return findAssignedElements(this.slotEl, 'mwc-list-item:not(disabled)') as ListItem[];
   }
 
   protected getListItemIndex_(evt: Event): number {
