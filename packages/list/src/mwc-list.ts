@@ -127,8 +127,10 @@ export class List extends BaseElement {
       setSelectedAtIndex: (index) => {
         this.listElements.forEach(ele => {
           ele.selected = false;
+          ele.setFocused(false);
         })
         this.listElements[index].selected = true;
+        this.listElements[index].setFocused(true);
       },
       toggleItemAtIndex: (index) => { this.listElements[index].toggle() },
       getFocusedElementIndex: () => {
