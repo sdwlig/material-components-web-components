@@ -236,12 +236,10 @@ export class ListItem extends LitElement {
     Array
       .from( this.shadowRoot!.querySelectorAll( "slot" ) )
       .forEach( ( slot ) => {
-        console.log('slot loop', slot.name);
         let nodes = slot.assignedNodes();
         if (nodes.length) {
-          console.log('has the slot filled', nodes);
+          // slot id full
         } else {
-          console.log('has not slot contents')
           this[ `_slot_${slot.name}` ] = false;
           this.requestUpdate()
         }
