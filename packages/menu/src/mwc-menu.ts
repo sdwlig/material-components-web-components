@@ -80,7 +80,7 @@ export class Menu extends BaseElement {
    * elements.
    */
   get items(): Element[] {
-    return this.listEl ? this.listEl.listElements : [];
+    return this.listEl ? this.listEl.listElements as Element[] : [];
   }
 
   protected get listEl() {
