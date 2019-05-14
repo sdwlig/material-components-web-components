@@ -81,11 +81,9 @@
     background-color: rgba(0,0,0,0);
   }
   .mdc-list-item--background-focused-disabled {
-    background-color: #b0002022;
+    background-color: rgba(0,0,0,0.03);
   }
-  .mdc-list-item--background-focused:not( .mdc-list-item--selected):not( .mdc-list-item--activated):disabled {
-    background-color: rgba(123,0,0,0.99);
-  }
+
   :not(.mdc-list-item--non-interactive):not(.mdc-list-item--disabled):not(.mdc-list-item--background-focused):not( .mdc-list-item--selected):not( .mdc-list-item--activated).mdc-list-item::before {
     background: none;
   }
