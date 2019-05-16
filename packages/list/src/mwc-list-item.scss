@@ -104,7 +104,7 @@
       // background: #000;
       opacity: 0.12;
     }
-    &:not(.mdc-list-item--activated):not(.mdc-ripple-upgraded):focus::before {
+    &:not(.mdc-list-item--selected):not(.mdc-list-item--activated):not(.mdc-ripple-upgraded):focus::before {
       opacity: 0 !important;
     }
     // &--selected:not(.mdc-ripple-upgraded):focus::before {
