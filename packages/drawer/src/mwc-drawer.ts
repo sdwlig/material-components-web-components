@@ -24,7 +24,7 @@ import {
   PropertyValues,
   classMap,
   addHasRemoveClass
-} from '@material/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element.js';
 import MDCModalDrawerFoundation from '@material/drawer/modal/foundation.js';
 import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation.js';
 import { MDCDrawerAdapter } from '@material/drawer/adapter.js';

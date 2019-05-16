@@ -25,7 +25,7 @@ import { styleMap } from 'lit-html/directives/style-map';
 import { MDCTooltipFoundation } from './mdc-tooltip/foundation.js';
 import { MDCTooltipAdapter } from './mdc-tooltip/adapter.js';
 import { style } from './mwc-tooltip-css.js';
-import { addHasRemoveClass } from '@material/mwc-base/base-element.js';
+import { addHasRemoveClass } from '@authentic/mwc-base/base-element.js';
 
 declare global {
     interface HTMLElementTagNameMap {

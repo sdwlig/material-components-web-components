@@ -21,7 +21,7 @@ import { style } from './mwc-ripple-global-css.js';
 import * as util from '@material/ripple/util.js';
 import { matches } from '@material/dom/ponyfill';
 
-import { SpecificEventListener } from '@material/mwc-base/base-element.js';
+import { SpecificEventListener } from '@authentic/mwc-base/base-element.js';
 
 const supportsCssVariables = util.supportsCssVariables(window);
 

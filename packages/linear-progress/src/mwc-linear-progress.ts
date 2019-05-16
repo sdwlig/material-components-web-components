@@ -22,7 +22,7 @@ import {
   query,
   customElement,
   addHasRemoveClass
-} from '@material/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element.js';
 import { style } from './mwc-linear-progress-css.js';
 import MDCLinearProgressFoundation from '@material/linear-progress/foundation.js';
 import { MDCLinearProgressAdapter } from '@material/linear-progress/adapter.js';

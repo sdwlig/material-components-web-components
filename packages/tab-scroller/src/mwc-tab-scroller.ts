@@ -21,7 +21,7 @@ import {
   customElement,
   eventOptions,
   addHasRemoveClass
-} from '@material/mwc-base/base-element';
+} from '@authentic/mwc-base/base-element';
 import MDCTabScrollerFoundation from '@material/tab-scroller/foundation.js';
 import { matches } from '@material/dom/ponyfill';
 import { style } from './mwc-tab-scroller-css.js';

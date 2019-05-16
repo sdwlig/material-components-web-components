@@ -21,9 +21,9 @@ import {
   observer,
   query,
   customElement
-} from '@material/mwc-base/base-element.js';
-import { Tab } from '@material/mwc-tab';
-import { TabScroller } from '@material/mwc-tab-scroller';
+} from '@authentic/mwc-base/base-element.js';
+import { Tab } from '@authentic/mwc-tab';
+import { TabScroller } from '@authentic/mwc-tab-scroller';
 import MDCTabBarFoundation from '@material/tab-bar/foundation';
 import { MDCTabBarAdapter } from '@material/tab-bar/adapter';
 import { MDCTabInteractionEvent } from '@material/tab/types';

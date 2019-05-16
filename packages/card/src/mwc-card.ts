@@ -20,12 +20,12 @@ import {
   html,
   property,
   classMap
-} from "@material/mwc-base/base-element";
-import { ripple } from  "@material/mwc-ripple/ripple-directive";
+} from "@authentic/mwc-base/base-element";
+import { ripple } from  "@authentic/mwc-ripple/ripple-directive";
 
 import { style } from "./mwc-card-css.js";
 
-import "@material/mwc-icon/mwc-icon-font";
+import "@authentic/mwc-icon/mwc-icon-font";
 
 declare global {
   interface HTMLElementTagNameMap {

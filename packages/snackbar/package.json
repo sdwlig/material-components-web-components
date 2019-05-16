@@ -1,5 +1,5 @@
 {
-  "name": "@material/mwc-snackbar",
+  "name": "@authentic/mwc-snackbar",
   "version": "0.5.0",
   "description": "",
   "main": "mwc-snackbar.js",
@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@material/snackbar": "^2.0.0",
-    "@material/mwc-base": "^0.5.0"
+    "@authentic/mwc-base": "^0.5.0"
   },
   "publishConfig": {
     "access": "public"

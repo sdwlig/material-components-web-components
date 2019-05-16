@@ -24,13 +24,13 @@ import {
   observer,
   emit,
   addHasRemoveClass
-} from '@material/mwc-base/base-element';
+} from '@authentic/mwc-base/base-element';
 import { MDCChipFoundation } from '@material/chips/chip/foundation';
 import { MDCChipAdapter } from '@material/chips/chip/adapter';
 import { ChipSet as MWCChipSet } from './mwc-chip-set';
 import { styleMap } from 'lit-html/directives/style-map';
 import { strings } from '@material/chips/chip/constants';
-import { ripple } from '@material/mwc-ripple/ripple-directive';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 import { style } from './mwc-chip-css';
 
 import "@authentic/mwc-icon/mwc-icon-font";

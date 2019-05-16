@@ -23,8 +23,8 @@ import {
   query,
   queryAll,
   addHasRemoveClass
-} from '@material/mwc-base/base-element';
-import { findAssignedElements } from '@material/mwc-base/utils';
+} from '@authentic/mwc-base/base-element';
+import { findAssignedElements } from '@authentic/mwc-base/utils';
 import { MDCChipSetFoundation } from '@material/chips/chip-set/foundation';
 import { MDCChipSetAdapter } from '@material/chips/chip-set/adapter';
 import { MDCChipFoundation } from '@material/chips/chip/foundation';

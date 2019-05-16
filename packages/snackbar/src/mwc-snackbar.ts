@@ -23,7 +23,7 @@ import {
   customElement,
   classMap,
   addHasRemoveClass
-} from '@material/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element.js';
 import { style } from './mwc-snackbar-css.js';
 import MDCSnackbarFoundation from '@material/snackbar/foundation.js';
 import { MDCSnackbarCloseEventDetail } from '@material/snackbar/types';

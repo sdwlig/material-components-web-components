@@ -17,15 +17,15 @@ A [Material Components](https://material.io/develop/) tab indicator implementati
 
   1. Add mwc-tooltip to your project:
 
-      ```npm i @material/mwc-tooltip```
+      ```npm i @authentic/mwc-tooltip```
 
   1. Import the mwc-tooltip definition into your HTML page:
 
-      ```<script type="module" src="@material/mwc-tooltip/index.js"></script>```
+      ```<script type="module" src="@authentic/mwc-tooltip/index.js"></script>```
 
       Or into your module script:
 
-      ```import { Tooltip } from "@material/mwc-tooltip"```
+      ```import { Tooltip } from "@authentic/mwc-tooltip"```
 
   1. Create an instance of mwc-tooltip in your HTML page, or via any framework that [supports rendering Custom Elements](https://custom-elements-everywhere.com/):
 
@@ -39,7 +39,7 @@ A [Material Components](https://material.io/develop/) tab indicator implementati
 
       ```polymer serve```
 
-  > mwc-tooltip is published on [npm](https://www.npmjs.com/package/@material/mwc-tooltip) using JavaScript Modules.
+  > mwc-tooltip is published on [npm](https://www.npmjs.com/package/@authentic/mwc-tooltip) using JavaScript Modules.
   This means it can take advantage of the standard native JavaScript module loader available in all current major browsers.
   >
   > However, since mwc-tooltip uses npm convention to reference dependencies by name, a light transform to rewrite specifiers to URLs is required to get it to run in the browser. The polymer-cli's development server `polymer serve` automatically handles this transform.

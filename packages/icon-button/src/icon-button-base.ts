@@ -15,10 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { BaseElement, html, property, query, observer, addHasRemoveClass } from '@material/mwc-base/base-element.js';
+import { BaseElement, html, property, query, observer, addHasRemoveClass } from '@authentic/mwc-base/base-element.js';
 import MDCIconButtonToggleFoundation from '@material/icon-button/foundation.js';
 import { MDCIconButtonToggleAdapter } from '@material/icon-button/adapter.js';
-import { ripple } from '@material/mwc-ripple/ripple-directive.js';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive.js';
 
 export abstract class IconButtonBase extends BaseElement {
 

@@ -24,7 +24,7 @@ import {
   classMap,
   SpecificEventListener,
   addHasRemoveClass
-} from '@material/mwc-base/form-element.js';
+} from '@authentic/mwc-base/form-element.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { style } from './mwc-slider-css.js';
 import MDCSliderFoundation from '@material/slider/foundation.js';

@@ -20,10 +20,10 @@ import {
   property,
   customElement,
   classMap
-} from '@material/mwc-base/base-element';
+} from '@authentic/mwc-base/base-element';
 import { style } from './mwc-fab-css.js';
-import { ripple } from '@material/mwc-ripple/ripple-directive.js';
-import '@material/mwc-icon/mwc-icon-font.js';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive.js';
+import '@authentic/mwc-icon/mwc-icon-font.js';
 
 declare global {
   interface HTMLElementTagNameMap {

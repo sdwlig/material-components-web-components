@@ -17,15 +17,15 @@ A [Material Components](https://material.io/components/) icon implementation usi
 
   1. Add mwc-chips to your project:
 
-      ```npm i @material/mwc-chips```
+      ```npm i @authentic/mwc-chips```
 
   1. Import the mwc-chips definition into your HTML page:
 
-      ```<script type="module" src="@material/mwc-chips/mwc-chip.js"></script>```
+      ```<script type="module" src="@authentic/mwc-chips/mwc-chip.js"></script>```
 
       Or into your module script:
 
-      ```import { Chip } from "@material/mwc-chips/mwc-chip"```
+      ```import { Chip } from "@authentic/mwc-chips/mwc-chip"```
 
   1. Create an instance of mwc-chips in your HTML page, or via any framework that [supports rendering Custom Elements](https://custom-elements-everywhere.com/):
 
@@ -39,7 +39,7 @@ A [Material Components](https://material.io/components/) icon implementation usi
 
       ```polymer serve```
 
-  > mwc-chips is published on [npm](https://www.npmjs.com/package/@material/mwc-chips) using JavaScript Modules.
+  > mwc-chips is published on [npm](https://www.npmjs.com/package/@authentic/mwc-chips) using JavaScript Modules.
   This means it can take advantage of the standard native JavaScript module loader available in all current major browsers.
   >
   > However, since mwc-chips uses npm convention to reference dependencies by name, a light transform to rewrite specifiers to URLs is required to get it to run in the browser. The polymer-cli's development server `polymer serve` automatically handles this transform.

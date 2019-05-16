@@ -25,7 +25,7 @@ import {
   RippleSurface,
   html,
   classMap,
-} from '@material/mwc-base/form-element';
+} from '@authentic/mwc-base/form-element';
 import { MDCSelectAdapter } from '@material/select/adapter';
 import { MDCSelectFoundation } from '@material/select/foundation';
 import { MDCSelectFoundationMap } from '@material/select/types';
@@ -35,13 +35,13 @@ import { MDCSelectHelperText, MDCSelectHelperTextFactory } from '@material/selec
 import { MDCNotchedOutline, MDCNotchedOutlineFactory } from '@material/notched-outline';
 import { MDCFloatingLabel, MDCFloatingLabelFactory } from '@material/floating-label';
 import { MDCLineRipple, MDCLineRippleFactory } from '@material/line-ripple';
-import { findAssignedElement } from '@material/mwc-base/utils';
+import { findAssignedElement } from '@authentic/mwc-base/utils';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
-import { ripple } from '@material/mwc-ripple/ripple-directive';
-import { emit } from '@material/mwc-base/utils';
-import { Menu as MWCMenu } from '@material/mwc-menu/mwc-menu';
-import { ListItem as MWCListItem } from '@material/mwc-list/mwc-list-item';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive';
+import { emit } from '@authentic/mwc-base/utils';
+import { Menu as MWCMenu } from '@authentic/mwc-menu/mwc-menu';
+import { ListItem as MWCListItem } from '@authentic/mwc-list/mwc-list-item';
 
 import { style } from './mwc-select-css.js';
 

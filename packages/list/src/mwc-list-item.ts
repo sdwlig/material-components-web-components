@@ -21,7 +21,7 @@ import {
   query,
   customElement,
   classMap,
-} from '@material/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element.js';
 import { List as MWCList } from './mwc-list';
 
 import { style } from './mwc-list-item-css';

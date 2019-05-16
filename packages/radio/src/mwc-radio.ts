@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {FormElement, query, customElement, property, html, observer, HTMLElementWithRipple, addHasRemoveClass} from '@material/mwc-base/form-element.js';
+import {FormElement, query, customElement, property, html, observer, HTMLElementWithRipple, addHasRemoveClass} from '@authentic/mwc-base/form-element.js';
 import {style} from './mwc-radio-css.js';
 import {SelectionController} from './selection-controller.js';
 import {ripple} from '@authentic/mwc-ripple/ripple-directive.js';

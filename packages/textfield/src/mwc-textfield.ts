@@ -26,7 +26,7 @@ import {
   classMap,
   property,
   observer
-} from '@material/mwc-base/form-element';
+} from '@authentic/mwc-base/form-element';
 import { MDCFloatingLabel, MDCFloatingLabelFactory } from '@material/floating-label';
 import { MDCLineRipple, MDCLineRippleFactory } from '@material/line-ripple';
 import { MDCNotchedOutline, MDCNotchedOutlineFactory } from '@material/notched-outline';
@@ -52,8 +52,8 @@ import {
 } from '@material/textfield/helper-text';
 import { MDCTextFieldIcon, MDCTextFieldIconFactory } from '@material/textfield/icon';
 import { MDCTextFieldFoundationMap } from '@material/textfield/types';
-import { ripple } from '@material/mwc-ripple/ripple-directive';
-import { emit } from '@material/mwc-base/utils';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive';
+import { emit } from '@authentic/mwc-base/utils';
 
 import { style } from './mwc-textfield-css.js';
 

@@ -1,5 +1,5 @@
 {
-  "name": "@material/mwc-chips",
+  "name": "@authentic/mwc-chips",
   "version": "0.5.0",
   "description": "",
   "main": "mwc-chip.js",
@@ -14,9 +14,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@material/chips": "^2.0.0",
-    "@material/mwc-base": "^0.5.0",
-    "@material/mwc-icon": "^0.5.0",
-    "@material/mwc-ripple": "^0.5.0",
+    "@authentic/mwc-base": "^0.5.0",
+    "@authentic/mwc-icon": "^0.5.0",
+    "@authentic/mwc-ripple": "^0.5.0",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^1.1.1",
     "@material/theme": "^1.1.0",

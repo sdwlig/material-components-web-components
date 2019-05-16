@@ -16,7 +16,7 @@
 
 import { assert } from 'chai';
 import { fake } from 'sinon';
-import { Checkbox } from '@material/mwc-checkbox';
+import { Checkbox } from '@authentic/mwc-checkbox';
 
 let element;
 

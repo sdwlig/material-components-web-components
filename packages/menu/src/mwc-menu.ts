@@ -24,14 +24,14 @@ import {
   observer,
   emit,
   findAssignedElement
-} from '@material/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element.js';
 import { MDCMenuFoundation, MDCMenuAdapter, Corner } from '@material/menu';
 import { cssClasses, DefaultFocusState, strings } from '@material/menu/constants';
 import { MDCMenuSurface, MDCMenuSurfaceFactory } from '@material/menu-surface/component';
 import MDCListFoundation from '@material/list/foundation';
 import MDCMenuSurfaceFoundation from '@material/menu-surface/foundation';
 import { MDCMenuDistance } from '@material/menu-surface/types';
-import { List as MWCList } from '@material/mwc-list/mwc-list';
+import { List as MWCList } from '@authentic/mwc-list/mwc-list';
 
 import { style } from './mwc-menu-css.js';
 

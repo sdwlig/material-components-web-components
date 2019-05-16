@@ -16,7 +16,7 @@
 
 import { assert } from 'chai';
 import { fake } from 'sinon';
-import { Switch } from '@material/mwc-switch';
+import { Switch } from '@authentic/mwc-switch';
 
 let element;
 

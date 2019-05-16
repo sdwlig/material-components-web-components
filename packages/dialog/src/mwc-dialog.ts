@@ -8,12 +8,12 @@ import {
   classMap,
   observer,
   TemplateResult
-} from '@material/mwc-base/base-element'
-import { emit, findAssignedElements, addHasRemoveClass } from '@material/mwc-base/utils'
+} from '@authentic/mwc-base/base-element'
+import { emit, findAssignedElements, addHasRemoveClass } from '@authentic/mwc-base/utils'
 import { MDCDialogFoundation } from '@material/dialog/foundation'
 import { MDCDialogAdapter } from '@material/dialog/adapter'
-import { Button as MWCButton } from '@material/mwc-button'
-import { ripple } from '@material/mwc-ripple/ripple-directive'
+import { Button as MWCButton } from '@authentic/mwc-button'
+import { ripple } from '@authentic/mwc-ripple/ripple-directive'
 import { closest, matches } from '@material/dom/ponyfill'
 import { strings } from '@material/dialog/constants'
 import { styleMap } from 'lit-html/directives/style-map'

@@ -14,12 +14,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { LitElement, html, property, customElement, classMap } from '@material/mwc-base/base-element';
-import { ripple } from '@material/mwc-ripple/ripple-directive.js';
+import { LitElement, html, property, customElement, classMap } from '@authentic/mwc-base/base-element';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive.js';
 
 import { style } from './mwc-button-css.js';
 
-import '@material/mwc-icon/mwc-icon-font.js';
+import '@authentic/mwc-icon/mwc-icon-font.js';
 
 declare global {
   interface HTMLElementTagNameMap {

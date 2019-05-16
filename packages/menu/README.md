@@ -25,7 +25,7 @@ A [Material Components](https://material.io/components/) icon implementation usi
 
       Or into your module script:
 
-      ```import { Menu } from "@material/mwc-menu"```
+      ```import { Menu } from "@authentic/mwc-menu"```
 
   1. Create an instance of mwc-menu in your HTML page, or via any framework that [supports rendering Custom Elements](https://custom-elements-everywhere.com/):
 

@@ -1,5 +1,5 @@
 {
-  "name": "@material/mwc-list",
+  "name": "@authentic/mwc-list",
   "version": "0.5.0",
   "description": "",
   "main": "mwc-list.js",
@@ -18,9 +18,9 @@
     "@material/theme": "^1.1.0",
     "@material/typography": "^1.0.0",
     "@material/list": "^2.0.0",
-    "@material/mwc-base": "^0.5.0",
-    "@material/mwc-icon": "^0.5.0",
-    "@material/mwc-ripple": "^0.5.0",
+    "@authentic/mwc-base": "^0.5.0",
+    "@authentic/mwc-icon": "^0.5.0",
+    "@authentic/mwc-ripple": "^0.5.0",
     "lit-element": "^2.0.1"
   },
   "publishConfig": {
