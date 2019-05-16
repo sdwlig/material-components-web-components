@@ -14,23 +14,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {BaseElement, html, property, observer, query, customElement, Adapter, Foundation} from '@material/mwc-base/base-element.js';
-import {style} from './mwc-linear-progress-css.js';
+import {
+  BaseElement,
+  html,
+  property,
+  observer,
+  query,
+  customElement,
+  addHasRemoveClass
+} from '@material/mwc-base/base-element.js';
+import { style } from './mwc-linear-progress-css.js';
 import MDCLinearProgressFoundation from '@material/linear-progress/foundation.js';
-
-export interface LinearProgressFoundation extends Foundation {
-  setDeterminate(value: boolean): void;
-  setProgress(value: number): void;
-  setBuffer(value: number): void;
-  setReverse(value: boolean): void;
-  open(): void;
-  close(): void;
-}
-
-export declare var LinearProgressFoundation: {
-  prototype: LinearProgressFoundation;
-  new(adapter: Adapter): LinearProgressFoundation;
-}
+import { MDCLinearProgressAdapter } from '@material/linear-progress/adapter.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -40,9 +35,9 @@ declare global {
 
 @customElement('mwc-linear-progress' as any)
 export class LinearProgress extends BaseElement {
-  protected mdcFoundation!: LinearProgressFoundation;
+  protected mdcFoundation!: MDCLinearProgressFoundation;
 
-  protected readonly mdcFoundationClass: typeof LinearProgressFoundation = MDCLinearProgressFoundation;
+  protected readonly mdcFoundationClass = MDCLinearProgressFoundation;
 
   @query('.mdc-linear-progress')
   protected mdcRoot!: HTMLElement
@@ -53,32 +48,32 @@ export class LinearProgress extends BaseElement {
   @query('.mdc-linear-progress__buffer')
   protected bufferElement!: HTMLElement
 
-  @property({type: Boolean, reflect: true})
-  @observer(function(this: LinearProgress, value: boolean) {
+  @property({ type: Boolean, reflect: true })
+  @observer(function (this: LinearProgress, value: boolean) {
     this.mdcFoundation.setDeterminate(value);
   })
   determinate = false;
 
-  @property({type: Number})
-  @observer(function(this: LinearProgress, value: number) {
+  @property({ type: Number })
+  @observer(function (this: LinearProgress, value: number) {
     this.mdcFoundation.setProgress(value);
   })
   progress = 0;
 
-  @property({type: Number})
-  @observer(function(this: LinearProgress, value: number) {
+  @property({ type: Number })
+  @observer(function (this: LinearProgress, value: number) {
     this.mdcFoundation.setBuffer(value);
   })
   buffer = 0;
 
-  @property({type: Boolean, reflect: true})
-  @observer(function(this: LinearProgress, value: boolean) {
+  @property({ type: Boolean, reflect: true })
+  @observer(function (this: LinearProgress, value: boolean) {
     this.mdcFoundation.setReverse(value);
   })
   reverse = false;
 
-  @property({type: Boolean, reflect: true})
-  @observer(function(this: LinearProgress, value: boolean) {
+  @property({ type: Boolean, reflect: true })
+  @observer(function (this: LinearProgress, value: boolean) {
     if (value) {
       this.mdcFoundation.close();
     } else {
@@ -103,9 +98,9 @@ export class LinearProgress extends BaseElement {
       </div>`;
   }
 
-  protected createAdapter() {
+  protected createAdapter(): MDCLinearProgressAdapter {
     return {
-      ...super.createAdapter(),
+      ...addHasRemoveClass(this.mdcRoot),
       getPrimaryBar: () => this.primaryBar,
       getBuffer: () => this.bufferElement,
       setStyle: (el: HTMLElement, property: string, value: string) => el.style[property] = value,

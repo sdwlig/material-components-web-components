@@ -16,55 +16,45 @@ limitations under the License.
 */
 import {
   FormElement,
-  Foundation,
-  Adapter,
   customElement,
   query,
+  HTMLElementWithRipple,
+  addHasRemoveClass,
+  property,
+  observer,
+  RippleSurface,
   html,
   classMap,
-  property,
-  observer
 } from '@material/mwc-base/form-element';
-import { findAssignedElement, emit } from '@material/mwc-base/utils';
-import { Menu as MWCMenu } from '@material/mwc-menu/mwc-menu';
-import { ListItem } from '@material/mwc-list/mwc-list-item';
-import MDCSelectFoundation from '@material/select/foundation';
-import { MDCLineRipple } from '@material/line-ripple';
-import { MDCFloatingLabel } from '@material/floating-label';
-import { MDCNotchedOutline } from '@material/notched-outline';
+import { MDCSelectAdapter } from '@material/select/adapter';
+import { MDCSelectFoundation } from '@material/select/foundation';
+import { MDCSelectFoundationMap } from '@material/select/types';
+import { strings, cssClasses } from '@material/select/constants';
+import { MDCSelectIcon, MDCSelectIconFactory } from '@material/select/icon';
+import { MDCSelectHelperText, MDCSelectHelperTextFactory } from '@material/select/helper-text';
+import { MDCNotchedOutline, MDCNotchedOutlineFactory } from '@material/notched-outline';
+import { MDCFloatingLabel, MDCFloatingLabelFactory } from '@material/floating-label';
+import { MDCLineRipple, MDCLineRippleFactory } from '@material/line-ripple';
+import { findAssignedElement } from '@material/mwc-base/utils';
+import * as menuSurfaceConstants from '@material/menu-surface/constants';
+import * as menuConstants from '@material/menu/constants';
 import { ripple } from '@material/mwc-ripple/ripple-directive';
+import { emit } from '@material/mwc-base/utils';
+import { Menu as MWCMenu } from '@material/mwc-menu/mwc-menu';
+import { ListItem as MWCListItem } from '@material/mwc-list/mwc-list-item';
 
-import { style } from './mwc-select-css';
+import { style } from './mwc-select-css.js';
 
-// elements to be registered ahead of time
-import '@material/mwc-menu';
-import '@material/mwc-list';
-import '@material/mwc-list/mwc-list-item-separator';
-import { cssClasses, strings } from './constants';
+const lineRippleFactory: MDCLineRippleFactory = el => new MDCLineRipple(el);
+const helperTextFactory: MDCSelectHelperTextFactory = el => new MDCSelectHelperText(el);
+const iconFactory: MDCSelectIconFactory = el => new MDCSelectIcon(el);
+const labelFactory: MDCFloatingLabelFactory = el => new MDCFloatingLabel(el);
+const outlineFactory: MDCNotchedOutlineFactory = el => new MDCNotchedOutline(el);
 
-export interface SelectFoundation extends Foundation {
-  setValue(value: String): void;
-  setDisabled(value: Boolean): void;
-  setSelectedIndex(value: Number): void;
-  deactivateBottomLine(): void;
-  adapter_: any;
-}
+type PointerEventType = 'mousedown' | 'touchstart';
 
-export interface SelectProxy {
-  value?: string;
-  text?: string;
-  selectedIndex: number;
-  selectedOptions?: any;
-  selectedItems?: any;
-  options?: any;
-  items?: any;
-  updateComplete?: Promise<any>;
-}
-
-export declare var SelectFoundation: {
-  prototype: SelectFoundation;
-  new(adapter: Adapter): SelectFoundation;
-}
+const POINTER_EVENTS: PointerEventType[] = [ 'mousedown', 'touchstart' ];
+const VALIDATION_ATTR_WHITELIST = [ 'required', 'aria-required' ];
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -72,76 +62,19 @@ declare global {
   }
 }
 
-export class HTMLSelectElementProxy {
-  protected isReady: boolean = false;
-
-  get value(): string {
-    return this.select instanceof HTMLSelectElement
-      ? this.select.value
-      : this.items[this.selectedIndex]
-        ? this.items[this.selectedIndex].value
-        : '';
-  }
-
-  set value(value: string) {
-    if (this.select instanceof HTMLSelectElement) {
-      if (this.select.value !== value) {
-        this.select.value = value;
-        emit(this.select, 'change');
-      }
-    } else {
-      const selectedElement = this.items.filter(el => el.value === value)[0];
-      this.selectedIndex = selectedElement
-        ? this.items.indexOf(selectedElement)
-        : -1;
-    }
-  }
-
-  get selectedIndex(): number {
-    return this.select.selectedIndex;
-  }
-
-  set selectedIndex(value: number) {
-    if (this.select.selectedIndex !== value) {
-      this.select.selectedIndex = value;
-
-      if (this.select instanceof HTMLSelectElement) {
-        emit(this.select, 'change');
-      }
-    }
-  }
-
-  get selectedOptions() {
-    return [...this.isReady ? this.select.selectedOptions || this.select.selectedItems : []];
-  }
-
-  get items() {
-    return [...this.isReady ? this.select.options || this.select.items : []];
-  }
-
-  get text() {
-    return this.selectedOptions.length > 0
-      ? this.selectedOptions.map(option => option.label).join(', ')
-      : '';
-  }
-
-  constructor(protected select: SelectProxy) {
-    if (this.select.updateComplete) {
-      this.select.updateComplete.then(() => {
-        this.isReady = true;
-      })
-    }
-  }
-}
-
 @customElement('mwc-select' as any)
 export class Select extends FormElement {
-
   @query('.mdc-select')
-  protected mdcRoot!: HTMLElement;
+  protected mdcRoot!: HTMLElementWithRipple;
 
-  @query('input')
-  protected input!: HTMLInputElement;
+  @query(strings.HIDDEN_INPUT_SELECTOR)
+  protected _hiddenInput!: HTMLInputElement;
+
+  @query('.mdc-select__selected-text')
+  protected _selectedText!: HTMLElement;
+
+  @query('.mdc-select__menu-anchor')
+  protected _menuAnchor!: HTMLElement;
 
   @query('slot[name="select"]')
   protected slotSelect!: HTMLSlotElement;
@@ -149,491 +82,647 @@ export class Select extends FormElement {
   @query('slot[name="menu"]')
   protected slotMenu!: HTMLSlotElement;
 
-  @query('.mdc-line-ripple')
+  @query(strings.LABEL_SELECTOR)
+  protected labelElement!: HTMLLabelElement;
+
+  @query(strings.LINE_RIPPLE_SELECTOR)
   protected lineRippleElement!: HTMLElement;
 
-  @query('.mdc-floating-label')
-  protected labelElement!: HTMLElement;
-
-  @query('.mdc-notched-outline')
+  @query(strings.OUTLINE_SELECTOR)
   protected outlineElement!: HTMLElement;
 
-  @query('gsk-one-checkbox-group-helper-text')
+  @query(strings.LEADING_ICON_SELECTOR)
+  protected leadingIconElement!: HTMLElement;
+
+  @query('.mdc-select-helper-text')
   protected helperTextElement!: HTMLElement;
 
-  @property({ type: Number })
-  @observer(function(this: Select, value: Number) {
-    this.mdcFoundation.setSelectedIndex(value);
+  @property({ type: String, reflect: true })
+  @observer(function(this: Select, value: string) {
+    if (this.mdcFoundation.getValue() !== value) {
+      this.mdcFoundation && this.mdcFoundation.setValue(value);
+    }
   })
-  selectedIndex = -1;
+  public value = '';
 
   @property({ type: String })
-  label = '';
+  public label = '';
 
   @property({ type: Boolean })
-  box = false;
+  public outlined = false;
 
-  @property({ type: Boolean })
-  outlined = false;
-
-  @property({ type: Boolean })
-  dense = false;
-
-  @property({ type: Boolean })
-  @observer(function(this: Select, value: Boolean) {
-    this.mdcFoundation.setDisabled(value);
+  @property({ type: Boolean, reflect: true })
+  @observer(function(this: Select, value: boolean) {
+    this.mdcFoundation && this.mdcFoundation.setDisabled(value);
   })
-  disabled = false;
-
-  @property({ type: Boolean })
-  fullWidth = false;
-
-  @property({ type: Boolean })
-  required = false;
+  public disabled = false;
 
   @property({ type: String })
-  @observer(function(this: Select, value: String) {
-    this.mdcFoundation.setValue(value);
-    const isValid = this._isValid();
-    this._setValid(isValid);
+  @observer(function(this: Select, value: string) {
+    this.mdcFoundation && this.mdcFoundation.setHelperTextContent(value);
   })
-  value = '';
-
-  @property({type: String})
-  name = ''
+  public helperTextContent = '';
 
   @property({ type: String })
-  helperText = '';
+  public validationMessage = '';
 
   @property({ type: Boolean })
-  persistentHelperText = false;
+  @observer(function(this: Select, value: boolean) {
+    this._helperText && this._helperText.foundation.setPersistent(value);
+  })
+  public persistentHelperText = false;
 
   @property({ type: String })
-  validationMessage = '';
+  @observer(function(this: Select, value: string) {
+    this.mdcFoundation && this.mdcFoundation.setLeadingIconAriaLabel(value);
+  })
+  public leadingIconAriaLabel = '';
 
-  protected _valid: boolean = true;
+  @property({ type: String })
+  @observer(function(this: Select, value: string) {
+    this.mdcFoundation && this.mdcFoundation.setLeadingIconContent(value);
+  })
+  public leadingIconContent = '';
+
+  @property({ type: Boolean })
+  @observer(function(this: Select, value: boolean) {
+    if (this._nativeControl) {
+      this._nativeControl.required = value;
+    } else if (this._selectedText) {
+      if (value) {
+        this._selectedText!.setAttribute('aria-required', value.toString());
+      } else {
+        this._selectedText!.removeAttribute('aria-required');
+      }
+    }
+  })
+  public required = false;
 
   public get valid(): boolean {
-    return this._valid;
+    return this.mdcFoundation && this.mdcFoundation.isValid();
   }
 
-  public set valid(value: boolean) {
-    this._valid = value;
-    this.requestUpdate();
+  public set valid(valid: boolean) {
+    this.mdcFoundation && this.mdcFoundation.setValid(valid);
   }
 
-  protected get slottedElement() {
-    return findAssignedElement(this.slotSelect, '*') || findAssignedElement(this.slotMenu, '*');
+  public get ripple(): RippleSurface | undefined {
+    return this.mdcRoot.ripple;
   }
 
-  protected get select(): HTMLSelectElement {
-    return (this.formElement instanceof HTMLSelectElement ? this.slottedElement : undefined) as HTMLSelectElement;
+  /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   */
+  protected _useNativeValidation = false;
+  public set useNativeValidation(value: boolean) {
+    this._useNativeValidation = value;
   }
 
-  protected get menu(): MWCMenu {
-    return (this.formElement instanceof HTMLInputElement ? this.slottedElement : undefined) as MWCMenu;
+  public get slottedSelect(): HTMLSelectElement | null {
+    return this.slotSelect && findAssignedElement(this.slotSelect, 'select') as HTMLSelectElement;
   }
 
-  protected get isMenuOpen() {
-    return this.menu && this.menu.open;
+  public get slottedMenu(): MWCMenu | null {
+    return this.slotMenu && findAssignedElement(this.slotMenu, 'mwc-menu') as MWCMenu;
   }
 
-  protected get items() {
-    return this.selectProxy.items;
-  }
+  public get selectedIndex(): number {
+    let selectedIndex = -1;
 
-  protected _selectProxyInstance!: HTMLSelectElementProxy;
-  protected get selectProxy(): HTMLSelectElementProxy {
-    if ( !this._selectProxyInstance ) {
-      this._selectProxyInstance = new HTMLSelectElementProxy(
-        (this.select || this.menu) as SelectProxy
-      );
+    if (this.slottedMenu) {
+      selectedIndex = this.slottedMenu.items.indexOf(this._selectedItem);
+    } else if (this._nativeControl) {
+      selectedIndex = this._nativeControl.selectedIndex;
     }
 
-    return this._selectProxyInstance!;
+    if (this._nativeControl) {
+      selectedIndex = this._nativeControl.selectedIndex;
+      this.value = this._nativeControl.value;
+    }
+
+    return selectedIndex;
   }
 
-  protected _formElementInstance!: HTMLElement;
+  public set selectedIndex(selectedIndex: number) {
+    this.mdcFoundation.setSelectedIndex(selectedIndex);
+  }
+
   protected get formElement(): HTMLElement {
-    if ( !this._formElementInstance ) {
-      this._formElementInstance = this.slottedElement instanceof HTMLSelectElement
-        ? this.slottedElement
-        : this.input;
-    }
-
-    return this._formElementInstance;
+    return (this._nativeControl || this._selectedText) as HTMLElement;
   }
 
-  private _lineRippleInstance!: MDCLineRipple;
-  private get _lineRipple(): MDCLineRipple {
-    if ( !this.outlined && this.lineRippleElement ) {
-      this._lineRippleInstance = this._lineRippleInstance || new MDCLineRipple(this.lineRippleElement);
-    }
-
-    return this._lineRippleInstance;
+  protected get selectEl() {
+    return this.slottedSelect;
   }
 
-  private _labelInstance!: MDCFloatingLabel;
-  private get _label(): MDCFloatingLabel {
-    if ( this.label && this.labelElement ) {
-      this._labelInstance = this._labelInstance || new MDCFloatingLabel(this.labelElement);
-    }
+  protected _selectedItem!: MWCListItem;
+  
+  protected _isMenuOpen: boolean = false;
 
-    return this._labelInstance;
+  protected _nativeControl!: HTMLSelectElement | null;
+
+  protected _leadingIcon!: MDCSelectIcon;
+
+  protected _helperText!: MDCSelectHelperText | null;
+
+  protected _lineRipple!: MDCLineRipple | null;
+
+  protected _label!: MDCFloatingLabel | null;
+
+  protected _outline!: MDCNotchedOutline | null;
+
+  protected _validationObserver!: MutationObserver;
+
+  protected _handleChange = this._onChange.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleFocus = this._onFocus.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleBlur = this._onBlur.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleClick = this._onClick.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleKeydown = this._onKeydown.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleMenuOpened = this._onMenuOpened.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleMenuClosed = this._onMenuClosed.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleMenuSelected = this._onMenuSelected.bind(this) as EventListenerOrEventListenerObject;
+
+  protected mdcFoundation!: MDCSelectFoundation;
+
+  protected readonly mdcFoundationClass = MDCSelectFoundation;
+
+  createAdapter(): MDCSelectAdapter {
+    return {
+      ...addHasRemoveClass(this.mdcRoot),
+      ...(this._nativeControl ? this._getNativeSelectAdapterMethods() : this._getEnhancedSelectAdapterMethods()),
+      ...this._getCommonAdapterMethods(),
+      ...this._getOutlineAdapterMethods(),
+      ...this._getLabelAdapterMethods()
+    }
   }
 
-  private _outlineInstance!: MDCNotchedOutline;
-  private get _outline(): MDCNotchedOutline {
-    if ( this.outlined && this.outlineElement ) {
-      this._outlineInstance = this._outlineInstance || new MDCNotchedOutline(this.outlineElement);
-    }
+  protected _getNativeSelectAdapterMethods() {
+    return {
+      getValue: () => this._nativeControl!.value,
+      setValue: (value: string) => {
+        this._nativeControl!.value = value;
+      },
+      openMenu: () => undefined,
+      closeMenu: () => undefined,
+      isMenuOpen: () => false,
+      setSelectedIndex: (index: number) => {
+        this._nativeControl!.selectedIndex = index;
+      },
+      setDisabled: (isDisabled: boolean) => {
+        this._nativeControl!.disabled = isDisabled;
+      },
+      setValid: (isValid: boolean) => {
+        if (!this._useNativeValidation) return;
 
-    return this._outlineInstance;
+        if (isValid) {
+          this.mdcRoot.classList.remove(cssClasses.INVALID);
+        } else {
+          this.mdcRoot.classList.add(cssClasses.INVALID);
+        }
+
+        this._setValidity(isValid);
+      },
+      checkValidity: () => this._nativeControl!.checkValidity(),
+    };
   }
 
-  protected readonly mdcFoundationClass: typeof SelectFoundation = MDCSelectFoundation;
+  protected _getEnhancedSelectAdapterMethods() {
+    return {
+      getValue: () => {
+        return this.value;
+      },
+      setValue: (value: string) => {
+        const element = this.slottedMenu!.items.find(item => item['value'] === value);
+        // const element = this.slottedMenu!.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
+        this._setEnhancedSelectedIndex(element ? this.slottedMenu!.items.indexOf(element) : -1);
+      },
+      openMenu: () => {
+        if (this.slottedMenu && !this.slottedMenu.open) {
+          this.slottedMenu.setDefaultFocusState(2);
+          this.slottedMenu.open = true;
+          this._isMenuOpen = true;
+          this._selectedText!.setAttribute('aria-expanded', 'true');
+        }
+      },
+      closeMenu: () => {
+        if (this.slottedMenu && this.slottedMenu.open) {
+          this.slottedMenu.open = false;
+        }
+      },
+      isMenuOpen: () => Boolean(this.slottedMenu) && this._isMenuOpen,
+      setSelectedIndex: (index: number) => this._setEnhancedSelectedIndex(index),
+      setDisabled: (isDisabled: boolean) => {
+        this._selectedText!.setAttribute('tabindex', isDisabled ? '-1' : '0');
+        this._selectedText!.setAttribute('aria-disabled', isDisabled.toString());
+        if (this._hiddenInput) {
+          this._hiddenInput.disabled = isDisabled;
+        }
+      },
+      checkValidity: () => {
+        const classList = this.mdcRoot.classList;
+        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
+          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
+          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
+        } else {
+          return true;
+        }
+      },
+      setValid: (isValid: boolean) => {
+        this._selectedText!.setAttribute('aria-invalid', (!isValid).toString());
 
-  protected mdcFoundation!: SelectFoundation;
+        if (isValid) {
+          this.mdcRoot.classList.remove(cssClasses.INVALID);
+        } else {
+          this.mdcRoot.classList.add(cssClasses.INVALID);
+        }
 
-  protected _isMouseDown!: Boolean;
-  protected _isFocused!: Boolean;
+        this._setValidity(isValid);
+      },
+    };
+  }
+
+  protected _getCommonAdapterMethods() {
+    return {
+      addClass: className => this.mdcRoot.classList.add(className),
+      removeClass: className => this.mdcRoot.classList.remove(className),
+      hasClass: className => this.mdcRoot.classList.contains(className),
+      setRippleCenter: normalizedX => this._lineRipple && this._lineRipple.setRippleCenter(normalizedX),
+      activateBottomLine: () => this._lineRipple && this._lineRipple.activate(),
+      deactivateBottomLine: () => this._lineRipple && this._lineRipple.deactivate(),
+      notifyChange: value => {
+        if (value) {
+          const index = this.selectedIndex;
+          emit(this, 'change', { value, index }, true);
+        }
+      },
+    };
+  }
+
+  protected _getOutlineAdapterMethods() {
+    return {
+      hasOutline: () => Boolean(this._outline),
+      notchOutline: labelWidth => this._outline && this._outline.notch(labelWidth),
+      closeOutline: () => this._outline && this._outline.closeNotch(),
+    };
+  }
+
+  protected _getLabelAdapterMethods() {
+    return {
+      floatLabel: shouldFloat => this._label && this._label.float(shouldFloat),
+      getLabelWidth: () => this._label ? this._label.getWidth() : 0,
+    };
+  }
 
   static styles = style;
 
-  protected createAdapter() {
-    return {
-      ...super.createAdapter(),
-      floatLabel: (value) => {
-        if (this.menu && this.menu.open) {
-          return;
-        }
-
-        if (this._label) {
-          this._label.float(value);
-        }
-      },
-      activateBottomLine: () => {
-        if (this._lineRipple) {
-          this._lineRipple.activate();
-        }
-
-        if (this._outline) {
-          this._openNotch();
-        }
-      },
-      deactivateBottomLine: () => {
-        if ( this._isMouseDown ) return;
-
-        if (this._lineRipple) {
-          this._lineRipple.deactivate();
-        }
-
-        if (this._outlineInstance && !this.selectProxy.value) {
-          this._outline.closeNotch();
-        }
-      },
-      setDisabled: (disabled) => {
-        this.disabled = disabled;
-      },
-      registerInteractionHandler: (type, handler) => {
-        this.formElement.addEventListener(type, handler);
-      },
-      deregisterInteractionHandler: (type, handler) => {
-        this.formElement.removeEventListener(type, handler);
-      },
-      getSelectedIndex: () => {
-        return this.selectProxy.selectedIndex;
-      },
-      setSelectedIndex: (index) => {
-        this.selectProxy.selectedIndex = index;
-      },
-      getValue: () => {
-        return this.selectProxy.value;
-      },
-      setValue: (value) => {
-        this.selectProxy.value = value;
-        this.input.value = this.selectProxy.text;
-      },
-    }
+  _renderFloatingLabel() {
+    return html`
+      <label class="mdc-floating-label" for="form-element">${this.label}</label>
+    `;
   }
 
-  async firstUpdated() {
-    super.firstUpdated();
-
-    const isValid = this._isValid();
-    this._setValid(isValid);
-
-    if (this.select) {
-      this.select.classList.add('mdc-select__native-control');
-      this.formElement.addEventListener('change', this._handleSelection.bind(this));
-      this.input.style.display = 'none';
-      this.input.tabIndex = -1;
-    }
-
-    if (this.menu) {
-      this.input.tabIndex = 0;
-      this.menu.selectionGroup = true;
-      this.menu.autofocus = true;
-      this.menu.autoclose = true;
-      this.formElement.addEventListener('keydown', evt => this._handleKeydown(evt));
-      this.formElement.addEventListener('mousedown', () => this._handleMouseDown());
-      this.menu.addEventListener('MDCMenu:closed', () => this._handleMenuClosed());
-      this.menu.addEventListener('MDCMenu:selected', evt => this._handleMenuSelected(evt as CustomEvent))
-
-      this.menu.updateComplete.then(() => {
-        this.menu.setAnchorElement(this.mdcRoot);
-        this.formElement.style.minWidth = `${this.menu.getWidth() + 32}px`;
-      })
-    }
-
-    this.formElement.addEventListener('focus', this._handleFocus.bind(this));
-    this.formElement.addEventListener('blur', this._handleBlur.bind(this));
-  }
-
-  render() {
-    const { label, disabled, box, outlined, fullWidth, value, dense, valid } = this;
-
-    const hostClassInfo = {
-      'mdc-select--box': box,
-      'mdc-select--dense': dense,
-      'mdc-select--outlined': outlined,
-      'mdc-select--disabled': disabled,
-      'mdc-select--fullwidth': fullWidth,
-      'mdc-select--invalid': !valid
-    };
-
-    const labelClassInfo = {
-      'mdc-floating-label--float-above': !!value
-    };
+  _renderNotchedOutline() {
+    const hasLabel = this.label;
 
     return html`
-      <div class="mdc-select ${classMap(hostClassInfo)}" .ripple="${!outlined ? ripple({ unbounded: false }) : undefined}">
-        <input type="text" size="1" readonly class="mdc-select__selected-text">
-        <slot name="select"></slot>
-        ${label ? html`<label class="mdc-floating-label ${classMap(labelClassInfo)}" for="select">${label}</label>` : ''}
-        ${outlined
-          ? html`
-            <div class="mdc-notched-outline">
-              <svg><path class="mdc-notched-outline__path"/></svg>
-            </div>
-            <div class="mdc-notched-outline__idle"></div>`
-          : html`<div class="mdc-line-ripple"></div>`
-        }
+      <div class="mdc-notched-outline">
+        <div class="mdc-notched-outline__leading"></div>
+        <div class="mdc-notched-outline__notch">
+          ${hasLabel ? this._renderFloatingLabel() : ''}
+        </div>
+        <div class="mdc-notched-outline__trailing"></div>
       </div>
-      ${this._renderHelperText()}
-      <slot name="menu"></slot>
+    `;
+  }
+
+  _renderLineRipple() {
+    return html`
+      <div class="mdc-line-ripple"></div> 
     `;
   }
 
   _renderHelperText() {
-    const isValidationMessage = !this.valid && !!this.validationMessage;
+    return html`
+      <div class="mdc-select-helper-text"></div>
+    `
+  }
+
+  _renderLeadingIcon() {
+    return html`
+      <i class="material-icons mdc-select__icon">${this.leadingIconContent}</i>
+    `;
+  }
+
+  render() {
+    const hasLeadingIcon = this.leadingIconContent;
+    const hasOutline = this.outlined;
+    const hasLabel = this.label;
+    const hasHelperText = !!(this.helperTextContent || this.validationMessage);
     const classes = {
-      'mdc-select-helper-text': true,
-      [cssClasses.HELPER_TEXT_PERSISTENT]: this.persistentHelperText,
-      [cssClasses.HELPER_TEXT_VALIDATION_MSG]: isValidationMessage,
-    };
-    const message = isValidationMessage ? this.validationMessage : this.helperText;
-
-    return this.helperText || isValidationMessage
-      ? html`<p class="${classMap(classes)}">${message}</p>`
-      : null;
-  }
-
-  _isValid() {
-    return !this.required || this.value !== '';
-  }
-
-  _setValid(isValid: boolean) {
-    this.valid = isValid;
-    this._styleValidity(isValid);
-
-    const shouldShake = !isValid && !this._isFocused;
-
-    if (this._labelInstance) {
-      this._labelInstance.shake(shouldShake);
+      'mdc-select': true,
+      'mdc-select--outlined': hasOutline
     }
+
+    return html`
+      <div class="${classMap(classes)}" .ripple="${!hasOutline && ripple({ unbounded: false })}">
+        <input type="hidden" name="enhanced-select">
+        ${hasLeadingIcon ? this._renderLeadingIcon() : ''}
+        <i class="mdc-select__dropdown-icon"></i>
+        <div class="mdc-select__selected-text"></div>
+        <slot name="select"></slot>
+        ${hasLabel && !hasOutline ? this._renderFloatingLabel() : ''}
+        ${hasOutline ? this._renderNotchedOutline() : this._renderLineRipple()}
+      </div>
+      ${hasHelperText ? this._renderHelperText() : ''}
+      <slot name="menu"></slot>
+    `;
   }
 
-  _styleValidity(isValid: boolean) {
-    const { INVALID, HELPER_TEXT_PERSISTENT, HELPER_TEXT_VALIDATION_MSG } = cssClasses;
-
-    if (isValid) {
-      this.mdcFoundation.adapter_.removeClass(INVALID);
-    } else {
-      this.mdcFoundation.adapter_.addClass(INVALID);
+  firstUpdated() {
+    if (this.slottedSelect) {
+      this._nativeControl = this.slottedSelect;
+      this._selectedText.remove();
     }
-    if (this.helperTextElement) {
-      const helperTextIsPersistent = this.helperTextElement.classList.contains(HELPER_TEXT_PERSISTENT);
-      const helperTextIsValidationMsg = this.helperTextElement.classList.contains(HELPER_TEXT_VALIDATION_MSG);
-      const validationMsgNeedsDisplay = helperTextIsValidationMsg && !isValid;
 
-      if (validationMsgNeedsDisplay) {
-        this.helperTextElement.setAttribute(strings.ROLE, 'alert');
-      } else {
-        this.helperTextElement.removeAttribute(strings.ROLE);
+    this.formElement.id = 'form-element';
+
+    this._label = this.labelElement ? labelFactory(this.labelElement) : null;
+    this._lineRipple = this.lineRippleElement ? lineRippleFactory(this.lineRippleElement) : null;
+    this._outline = this.outlineElement ? outlineFactory(this.outlineElement) : null;
+    this._helperText = this.helperTextElement ? helperTextFactory(this.helperTextElement) : null;
+
+    if (this.leadingIconElement) {
+      this.mdcRoot.classList.add(cssClasses.WITH_LEADING_ICON);
+      this._leadingIcon = iconFactory(this.leadingIconElement);
+    }
+
+    // The required state needs to be sync'd before the mutation observer is added.
+    this._initialSyncRequiredState();
+    this._addMutationObserverForRequired();
+
+    super.firstUpdated();
+
+    this.formElement.addEventListener('change', this._handleChange);
+    this.formElement.addEventListener('focus', this._handleFocus);
+    this.formElement.addEventListener('blur', this._handleBlur);
+
+    POINTER_EVENTS.forEach((evtType) => {
+      this.formElement.addEventListener(evtType, this._handleClick);
+    });
+
+    if (this.slottedMenu) {
+      this._selectedText!.addEventListener('keydown', this._handleKeydown);
+      this.slottedMenu!.addEventListener(menuSurfaceConstants.strings.CLOSED_EVENT, this._handleMenuClosed);
+      this.slottedMenu!.addEventListener(menuSurfaceConstants.strings.OPENED_EVENT, this._handleMenuOpened);
+      this.slottedMenu!.addEventListener(menuConstants.strings.SELECTED_EVENT, this._handleMenuSelected);
+
+      if (this.leadingIconElement) {
+        this.slottedMenu.classList.add(cssClasses.WITH_LEADING_ICON);
       }
 
-      if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
-        this._hideHelperText();
+      if (this._hiddenInput && this._hiddenInput.value) {
+        // If the hidden input already has a value, use it to restore the select's value.
+        // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
+        const enhancedAdapterMethods = this._getEnhancedSelectAdapterMethods();
+        enhancedAdapterMethods.setValue(this._hiddenInput.value);
+      } else if (this.slottedMenu.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+        // If an element is selected, the select should set the initial selected text.
+        const enhancedAdapterMethods = this._getEnhancedSelectAdapterMethods();
+        enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
       }
+
+      setTimeout(() => {
+        this._enhancedSelectSetup();
+      }, 0);
+    }
+
+    // Initially sync floating label
+    this.mdcFoundation.handleChange(false);
+
+    if (
+      this.mdcRoot.classList.contains(cssClasses.DISABLED) ||
+      (this._nativeControl && this._nativeControl.disabled)
+    ) {
+      this.disabled = true;
     }
   }
 
-  _hideHelperText() {
-    this.helperTextElement.setAttribute(strings.ARIA_HIDDEN, 'true');
-  }
+  createFoundation() {
+    if (this.mdcFoundation !== undefined) {
+      this.mdcFoundation.destroy();
+    }
 
-  _showHelperTextToScreenReader() {
-    this.helperTextElement.removeAttribute(strings.ARIA_HIDDEN);
-  }
-
-  _openNotch() {
-    const isRtl = window.getComputedStyle(this.mdcRoot).getPropertyValue('direction') === 'rtl';
-    const labelWidth = !!this._label && !this.dense ? this._label.getWidth() : -12; // due to notched outline label spacing
-    this._outline.notch(labelWidth * (this.dense ? .923 : .75), isRtl);
+    this.mdcFoundation = new this.mdcFoundationClass(this.createAdapter(), this._getFoundationMap());
+    this.mdcFoundation.init();
   }
 
   /**
-   * Updates value and selectedIndex
+   * Handle change event
    */
-  _handleSelection(evt) {
+  protected _onChange(evt) {
     evt.stopImmediatePropagation();
-
-    const prevValue = this.value;
-
-    this.selectedIndex = this.selectProxy.selectedIndex;
-    this.value = this.selectProxy.value;
-    this._notifyChange();
-
-    if (this._outline && !this._isMouseDown) {
-      if (this.selectedIndex !== -1) {
-        this._openNotch();
-      } else {
-        this._outline.closeNotch();
-      }
-    }
-
-    if (prevValue !== this.value) {
-      emit(this, 'change', { value: this.value, selectedIndex: this.selectedIndex });
-    }
+    this.mdcFoundation.handleChange(true);
+  }
+  
+  /**
+   * Handle focus event
+   */
+  protected _onFocus(evt) {
+    this.mdcFoundation.handleFocus();
+    emit(this.mdcRoot, evt.type, {}, false);
   }
 
   /**
-   * Updates select proxy selectedIndex
+   * Handle blur event
    */
-  _handleMenuSelected(evt: CustomEvent) {
-    var detail = evt.detail;
-    this.selectProxy.selectedIndex = detail.index;
-    this._handleSelection(evt);
+  protected _onBlur(evt) {
+    this.mdcFoundation.handleBlur();
+    emit(this.mdcRoot, evt.type, {}, false);
   }
 
   /**
-   * Recover focus
+   * Handle click event
    */
-  _handleMenuClosed() {
-    if (this._isMouseDown) {
-      this._isMouseDown = false;
-    } else {
-      // Prevent focus if another select was focused
-      if (
-        document.activeElement instanceof HTMLSelectElement === false &&
-        (document.activeElement instanceof ListItem === false || this.contains(document.activeElement))
-      ) {
-        this.input.focus();
-      } else {
-        this._isMouseDown = false;
-        this._notifyBlur();
-      }
+  protected _onClick(evt) {
+    if (this._selectedText) {
+      this._selectedText.focus();
     }
+
+    this.mdcFoundation.handleClick(this._getNormalizedXCoordinate(evt));
   }
 
   /**
-   * Opens menu if already focused
+   * Handle keydown event
    */
-  _handleMouseDown() {
-    this._isMouseDown = true;
+  protected _onKeydown(evt) {
+    this.mdcFoundation.handleKeydown(evt)
+  }
 
-    if (this.isMenuOpen) {
+  /**
+   * Handle menu opened event
+   */
+  protected _onMenuOpened() {
+    if (this.slottedMenu!.items.length === 0) {
       return;
+    }
+
+    // Menu should open to the last selected element, should open to first menu item otherwise.
+    const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
+    const focusItemEl = this.slottedMenu!.items[focusItemIndex] as HTMLElement;
+    focusItemEl.focus();
+  }
+
+  /**
+   * Handle menu closed event
+   */
+  protected _onMenuClosed() {
+    const activeElement = (this as any).getRootNode().activeElement;
+
+    // _isMenuOpen is used to track the state of the menu opening or closing since the menu.open function
+    // will return false if the menu is still closing and this method listens to the closed event which
+    // occurs after the menu is already closed.
+    this._isMenuOpen = false;
+    this._selectedText!.removeAttribute('aria-expanded');
+
+    if (activeElement !== this) {
+      this.mdcFoundation.handleBlur();
+    }
+  }
+
+  /**
+   * Handle menu selected event
+   */
+  protected _onMenuSelected(evt) {
+    this.selectedIndex = evt.detail.index;
+    this._selectedItem = evt.detail.item;
+    this.value = evt.detail.item['value'];
+  }
+
+  /**
+   * Handles setup for the enhanced menu.
+   */
+  private _enhancedSelectSetup() {
+    const isDisabled = this.mdcRoot.classList.contains(cssClasses.DISABLED);
+    this._selectedText!.setAttribute('tabindex', isDisabled ? '-1' : '0');
+    this.slottedMenu!.setAnchorElement(this.mdcRoot);
+    this.slottedMenu!.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
+    this.slottedMenu!.wrapFocus = false;
+  }
+
+  /**
+   * Calculates where the line ripple should start based on the x coordinate within the component.
+   */
+  private _getNormalizedXCoordinate(evt: MouseEvent | TouchEvent): number {
+    const targetClientRect = (evt.target as Element).getBoundingClientRect();
+    const xCoordinate = this.isTouchEvent_(evt) ? evt.touches[0].clientX : evt.clientX;
+    return xCoordinate - targetClientRect.left;
+  }
+
+  private isTouchEvent_(evt: MouseEvent | TouchEvent): evt is TouchEvent {
+    return Boolean((evt as TouchEvent).touches);
+  }
+
+  protected _setValidity(isValid: boolean) {
+    if (this._helperText && this.validationMessage) {
+      this.mdcFoundation && this.mdcFoundation.setHelperTextContent(isValid ? this.helperTextContent : this.validationMessage);
+      this._helperText.foundation.setValidation(!isValid);
+    }
+  }
+
+  /**
+   * Returns a map of all subcomponents to subfoundations.
+   */
+  protected _getFoundationMap(): Partial<MDCSelectFoundationMap> {
+    return {
+      helperText: this._helperText ? this._helperText.foundation : undefined,
+      leadingIcon: this._leadingIcon ? this._leadingIcon.foundation : undefined,
+    };
+  }
+
+  private _setEnhancedSelectedIndex(index: number) {
+    const selectedItem = this.slottedMenu!.items[index];
+    this._selectedText!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
+    const previouslySelected = this._selectedItem;
+
+    if (previouslySelected) {
+      previouslySelected.selected = false;
+    }
+
+    if (selectedItem) {
+      selectedItem['selected'] = true;
+    }
+
+    // Synchronize hidden input's value with data-value attribute of selected item.
+    // This code path is also followed when setting value directly, so this covers all cases.
+    if (this._hiddenInput) {
+      this._hiddenInput.value = selectedItem ? selectedItem['value'] || '' : '';
+    }
+
+    this.layout();
+  }
+
+  private _initialSyncRequiredState() {
+    const isRequired =
+        (this.formElement as HTMLSelectElement).required
+        || this.formElement.getAttribute('aria-required') === 'true'
+        || this.mdcRoot.classList.contains(cssClasses.REQUIRED);
+    if (isRequired) {
+      if (this._nativeControl) {
+        this._nativeControl.required = true;
+      } else {
+        this._selectedText!.setAttribute('aria-required', 'true');
+      }
+      this.mdcRoot.classList.add(cssClasses.REQUIRED);
+    }
+  }
+
+  private _addMutationObserverForRequired() {
+    const observerHandler = (attributesList: string[]) => {
+      attributesList.some((attributeName) => {
+        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) === -1) {
+          return false;
+        }
+
+        if (this._selectedText) {
+          if (this._selectedText.getAttribute('aria-required') === 'true') {
+            this.mdcRoot.classList.add(cssClasses.REQUIRED);
+          } else {
+            this.mdcRoot.classList.remove(cssClasses.REQUIRED);
+          }
+        } else {
+          if (this._nativeControl!.required) {
+            this.mdcRoot.classList.add(cssClasses.REQUIRED);
+          } else {
+            this.mdcRoot.classList.remove(cssClasses.REQUIRED);
+          }
+        }
+
+        return true;
+      });
     };
 
-    if (this._isFocused) {
-      this.openMenu();
-    }
+    const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
+      return mutationsList
+          .map((mutation) => mutation.attributeName)
+          .filter((attributeName) => attributeName) as string[];
+    };
+    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
+    observer.observe(this.formElement, {attributes: true});
+    this._validationObserver = observer;
   }
 
   /**
-   * Handle keys that open the menu
+   * Recomputes the outline SVG path for the outline element.
    */
-  _handleKeydown(evt) {
-    const { key, keyCode } = evt;
-
-    const isSpace = key === 'Space' || keyCode === 32;
-    const isEnter = key === 'Enter' || keyCode === 13
-
-    if (isSpace || isEnter) {
-      this._isMouseDown = true;
-      this.openMenu();
-    }
-  }
-
-  /**
-   * Adds focused class, opens menu and redirects focus even to mdcRoot
-   */
-  _handleFocus() {
-    this.mdcRoot.classList.add('mdc-select--focused');
-    this._isFocused = true;
-
-    if ( this._isMouseDown ) {
-      this.openMenu();
-    }
-
-    if (this.helperTextElement) {
-      this._showHelperTextToScreenReader();
-    }
-
-    emit(this.mdcRoot, 'focus');
-    this._notifyFocus();
-  }
-
-  /**
-   * Removes focused class and redirects blur event to mdcRoot
-   */
-  _handleBlur(evt) {
-    evt.stopImmediatePropagation();
-
-    if ( this._isMouseDown ) {
-      this._isMouseDown = false;
-    } else {
-      this.mdcRoot.classList.remove('mdc-select--focused');
-      this._isFocused = false;
-
-      emit(this.mdcRoot, 'blur');
-      this._notifyBlur();
-    }
-  }
-
-  _notifyChange() {
-    emit(this, 'change', { value: this.value });
-  }
-
-  _notifyFocus() {
-    emit(this, 'focus', { value: this.value });
-  }
-
-  _notifyBlur() {
-    emit(this, 'blur', { value: this.value });
-  }
-
-  openMenu() {
-    if (this.menu && !this.menu.open) {
-      this.menu.open = true;
-    }
-  }
-
-  closeMenu() {
-    if (this.menu && this.menu.open) {
-      this.menu.open = false;
-    }
+  public layout() {
+    this.mdcFoundation.layout();
   }
 }

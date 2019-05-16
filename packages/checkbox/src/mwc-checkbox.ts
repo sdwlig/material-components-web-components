@@ -14,28 +14,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {html, FormElement, customElement, property, query, Foundation, Adapter, HTMLElementWithRipple} from '@material/mwc-base/form-element.js';
-import {style} from './mwc-checkbox-css.js';
-import {ripple} from '@material/mwc-ripple/ripple-directive.js';
+import { html, FormElement, customElement, property, query, observer, HTMLElementWithRipple, addHasRemoveClass, RippleSurface } from '@material/mwc-base/form-element.js';
+import { ripple } from '@material/mwc-ripple/ripple-directive.js';
 import MDCCheckboxFoundation from '@material/checkbox/foundation.js';
+import { MDCCheckboxAdapter } from '@material/checkbox/adapter.js';
+
+import { style } from './mwc-checkbox-css.js';
 
 declare global {
   interface HTMLElementTagNameMap {
     'mwc-checkbox': Checkbox;
   }
-}
-
-export interface CheckboxFoundation extends Foundation {
-  isChecked(): boolean;
-  setChecked(value: boolean): void;
-  setDisabled(disabled: boolean): void;
-  handleAnimationEnd(): void;
-  handleChange(): void
-}
-
-export declare var CheckboxFoundation: {
-  prototype: CheckboxFoundation;
-  new (adapter: Adapter): CheckboxFoundation;
 }
 
 @customElement('mwc-checkbox' as any)
@@ -47,65 +36,62 @@ export class Checkbox extends FormElement {
   @query('input')
   protected formElement!: HTMLInputElement;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   checked = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   indeterminate = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
+  @observer(function (this: Checkbox, value: boolean) {
+    this.mdcFoundation.setDisabled(value);
+  })
   disabled = false;
 
-  @property({type: String})
+  @property({ type: String })
   value = ''
 
-  @property({type: String})
+  @property({ type: String })
   name = ''
 
-  protected mdcFoundationClass: typeof CheckboxFoundation = MDCCheckboxFoundation;
+  protected mdcFoundationClass = MDCCheckboxFoundation;
 
-  protected mdcFoundation!: CheckboxFoundation;
+  protected mdcFoundation!: MDCCheckboxFoundation;
 
   static styles = style;
 
-  get ripple() {
+  get ripple(): RippleSurface | undefined {
     return this.mdcRoot.ripple;
   }
 
-  protected createAdapter(): Adapter {
+  protected createAdapter(): MDCCheckboxAdapter {
     return {
-      ...super.createAdapter(),
-      getNativeControl: () => {
-        return this.formElement;
-      },
-      forceLayout: () => {
-        this.mdcRoot.offsetWidth;
-      },
+      ...addHasRemoveClass(this.mdcRoot),
+      forceLayout: () => this.mdcRoot.offsetWidth,
       isAttachedToDOM: () => this.isConnected,
       isIndeterminate: () => this.indeterminate,
       isChecked: () => this.checked,
       hasNativeControl: () => Boolean(this.formElement),
       setNativeControlDisabled: (disabled: boolean) => {
         this.formElement.disabled = disabled;
-      }
+      },
+      setNativeControlAttr: (attr: string, value: string) => {
+        this.formElement.setAttribute(attr, value);
+      },
+      removeNativeControlAttr: (attr: string) => {
+        this.formElement.removeAttribute(attr);
+      },
     }
   }
 
   render() {
     return html`
       <div class="mdc-checkbox" @animationend="${this._animationEndHandler}" .ripple="${ripple()}">
-        <input type="checkbox"
-              class="mdc-checkbox__native-control"
-              @change="${this._changeHandler}"
-              .indeterminate="${this.indeterminate}"
-              .checked="${this.checked}"
-              .value="${this.value}">
+        <input type="checkbox" class="mdc-checkbox__native-control" @change="${this._changeHandler}" .indeterminate="${this.indeterminate}"
+          .checked="${this.checked}" .value="${this.value}">
         <div class="mdc-checkbox__background">
-          <svg class="mdc-checkbox__checkmark"
-              viewBox="0 0 24 24">
-            <path class="mdc-checkbox__checkmark-path"
-                  fill="none"
-                  d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+          <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+            <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
           </svg>
           <div class="mdc-checkbox__mixedmark"></div>
         </div>

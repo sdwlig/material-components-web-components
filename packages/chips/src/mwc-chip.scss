@@ -15,18 +15,188 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import "@material/chips/mdc-chips.scss";
-@import "@material/mwc-icon/src/_mwc-icon.scss";
+@import '@material/chips/chip/mdc-chip';
+@import "@material/mwc-icon/src/mwc-icon";
+@import "./mixins";
 
 .material-icons {
   @extend %material-icons;
 }
 
 :host {
-  display: inline-block;
+  display: inline-flex;
   outline: none;
 }
 
-.mdc-ripple-upgraded {
-  transition: background 0.4s;
+.mdc-chip {
+  @include mdc-chip-avatar-shape-radius(50%);
+  @include mdc-chip-avatar-fill-color($mdc-chip-avatar-fill-color-default);
+  @include mdc-chip-avatar-ink-color($mdc-chip-avatar-ink-color-default);
+  @include mdc-chip-avatar-size($mdc-chip-avatar-size-default);
+  @include mdc-chip-avatar-margin();
+  @include mdc-chip-avatar-icon-size($mdc-chip-avatar-icon-size-default);
+  @include mdc-chip-avatar-icon-margin();
+  @include mdc-chip-checkmark-stroke-color();
+
+  flex: 1;
+
+  &:not(.mdc-chip--exit) {
+    transition: background-color $mdc-chip-animation-duration linear;
+
+    &:before {
+      transition: background-color $mdc-chip-animation-duration linear,
+                  opacity $mdc-chip-animation-duration linear;
+    }
+  }
+
+  .mdc-chip__checkmark {
+    .mdc-chip__checkmark-path {
+      stroke: currentColor;
+    }
+  }
+
+  .mdc-chip__avatar {
+    align-content: center;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+
+    &:after {
+      transition: opacity $mdc-chip-opacity-animation-duration linear;
+      transition-delay: $mdc-chip-leading-icon-delay;
+      content: '';
+      height: 100%;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    > * {
+      position: relative;
+      z-index: 0;
+    }
+
+    + .mdc-chip__checkmark {
+      // Delay the checkmark transition.
+      transition-delay: 0;
+      opacity: 0;
+      position: absolute;
+      margin: 0 0 0 $mdc-chip-avatar-checkmark-margin-left;
+      z-index: 2;
+  
+      .mdc-chip__checkmark-svg {
+        transition: width 0ms;
+
+        .mdc-chip__checkmark-path {
+          stroke-width: $mdc-chip-avatar-checkmark-stroke-width;
+        }
+      }
+    }
+  }
+
+  &.mdc-chip--selected .mdc-chip__avatar {
+    &.mdc-chip__avatar--default:after {
+      opacity: .5;
+    }
+
+    + .mdc-chip__checkmark {
+      width: $mdc-chip-avatar-checkmark-size;
+      opacity: 1;
+
+      .mdc-chip__checkmark-svg {
+        width: $mdc-chip-avatar-checkmark-size;
+      }
+    }
+  }
+}
+
+.mdc-chip--choice,
+.mdc-chip--filter,
+.mdc-chip--input,
+.mdc-chip--default {
+  @include mdc-chip-spacing(8px);
+}
+
+.mdc-chip--selected {
+  &:not(.mdc-chip--choice) {
+    &:not(:focus) {
+      @include mdc-chip-fill-color($mdc-chip-selected-fill-color-default);
+
+      &.mdc-chip--outlined {
+        @include mdc-chip-fill-color($mdc-chip-outline-selected-fill-color-default);
+      }
+    }
+  }
+}
+
+// Add outline styles
+.mdc-chip--outlined {
+  @include mdc-chip-fill-color($mdc-chip-outline-fill-color-default);
+  @include mdc-chip-outline($color: $mdc-chip-outline-border-color-default);
+}
+
+// Add animation to input chips
+
+.mdc-chip--input {
+  animation: mdc-chip-entry 100ms $mdc-animation-deceleration-curve-timing-function;
+}
+
+// Change color of selected choice chips
+
+.mdc-chip--choice {
+  @include mdc-chip-selected-ink-color(primary);
+
+  &.mdc-chip--selected {
+    @include mdc-theme-prop(background-color, surface);
+  }
+}
+
+// Add leading checkmark to filter chips with a leading icon
+
+.mdc-chip--filter {
+  @include mdc-chip-leading-icon-margin-override();
+
+  .mdc-chip__icon--leading {
+    transition: opacity $mdc-chip-opacity-animation-duration linear;
+    transition-delay: $mdc-chip-leading-icon-delay;
+    opacity: 1;
+
+    + .mdc-chip__checkmark {
+      transition: opacity $mdc-chip-opacity-animation-duration linear;
+
+      // Delay the checkmark transition.
+      transition-delay: $mdc-chip-checkmark-with-leading-icon-delay;
+      opacity: 0;
+
+      .mdc-chip__checkmark-svg {
+        transition: width 0ms;
+      }
+    }
+  }
+
+  &.mdc-chip--selected .mdc-chip__icon--leading {
+    opacity: 0;
+
+    + .mdc-chip__checkmark {
+      // This ensures that the checkmark has zero width while the leading icon is still animating.
+      width: 0;
+      opacity: 1;
+    }
+  }
+
+  .mdc-chip__icon--leading-hidden.mdc-chip__icon--leading {
+    width: 0;
+
+    // This ensures that the leading icon doesn't fade in while the checkmark is fading out.
+    opacity: 0;
+
+    + .mdc-chip__checkmark {
+      width: $mdc-chip-leading-icon-size;
+    }
+  }
 }

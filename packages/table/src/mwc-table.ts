@@ -14,13 +14,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { LitElement, customElement, query, property, html, TemplateResult } from 'lit-element';
+import {
+  LitElement,
+  customElement,
+  query,
+  property,
+  html,
+  TemplateResult
+} from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { findAssignedElement } from '@material/mwc-base/utils';
 import { observer } from '@material/mwc-base/observer';
 import { cssClasses } from './constants';
-import { Checkbox as MWCCheckbox } from '@material/mwc-checkbox';
 
 import { style } from './mwc-table-css';
 
@@ -108,7 +114,7 @@ export class Table extends LitElement {
       : [];
   }
 
-  protected get _headerRow(): MWCCheckbox|null {
+  protected get _headerRow(): HTMLTableRowElement|null {
     return this.mdcRoot.querySelector('thead tr');
   }
 

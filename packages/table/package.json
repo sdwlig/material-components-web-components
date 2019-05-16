@@ -1,6 +1,6 @@
 {
   "name": "@material/mwc-table",
-  "version": "0.3.6",
+  "version": "0.5.0",
   "description": "",
   "main": "mwc-table.js",
   "scripts": {
@@ -9,16 +9,15 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/animation": "^0.40.1",
-    "@material/theme": "^0.40.1",
-    "@material/elevation": "^0.40.1",
-    "@material/shape": "^0.40.1",
-    "@material/mwc-base": "^0.3.6",
-    "@material/mwc-icon": "^0.3.6",
-    "@material/mwc-checkbox": "^0.3.6",
-    "@material/mwc-circular-progress": "^0.3.6",
-    "@material/mwc-tooltip": "^0.3.6",
-    "lit-element": "^2.0.1",
+    "@material/theme": "^1.1.0",
+    "@material/elevation": "^1.1.0",
+    "@material/shape": "^1.1.1",
+    "@material/typography": "^1.0.0",
+    "@material/mwc-base": "^0.5.0",
+    "@material/mwc-icon": "^0.5.0",
+    "@material/mwc-circular-progress": "^0.5.0",
+    "@material/mwc-tooltip": "^0.5.0",
+    "lit-element": "^2.1.0",
     "lit-html": "^1.0.0"
   },
   "publishConfig": {

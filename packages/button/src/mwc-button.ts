@@ -14,30 +14,38 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {LitElement, html, property, customElement, classMap} from '@material/mwc-base/base-element';
-import {style} from './mwc-button-css.js';
-import {ripple} from '@material/mwc-ripple/ripple-directive.js';
+import { LitElement, html, property, customElement, classMap } from '@material/mwc-base/base-element';
+import { ripple } from '@material/mwc-ripple/ripple-directive.js';
+
+import { style } from './mwc-button-css.js';
+
 import '@material/mwc-icon/mwc-icon-font.js';
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mwc-button': Button;
+  }
+}
 
 @customElement('mwc-button' as any)
 export class Button extends LitElement {
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   raised = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   unelevated = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   outlined = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   dense = false;
 
-  @property({type: Boolean})
+  @property({type: Boolean, reflect: true})
   disabled = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   trailingIcon = false;
 
   @property()
@@ -49,42 +57,48 @@ export class Button extends LitElement {
   @property()
   href = '';
 
-
   createRenderRoot() {
-    return this.attachShadow({mode: 'open', delegatesFocus: true});
+    return this.attachShadow({ mode: 'open', delegatesFocus: true });
   }
 
   static styles = style;
 
   render() {
     const classes = {
+      'mdc-button': true,
       'mdc-button--raised': this.raised,
       'mdc-button--unelevated': this.unelevated,
       'mdc-button--outlined': this.outlined,
       'mdc-button--dense': this.dense,
     };
-    const mdcButtonIcon = html`<span class="material-icons mdc-button__icon">${this.icon}</span>`
+    
+    const mdcButtonIcon = html`
+      <i class="material-icons mdc-button__icon" aria-hidden="true">${this.icon}</i>
+    `;
+
     return html`
-      ${this.href ?
-        html`
+      ${this.href
+        ? html`
           <a
-              .ripple="${ripple({unbounded: false})}"
-              class="mdc-button ${classMap(classes)}"
-              ?disabled="${this.disabled}"
-              aria-label="${this.label || this.icon}"
-              href="${this.href}">
+            .ripple="${ripple({ unbounded: false })}"
+            class="${classMap(classes)}"
+            ?disabled="${this.disabled}"
+            aria-label="${this.label || this.icon}"
+            href="${this.href}"
+          >
             ${this.icon && !this.trailingIcon ? mdcButtonIcon : ''}
             <span class="mdc-button__label">${this.label}</span>
             ${this.icon && this.trailingIcon ? mdcButtonIcon : ''}
             <slot></slot>
           </a>
-        ` :
-        html`
+        `
+        : html`
           <button
-              .ripple="${ripple({unbounded: false})}"
-              class="mdc-button ${classMap(classes)}"
-              ?disabled="${this.disabled}"
-              aria-label="${this.label || this.icon}">
+            .ripple="${ripple({ unbounded: false })}"
+            class="${classMap(classes)}"
+            ?disabled="${this.disabled}"
+            aria-label="${this.label || this.icon}"
+          >
             ${this.icon && !this.trailingIcon ? mdcButtonIcon : ''}
             <span class="mdc-button__label">${this.label}</span>
             ${this.icon && this.trailingIcon ? mdcButtonIcon : ''}
@@ -93,11 +107,5 @@ export class Button extends LitElement {
         `
       }
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'mwc-button': Button;
   }
 }

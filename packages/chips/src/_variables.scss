@@ -1,0 +1,47 @@
+//
+// Copyright 2017 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+$mdc-chip-set-removal-animation-duration: 75ms;
+
+$mdc-chip-selected-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 22%) !default;
+$mdc-chip-outline-fill-color-default: mdc-theme-prop-value(white) !default;
+$mdc-chip-outline-border-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 30%);
+$mdc-chip-outline-selected-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 11%) !default;
+$mdc-chip-animation-duration: 150ms;
+
+$mdc-chip-avatar-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 45%) !default;
+$mdc-chip-avatar-ink-color-default: rgba(mdc-theme-prop-value(white), .75) !default;
+
+$mdc-chip-avatar-checkmark-size: 16px;
+$mdc-chip-avatar-checkmark-stroke-width: 3px;
+$mdc-chip-avatar-checkmark-margin-left: -4px;
+
+$mdc-chip-avatar-size-default: 24px;
+$mdc-chip-avatar-margin-top: 0;
+$mdc-chip-avatar-margin-right: 6px;
+$mdc-chip-avatar-margin-bottom: 0;
+$mdc-chip-avatar-margin-left: -8px;
+
+$mdc-chip-avatar-icon-size-default: 14px;
+$mdc-chip-avatar-icon-margin-top: 5px;
+$mdc-chip-avatar-icon-margin-right: 5px;
+$mdc-chip-avatar-icon-margin-bottom: 5px;
+$mdc-chip-avatar-icon-margin-left: 5px;

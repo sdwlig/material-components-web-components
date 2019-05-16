@@ -19,7 +19,7 @@ limitations under the License.
  * Return an element assigned to a given slot that matches the given selector
  */
 export function findAssignedElement(slot: HTMLSlotElement, selector: string) {
-  for (const node of slot.assignedNodes({flatten: true})) {
+  for (const node of slot.assignedNodes({ flatten: true })) {
     if (node.nodeType === Node.ELEMENT_NODE) {
       const el = (node as HTMLElement);
       if (el.matches(selector)) {
@@ -32,15 +32,34 @@ export function findAssignedElement(slot: HTMLSlotElement, selector: string) {
 }
 
 /**
+ * Return all elements assigned to a given slot that matches the given selector
+ */
+export function findAssignedElements(slot: HTMLSlotElement, selector: string) {
+  const els: HTMLElement[] = [];
+
+  for (const node of slot.assignedNodes({ flatten: true })) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = (node as HTMLElement);
+      if (el.matches(selector)) {
+        els.push(el);
+      }
+    }
+  }
+
+  return els;
+}
+
+/**
  * Emits a Custom Event
  */
 export function emit(target: HTMLElement, evtType: string, evtData = {}, shouldBubble = false) {
   let evt;
-  
+
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent(evtType, {
       detail: evtData,
       bubbles: shouldBubble,
+      composed: shouldBubble
     });
   } else {
     evt = document.createEvent('CustomEvent');
@@ -48,4 +67,18 @@ export function emit(target: HTMLElement, evtType: string, evtData = {}, shouldB
   }
 
   target.dispatchEvent(evt);
+}
+
+export type Constructor<T> = new (...args: any[]) => T;
+
+export function addHasRemoveClass(element: HTMLElement) {
+  return {
+    addClass: (className: string) => {
+      element.classList.add(className);
+    },
+    removeClass: (className: string) => {
+      element.classList.remove(className);
+    },
+    hasClass: (className: string) => element.classList.contains(className)
+  }
 }
