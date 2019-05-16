@@ -21,8 +21,9 @@ import {
   query,
   customElement,
   classMap,
-} from '@authentic/mwc-base/base-element.js';
+} from '@material/mwc-base/base-element.js';
 import { List as MWCList } from './mwc-list';
+
 import { style } from './mwc-list-item-css';
 
 declare global {
@@ -37,41 +38,44 @@ export class ListItem extends LitElement {
   @query('.mdc-list-item')
   protected mdcRoot!: HTMLElement;
 
-  @property({type: String})
-  variant = 'single-line';
+  @property({ type: String })
+  public variant = 'single-line';
 
-  @property({type: Boolean})
-  disabled = false;
+  @property({ type: Boolean })
+  public disabled = false;
 
-  @property({type: Boolean})
-  focused = false;
+  @property({ type: String })
+  public value = "";
 
-  @property({type: Boolean})
-  selected = false;
+  @property({ type: Boolean })
+  public focused = false;
 
-  @property({type: Boolean})
-  activated = false;
+  @property({ type: Boolean })
+  public selected = false;
 
-  @property({type: Boolean})
-  checkbox = false;
+  @property({ type: Boolean })
+  public activated = false;
 
-  @property({type: Boolean})
-  radio = false;
+  @property({ type: Boolean })
+  public checkbox = false;
 
-  @property({type: Boolean})
-  trailingInput = false;
+  @property({ type: Boolean })
+  public radio = false;
 
-  @property({type: Number})
-  tabindex = -1;
+  @property({ type: Boolean })
+  public trailingInput = false;
 
-  @property({type: Boolean})
-  expandable = false;
+  @property({ type: Number })
+  public tabindex = -1;
 
-  @property({type: Boolean})
-  expanded = false;
+  @property({ type: Boolean })
+  public expandable = false;
 
-  @property({type: Boolean})
-  indent = false;
+  @property({ type: Boolean })
+  public expanded = false;
+
+  @property({ type: Boolean })
+  public indent = false;
 
   protected _lines = 1;
   protected _ripple = false;
@@ -79,33 +83,34 @@ export class ListItem extends LitElement {
   protected _nonInteractive = false;
   protected _inputType = 'none';
   protected _inputAction = '';
+  protected _slot_graphic = true;
+  protected _slot_content = true;
+  protected _slot_meta = true;
+  protected _slot_secondary = true;
 
   static styles = style;
 
   render() {
+    let inactive = this._nonInteractive || this.disabled;
     const classes = {
-      "mdc-list-item" : true,
+      "mdc-list-item": true,
       "mdc-list-item__avatar-list": this._avatarList,
       "mdc-list-item--two-line": this._lines === 2,
       "mdc-list-item--disabled": this.disabled,
       "mdc-list-item--non-interactive": this._nonInteractive,
-      "mdc-list-item--selected": this.selected,
-      "mdc-list-item--activated": this.activated,
+      "mdc-list-item--selected": this.selected && !inactive,
+      "mdc-list-item--activated": this.activated && !inactive,
       "mdc-list-item--expanded": this.expanded,
       "mdc-list-item--expandable": this.expandable,
       "mdc-list-item--indented": this.indent,
       "mdc-ripple-upgraded": this._ripple,
-      "mdc-ripple-upgraded--background-focused": this._ripple && this.focused,
-      "mdc-list-item--background-focused": !this._ripple && this.focused,
+      "mdc-ripple-upgraded--background-focused": this._ripple && this.focused && !inactive,
+      "mdc-list-item--background-focused": !this._ripple && this.focused && !inactive,
+      "mdc-list-item--background-focused-disabled": !this._ripple && this.focused && this.disabled,
     };
 
     return html`
-      <li
-        class="${classMap(classes)}"
-        tabindex="${this.tabindex}"
-        aria-current="${this.focused}"
-        aria-selected="${this.selected}"
-        >
+      <li class="${classMap(classes)}" tabindex="${this.tabindex}" aria-current="${this.focused}" aria-selected="${this.selected}">
         ${this.renderGraphic()}
         <span class="mdc-list-item__text">
           ${this._lines === 1 ? this.renderSingleLine() : this.renderDoubleLine()}
@@ -122,14 +127,14 @@ export class ListItem extends LitElement {
     this.updateComplete
       .then(() => {
         this.setParentType();
+        this.removeEmptySlots();
       });
   }
 
   public toggle(): void {
     this.expanded = this.expandable
       ? !this.expanded
-      : false
-    console.log("expanded", this.expanded, this)
+      : false;
     this.requestUpdate();
   }
 
@@ -145,24 +150,34 @@ export class ListItem extends LitElement {
 
   public renderDoubleLine() {
     return html`
-      <span class="mdc-list-item__primary-text"><slot></slot></span>
-      <span class="mdc-list-item__secondary-text"><slot name='secondary'></slot></span>
+      <span class="mdc-list-item__primary-text">
+        <slot></slot>
+      </span>
+      <span class="mdc-list-item__secondary-text">
+        <slot name='secondary'></slot>
+      </span>
     `;
   }
 
   public renderGraphic() {
+    const orNot = this._slot_graphic ? '' : '-empty';
     return html`
-      <span class="mdc-list-item__graphic"><slot name='graphic'></slot></span>
-    `;
+      <slot class="mdc-list-item__graphic${orNot}" name='graphic'></slot>
+    `
   }
 
   public renderMeta() {
     let moreorless = this.expanded ? "expand_less" : "expand_more";
+    const orNot = this._slot_meta ? '' : '-empty';
     return this.expandable
       ? html`
-        <span class="mdc-list-item__meta"><mwc-icon>${moreorless}</mwc-icon></span>
+        <span class="mdc-list-item__meta${orNot}">
+          <mwc-icon>${moreorless}</mwc-icon>
+        </span>
       `: html`
-        <span class="mdc-list-item__meta"><slot name='meta'></slot></span>
+        <span class="mdc-list-item__meta${orNot}">
+          <slot name='meta'></slot>
+        </span>
       `;
   }
 
@@ -172,7 +187,9 @@ export class ListItem extends LitElement {
       "mdc-list-item__content--expanded": this.expanded,
     }
     return html`
-      <div class="${classMap(classes)}"><slot name='content'></slot></div>
+      <div class="${classMap(classes)}">
+        <slot name='content'></slot>
+      </div>
     `;
   }
 
@@ -193,7 +210,7 @@ export class ListItem extends LitElement {
     this[attr] = value;
   }
 
-  public setFocused(focus:boolean) {
+  public setFocused(focus: boolean) {
     if (focus) {
       this.focused = true;
       this.tabindex = 0;
@@ -213,6 +230,29 @@ export class ListItem extends LitElement {
       this._inputAction = parentElement.inputAction;
       this.requestUpdate();
     }
+  }
+
+  public removeEmptySlots() {
+    Array
+      .from( this.shadowRoot!.querySelectorAll( "slot" ) )
+      .forEach( ( slot ) => {
+        let nodes = slot.assignedNodes();
+        if (nodes.length) {
+        } else {
+          this[ `_slot_${slot.name}` ] = false;
+          this.requestUpdate()
+        }
+      } );
+  }
+
+  public focus() {
+    this.mdcRoot.focus();
+    this.setFocused(true);
+  }
+
+  public blur() {
+    this.mdcRoot.blur();
+    this.setFocused(false);
   }
 
 }

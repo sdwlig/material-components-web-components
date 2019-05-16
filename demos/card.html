@@ -70,33 +70,41 @@ limitations under the License.
     </style>
   </head>
   <body class="unresolved">
-    <div class="presentCard">
-      <mwc-card aspectRatio="16-9">
-        <div slot="media" class="my-media"></div>
+    <header>
+      <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
+      <span>Card</span></a>
+    </header>
 
-        <div slot="content" class="content">
-          <h2 class="">Our Changing Planet</h2>
-          <h3 class="subtext">by Kurt Wagner</h3>
-          <div class="subtext">
-            Visit ten places on our planet that are undergoing the biggest
-            changes today.
+    <main>
+      <div class="presentCard">
+        <mwc-card aspectRatio="16-9">
+          <div slot="media" class="my-media"></div>
+
+          <div slot="content" class="content">
+            <h2 class="">Our Changing Planet</h2>
+            <h3 class="subtext">by Kurt Wagner</h3>
+            <div class="subtext">
+              Visit ten places on our planet that are undergoing the biggest
+              changes today.
+            </div>
           </div>
-        </div>
 
-        <div slot="action-buttons">
-          <mwc-button dense class="mdc-card__action--button">Read</mwc-button>
-          <mwc-button dense class="mdc-card__action--button">Save</mwc-button>
-        </div>
-        <div slot="action-icons">
-          <mwc-icon-button title="Favorite" icon="favorite"></mwc-icon-button>
-          <mwc-icon-button title="Share" icon="share"></mwc-icon-button>
-          <mwc-icon-button
-            title="More options"
-            icon="more_vert"
-          ></mwc-icon-button>
-        </div>
-      </mwc-card>
-    </div>
+          <div slot="action-buttons">
+            <mwc-button dense class="mdc-card__action--button">Read</mwc-button>
+            <mwc-button dense class="mdc-card__action--button">Save</mwc-button>
+          </div>
+          <div slot="action-icons">
+            <mwc-icon-button title="Favorite" icon="favorite"></mwc-icon-button>
+            <mwc-icon-button title="Share" icon="share"></mwc-icon-button>
+            <mwc-icon-button
+              title="More options"
+              icon="more_vert"
+            ></mwc-icon-button>
+          </div>
+        </mwc-card>
+      </div>
+    </main>
+
     <script>
       addEventListener("load", () =>
         document.body.classList.remove("unresolved")

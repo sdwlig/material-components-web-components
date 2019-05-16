@@ -15,44 +15,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import {
-  BaseElement,
+  LitElement,
   customElement,
-  query,
-  Foundation,
   html,
-  Adapter,
-  property
-} from "@authentic/mwc-base/base-element";
-import { classMap } from "lit-html/directives/class-map";
+  property,
+  classMap
+} from "@material/mwc-base/base-element";
+import { ripple } from  "@material/mwc-ripple/ripple-directive";
+
 import { style } from "./mwc-card-css.js";
-import MDCFoundation from "@material/base/foundation";
-import "@authentic/mwc-icon/mwc-icon-font";
-import "@authentic/mwc-ripple/mwc-ripple";
 
-export interface CardFoundation extends Foundation {}
+import "@material/mwc-icon/mwc-icon-font";
 
-export declare var CardFoundation: {
-  prototype: CardFoundation;
-  new (adapter: Adapter): CardFoundation;
-};
+declare global {
+  interface HTMLElementTagNameMap {
+    "mwc-card": Card;
+  }
+}
 
 @customElement("mwc-card" as any)
-export class Card extends BaseElement {
-  @query(".mdc-card")
-  protected mdcRoot!: HTMLElement;
-
-  protected mdcFoundation!: CardFoundation;
-
-  protected readonly mdcFoundationClass: typeof CardFoundation = MDCFoundation;
-
+export class Card extends LitElement {
   @property({ type: Boolean })
   stroke = false;
-
-  @query("slot")
-  protected slotEl!: HTMLSlotElement;
-
-  @query('slot[name="menu"]')
-  protected slotMenu!: HTMLSlotElement;
 
   @property({ type: String })
   aspectRatio =  '';
@@ -64,7 +48,7 @@ export class Card extends BaseElement {
 
     return html`
       <div class="mdc-card ${classMap({ "mdc-card--stroked": this.stroke })}">
-        <div class="mdc-card__primary-action" tabindex="0">
+        <div class="mdc-card__primary-action" tabindex="0" .ripple="${ripple({ unbounded: false })}">
           <div class="mdc-card__media ${mediaStyles}">
             <div class="mdc-card__media-content">
               <slot name="media"></slot>
@@ -72,7 +56,6 @@ export class Card extends BaseElement {
           </div>
 
           <slot name="content"></slot>
-          <mwc-ripple></mwc-ripple>
         </div>
 
         <div class="mdc-card__actions">
@@ -86,11 +69,5 @@ export class Card extends BaseElement {
         </div>
       </div>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-card": Card;
   }
 }

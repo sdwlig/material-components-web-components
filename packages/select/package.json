@@ -1,6 +1,6 @@
 {
-  "name": "@authentic/mwc-select",
-  "version": "0.4.7",
+  "name": "@material/mwc-select",
+  "version": "0.5.0",
   "description": "",
   "main": "mwc-select.js",
   "scripts": {
@@ -9,21 +9,22 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.7",
-    "@authentic/mwc-list": "^0.4.7",
-    "@authentic/mwc-menu": "^0.4.7",
-    "@authentic/mwc-ripple": "^0.4.7",
-    "@material/animation": "^0.41.0",
-    "@material/floating-label": "^0.35.0",
-    "@material/line-ripple": "^0.35.0",
-    "@material/notched-outline": "^0.40.1",
-    "@material/ripple": "^0.40.1",
-    "@material/rtl": "^0.40.1",
-    "@material/select": "^0.35.0",
-    "@material/shape": "^0.40.1",
-    "@material/theme": "^0.40.1",
-    "@material/typography": "^0.40.1",
-    "lit-element": "^2.0.1"
+    "@material/animation": "^1.0.0",
+    "@material/floating-label": "^1.1.0",
+    "@material/line-ripple": "^1.1.0",
+    "@material/menu": "^2.0.0",
+    "@material/menu-surface": "^1.1.1",
+    "@material/mwc-base": "^0.5.0",
+    "@material/mwc-list": "^0.5.0",
+    "@material/mwc-menu": "^0.5.0",
+    "@material/mwc-ripple": "^0.5.0",
+    "@material/notched-outline": "^1.1.0",
+    "@material/ripple": "^1.1.0",
+    "@material/rtl": "^0.42.0",
+    "@material/select": "^1.1.0",
+    "@material/shape": "^1.0.0",
+    "@material/theme": "^1.1.0",
+    "@material/typography": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"

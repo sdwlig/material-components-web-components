@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/foundation';
-import {MDCListAdapter} from './_adapter';
-import {cssClasses, numbers, strings} from './_constants';
-import {MDCListIndex} from './_types';
+import { MDCFoundation } from '@material/base/foundation';
+import { MDCListAdapter } from './_adapter';
+import { cssClasses, numbers, strings } from './_constants';
+import { MDCListIndex } from './_types';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -57,6 +57,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
       isFocusInsideList: () => false,
+      isDisabledAtIndex: () => false,
       notifyAction: () => undefined,
       removeClassForElementIndex: () => undefined,
       setAttributeForElementIndex: () => undefined,
@@ -77,7 +78,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private isRadioList_ = false;
 
   constructor(adapter?: Partial<MDCListAdapter>) {
-    super({...MDCListFoundation.defaultAdapter, ...adapter});
+    super({ ...MDCListFoundation.defaultAdapter, ...adapter });
   }
 
   layout() {
@@ -203,13 +204,14 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
         if (target && target.tagName === 'A' && isEnter) {
           return;
         }
+        if (!this.adapter_.isDisabledAtIndex(currentIndex)) {
+          if (this.isSelectableList_()) {
+            this.setSelectedIndexOnAction_(currentIndex);
+          }
+          this.adapter_.notifyAction(currentIndex);
+        }
         this.preventDefaultEvent_(evt);
 
-        if (this.isSelectableList_()) {
-          this.setSelectedIndexOnAction_(currentIndex);
-        }
-
-        this.adapter_.notifyAction(currentIndex);
       }
     }
 
@@ -229,11 +231,12 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       return;
     }
 
-    if (this.isSelectableList_()) {
-      this.setSelectedIndexOnAction_(index, toggleCheckbox);
+    if (!this.adapter_.isDisabledAtIndex(index)) {
+      if (this.isSelectableList_()) {
+        this.setSelectedIndexOnAction_(index, toggleCheckbox);
+      }
+      this.adapter_.notifyAction(index);
     }
-
-    this.adapter_.notifyAction(index);
 
     this.setTabindexAtIndex_(index);
     this.focusedItemIndex_ = index;

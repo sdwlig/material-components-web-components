@@ -17,347 +17,213 @@ limitations under the License.
 import {
   BaseElement,
   customElement,
-  query,
-  Foundation,
   html,
-  Adapter,
-  property
-} from "@authentic/mwc-base/base-element";
-import { classMap } from "lit-html/directives/class-map.js";
-import { style } from "./mwc-chip-set-css.js";
-import MDCChipSetFoundation from "@material/chips/chip-set/foundation.js";
-import { Chip as MWCChip } from "./mwc-chip";
-import { strings } from "./constants";
-import { emit } from '@authentic/mwc-base/utils';
+  property,
+  classMap,
+  query,
+  queryAll,
+  addHasRemoveClass
+} from '@material/mwc-base/base-element';
+import { findAssignedElements } from '@material/mwc-base/utils';
+import { MDCChipSetFoundation } from '@material/chips/chip-set/foundation';
+import { MDCChipSetAdapter } from '@material/chips/chip-set/adapter';
+import { MDCChipFoundation } from '@material/chips/chip/foundation';
+import { Chip as MWCChip } from './mwc-chip';
 
-export interface ChipSetFoundation extends Foundation {
-  init(): void;
-  destroy(): void;
-  deselectAll_(): void;
-  addChip(text: string, leadingIcon?: string, trailingIcon?: string): MWCChip;
-  select(chipFoundation): void;
-  adapter_: any;
-  selectedChips_: any;
-}
+import { style } from './mwc-chip-set-css';
 
-export declare var ChipSetFoundation: {
-  prototype: ChipSetFoundation;
-  new (adapter: Adapter): ChipSetFoundation;
-};
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-chip-set": ChipSet;
-  }
-}
-
-@customElement("mwc-chip-set" as any)
+@customElement('mwc-chip-set' as any)
 export class ChipSet extends BaseElement {
+
   @query(".mdc-chip-set")
   protected mdcRoot!: HTMLElement;
+
+  @queryAll("mwc-chip")
+  protected chipEls!: MWCChip[];
 
   @query("slot")
   protected slotEl!: HTMLSlotElement;
 
-  @property({ type: String })
-  type = "";
+  @property({ type: Boolean })
+  choice = false;
 
   @property({ type: Boolean })
-  wrapFocus = false;
+  filter = false;
 
   @property({ type: Boolean })
-  preventAutoRemove = false;
+  input = false;
 
   protected _chips: MWCChip[] = [];
 
-  get chips() {
-    return this._chips;
+  public get chips() {
+    return [...this._chips];
   }
 
-  get slottedChips(): MWCChip[] {
-    return [...this.slotEl.assignedNodes()].filter(
-      el => el instanceof MWCChip
-    ) as MWCChip[];
+  public get selectedChipIds() {
+    return this.mdcFoundation.getSelectedChipIds();
   }
 
-  protected mdcFoundation!: ChipSetFoundation;
+  protected get slottedChips(): MWCChip[] {
+    return this.slotEl
+      ? findAssignedElements(this.slotEl, 'mwc-chip') as MWCChip[]
+      : [];
+  }
 
-  protected readonly mdcFoundationClass: typeof ChipSetFoundation = MDCChipSetFoundation;
+  protected idCounter = 0;
+
+  protected _handleSlotChange = this._onSlotChange.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleChipInteraction = this._onChipInteraction.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleChipSelection = this._onChipSelection.bind(this) as EventListenerOrEventListenerObject;
+
+  protected _handleChipRemoval = this._onChipRemoval.bind(this) as EventListenerOrEventListenerObject;
+
+  protected mdcFoundation!: MDCChipSetFoundation;
+
+  protected readonly mdcFoundationClass = MDCChipSetFoundation;
+
+  protected createAdapter(): MDCChipSetAdapter {
+    return {
+      ...addHasRemoveClass(this.mdcRoot),
+      removeChip: (chipId) => {
+        const index = this._findChipIndex(chipId);
+
+        if (index >= 0) {
+          const chip = this._chips[index];
+          this._chips.splice(index, 1);
+          chip.remove();
+        }
+      },
+      setSelected: (chipId, selected) => {
+        const index = this._findChipIndex(chipId);
+
+        if (index >= 0) {
+          this._chips[index].selected = selected;
+        }
+      }
+    }
+  }
 
   static styles = style;
 
-  get foundation() {
-    return this.mdcFoundation;
-  }
-
-  chipSetClasses(type: string) {
-    return {
-      "mdc-chip-set--choice": type === "choice",
-      "mdc-chip-set--filter": type === "filter"
+  render() {
+    const classes = {
+      'mdc-chip-set': true,
+      'mdc-chip-set--choice': this.choice,
+      'mdc-chip-set--filter': this.filter,
+      'mdc-chip-set--input': this.input
     };
-  }
 
-  protected createAdapter() {
-    return {
-      ...super.createAdapter(),
-      hasClass: className => this.mdcRoot.classList.contains(className),
-      registerInteractionHandler: (evtType, handler) =>
-        this.mdcRoot.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) =>
-        this.mdcRoot.removeEventListener(evtType, handler),
-      appendChip: (text, leadingIcon, trailingIcon) => {
-        const chipEl = this.getChip() as MWCChip;
-        chipEl.label = text;
-        chipEl.leadingIcon = leadingIcon;
-        chipEl.trailingIcon = trailingIcon;
-
-        this.mdcRoot.appendChild(chipEl);
-
-        return chipEl;
-      },
-      removeChip: chip => {
-        this.removeChip(chip);
-      }
-    };
-  }
-
-  protected getChip(): HTMLElement {
-    return document.createElement('mwc-chip');
+    return html`
+      <div class="${classMap(classes)}">
+        <slot @slotchange="${this._handleSlotChange}"></slot>
+      </div>
+    `;
   }
 
   firstUpdated() {
     super.firstUpdated();
 
-    this.shadowRoot!.addEventListener('slotchange', () => this.updateChips());
-    
-    this.updateChips();
-
-    this.mdcRoot.addEventListener('keydown', this._handleKeydown.bind(this));
+    this.updateComplete
+      .then(() => {
+        this._initialize();
+      });
   }
 
-  render() {
-    return html`
-      <div class="mdc-chip-set ${classMap(this.chipSetClasses(this.type))}">
-        <slot></slot>
-      </div>
-    `;
+  protected _initialize() {
+    this.addEventListener(MDCChipFoundation.strings.INTERACTION_EVENT, this._handleChipInteraction);
+    this.addEventListener(MDCChipFoundation.strings.SELECTION_EVENT, this._handleChipSelection);
+    this.addEventListener(MDCChipFoundation.strings.REMOVAL_EVENT, this._handleChipRemoval);
+
+    this._updateChips();
   }
 
-  updateChips() {
-    const chips: MWCChip[] = [];
-
-    this.slottedChips.forEach(el => {
+  /**
+   * Updates chips id and foundation selections
+   */
+  protected _updateChips() {
+    const slottedChips = this.slottedChips.map(el => {
+      el.id = el.id || "mdc-chip-" + ++this.idCounter;
       el.tabIndex = 0;
-      el.preventAutoRemove = this.preventAutoRemove;
-      this.removeChipListeners(el);
-      this.addChipListeners(el);
-      chips.push(el);
+      return el;
     });
 
-    this._chips = chips;
-  }
+    this._chips = [...slottedChips, ...this.chipEls];
 
-  protected _interactionHandler = this.interactionHandler.bind(this);
-  protected _handleFocus = this.handleFocus.bind(this);
-
-  addChipListeners(chip) {
-    chip.addEventListener(
-      strings.INTERACTION_EVENT,
-      this._interactionHandler
-    );
-
-    chip.addEventListener(
-      strings.TRAILING_ICON_INTERACTION_EVENT,
-      this._interactionHandler
-    );
-
-    chip.addEventListener(
-      'focus',
-      this._handleFocus
-    );
-  }
-
-  removeChipListeners(chip) {
-    chip.removeEventListener(
-      strings.INTERACTION_EVENT,
-      this._interactionHandler
-    );
-
-    chip.removeEventListener(
-      strings.TRAILING_ICON_INTERACTION_EVENT,
-      this._interactionHandler
-    );
-
-    chip.removeEventListener(
-      'focus',
-      this._handleFocus
-    );
-  }
-
-  interactionHandler(e) {
-    emit(this.mdcRoot, e.type, e.detail);
-    emit(this, e.type, e.detail);
-
-    if (e.type === strings.TRAILING_ICON_INTERACTION_EVENT) {
-      setTimeout(() => {
-        if (!this.preventAutoRemove) {
-          emit(this.mdcRoot, strings.REMOVAL_EVENT, e.detail);
-        }
-
-        emit(this, strings.REMOVAL_EVENT, e.detail);
-      }, 0);
-    }
-  }
-
-  handleFocus(evt) {
-    emit(this, 'MDCChipSet:chipFocus', { chip: evt.target })
+    this._chips.forEach(chip => {
+      const { id, selected } = chip;
+      if (id && selected) {
+        this.mdcFoundation.select(id);
+      }
+    });
   }
 
   /**
-   * Creates a new chip in the chip set with the given text, leading icon, and trailing icon.
+   * Adds a chip to the current chips list
    */
-  addChip(text: string, leadingIcon?: string, trailingIcon?: string): HTMLElement {
-    const chipEl = this.foundation.addChip(text, leadingIcon, trailingIcon);
-    this.addChipListeners(chipEl)
-    this._chips.push(chipEl);
-    
-    return chipEl;
-  }
+  public addChip(chipEl: MWCChip) {
+    chipEl.id = chipEl.id || `mdc-chip-${++this.idCounter}`;
+    chipEl.setParentType(this);
 
-  removeChip(chip) {
-    const index = this._chips.indexOf(chip);
-    this._chips.splice(index, 1);
-    this.removeChipListeners(chip);
-    chip.remove();
+    this.mdcRoot.appendChild(chipEl);
+
+    this._updateChips();
+  };
+
+  /**
+   * Handles slot change event
+   */
+  protected _onSlotChange() {
+    this._updateChips();
   }
 
   /**
-   * Key handler for the list
-   * @param {Event} evt
-   * @param {boolean} isRootListItem
-   * @param {number} listItemIndex
+   * Handles a chip interaction event
    */
-  _handleKeydown(evt) { 
-    const { key, keyCode } = evt;
-    const arrowLeft = key === 'ArrowLeft' || keyCode === 37;
-    const arrowRight = key === 'ArrowRight' || keyCode === 39;
-    const isHome = key === 'Home' || keyCode === 36;
-    const isEnd = key === 'End' || keyCode === 35;
-    const isBackspace = key === 'Backspace' || keyCode === 8;
-    const isSpace = key === 'Space' || keyCode === 32;
+  protected _onChipInteraction(evt: CustomEvent) {
+    const {
+      chipId
+    } = evt.detail;
 
-    let currentIndex = this._getFocusedElementIndex();
-
-    if (currentIndex === -1) return;
-
-    if (arrowRight) {
-      evt.preventDefault();
-      this._focusNextElement(currentIndex);
-    } else if (arrowLeft) {
-      evt.preventDefault();
-      this._focusPrevElement(currentIndex);
-    } else if (isHome) {
-      evt.preventDefault();
-      this._focusFirstElement();
-    } else if (isEnd) {
-      evt.preventDefault();
-      this._focusLastElement();
-    } else if (isBackspace) {
-      evt.preventDefault();
-      this._handleBackspace(currentIndex);
-    } else if (isSpace) {
-      evt.preventDefault();
-      this.chips[currentIndex].forceClick();
-    }
-  }
-
-  _handleBackspace(currentIndex) {
-    const chip = this.chips[currentIndex];
-
-    if (chip.trailingIcon) {
-      if (!this.preventAutoRemove) {
-        this.removeChip(chip);
-      }
-      
-      emit(this, strings.REMOVAL_EVENT, { chip });
-
-      if (currentIndex > 0) {
-        this._focusPrevElement(currentIndex);
-      } else {
-        this._focusNextElement(currentIndex - 1);
-      }
-    }
+    this.mdcFoundation.handleChipInteraction(chipId);
   }
 
   /**
-   * Focuses the next element on the list.
-   * @param {number} index
+   * Handles a chip selection event, used to handle discrepancy
+   * when selection state is set directly on the Chip.
    */
-  _focusNextElement(index) {
-    const count = this._getListItemCount();
-    let nextIndex = index + 1;
+  protected _onChipSelection(evt: CustomEvent) {
+    const {
+      chipId,
+      selected
+    } = evt.detail;
 
-    if (nextIndex >= count) {
-      if (this.wrapFocus) {
-        nextIndex = 0;
-      } else {
-        // Return early because last item is already focused.
-        return this._afterLastFocusNext();
-      }
-    }
-
-    this._focusItemAtIndex(nextIndex);
-  }
-
-  _afterLastFocusNext() {
-    emit(this, 'MDCChipSet:afterLastFocusNext');
+    this.mdcFoundation.handleChipSelection(chipId, selected);
   }
 
   /**
-   * Focuses the previous element on the list.
-   * @param {number} index
+   * Handles the event when a chip is removed.
    */
-  _focusPrevElement(index) {
-    let prevIndex = index - 1;
+  protected _onChipRemoval(evt: CustomEvent) {
+    const {
+      chipId
+    } = evt.detail;
 
-    if (prevIndex < 0) {
-      if (this.wrapFocus) {
-        prevIndex = this._getListItemCount() - 1;
-      } else {
-        // Return early because first item is already focused.
-        return this._afterLastFocusPrev();
-      }
-    }
-
-    this._focusItemAtIndex(prevIndex);
+    this.mdcFoundation.handleChipRemoval(chipId);
   }
 
-  _afterLastFocusPrev() {
-    emit(this, 'MDCChipSet:afterLastFocusPrev');
+  /**
+   * Returns the index of the chip with the given id, or -1 if the chip does not exist.
+   */
+  protected _findChipIndex(chipId: string) {
+    return this._chips.findIndex(chip => chip.id === chipId);
   }
 
-  _focusFirstElement() {
-    if (this._getListItemCount() > 0) {
-      this._focusItemAtIndex(0);
-    }
-  }
-
-  _focusLastElement() {
-    const lastIndex = this._getListItemCount() - 1;
-    if (lastIndex >= 0) {
-      this._focusItemAtIndex(lastIndex);
-    }
-  }
-
-  _getFocusedElementIndex() {
-    return this.chips.indexOf(document.activeElement as MWCChip);
-  }
-
-  _getListItemCount() {
-    return this.chips.length;
-  }
-
-  _focusItemAtIndex(index) {
-    this.chips[index].setFocus();
+  /**
+   * Returns the chip with the given id
+   */
+  public getChipById(chipId: string) {
+    return this._chips[this._findChipIndex(chipId)];
   }
 }

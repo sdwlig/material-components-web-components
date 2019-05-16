@@ -15,25 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import '@material/chips/mdc-chips.scss';
+@import '@material/chips/chip-set/mdc-chip-set';
+@import './mixins';
 
 :host {
-  display: inline-block;
+  display: inline-flex;
 }
 
-// TODO(sorvell) #css: note, needs SASS changes in MDC
-.mdc-chip-set {
-  align-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  padding: 4px;
-}
-.mdc-chip-set ::slotted(*),
-.mdc-chip-set > *:not(slot) {
-  margin: 4px;
-  position: relative;
-  z-index: 1;
+.mdc-chip-set--input {
+  padding-top: 6px;
+  width: 100%;
 }

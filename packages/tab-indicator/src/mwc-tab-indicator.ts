@@ -14,10 +14,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {BaseElement, html, property, query, customElement, Adapter, Foundation, PropertyValues, classMap} from '@authentic/mwc-base/base-element.js';
+import {
+  BaseElement,
+  html,
+  property,
+  query,
+  customElement,
+  PropertyValues,
+  classMap,
+  addHasRemoveClass
+} from '@material/mwc-base/base-element.js';
+import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
 import MDCSlidingTabIndicatorFoundation from '@material/tab-indicator/sliding-foundation.js';
 import MDCFadingTabIndicatorFoundation from '@material/tab-indicator/fading-foundation.js';
-import {style} from './mwc-tab-indicator-css.js';
+import { MDCTabIndicatorAdapter } from '@material/tab-indicator/adapter';
+
+import { style } from './mwc-tab-indicator-css.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -25,24 +37,12 @@ declare global {
   }
 }
 
-export interface TabIndicatorFoundation extends Foundation {
-  handleTransitionEnd(e: Event): void;
-  computeContentClientRect(): ClientRect;
-  activate(previousIndicatorClientRect?: ClientRect): void;
-  deactivate(): void;
-}
-
-export declare var TabIndicatorFoundation: {
-  prototype: TabIndicatorFoundation;
-  new(adapter: Adapter): TabIndicatorFoundation;
-}
-
 @customElement('mwc-tab-indicator' as any)
 export class TabIndicator extends BaseElement {
 
-  protected mdcFoundation!: MDCSlidingTabIndicatorFoundation|MDCFadingTabIndicatorFoundation;
+  protected mdcFoundation!: MDCTabIndicatorFoundation;
 
-  protected get mdcFoundationClass(): typeof TabIndicatorFoundation {
+  protected get mdcFoundationClass() {
     return this.fade ? MDCFadingTabIndicatorFoundation : MDCSlidingTabIndicatorFoundation;
   }
 
@@ -55,7 +55,7 @@ export class TabIndicator extends BaseElement {
   @property()
   icon = '';
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   fade = false;
 
   static styles = style;
@@ -67,7 +67,7 @@ export class TabIndicator extends BaseElement {
       'mdc-tab-indicator__content--underline': !this.icon
     };
     return html`
-      <span class="mdc-tab-indicator ${classMap({'mdc-tab-indicator--fade': this.fade})}">
+      <span class="mdc-tab-indicator ${classMap({ 'mdc-tab-indicator--fade': this.fade })}">
         <span class="mdc-tab-indicator__content ${classMap(contentClasses)}">${this.icon}</span>
       </span>
       `;
@@ -79,20 +79,13 @@ export class TabIndicator extends BaseElement {
     }
   }
 
-  createAdapter() {
+  createAdapter(): MDCTabIndicatorAdapter {
     return {
-      ...super.createAdapter(),
+      ...addHasRemoveClass(this.mdcRoot),
       computeContentClientRect: () => this.contentElement.getBoundingClientRect(),
       setContentStyleProperty: (prop: string, value: string) =>
-          this.contentElement.style.setProperty(prop, value)
+        this.contentElement.style.setProperty(prop, value)
     };
-  }
-
-  createFoundation() {
-    if (this.mdcFoundation !== undefined) {
-      this.mdcFoundation.destroy();
-    }
-    super.createFoundation();
   }
 
   computeContentClientRect() {
@@ -106,5 +99,4 @@ export class TabIndicator extends BaseElement {
   deactivate() {
     this.mdcFoundation.deactivate();
   }
-
 }
