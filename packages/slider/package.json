@@ -9,11 +9,12 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/slider": "^1.1.0",
     "@authentic/mwc-base": "^0.5.0",
+    "@material/slider": "^1.1.0",
     "lit-html": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "d30e08593e48e3e7bd9fd4fb57fc777ef6f6781c"
 }

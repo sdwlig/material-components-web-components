@@ -9,15 +9,16 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
+    "@authentic/mwc-base": "^0.5.0",
     "@material/list": "^2.0.0",
     "@material/menu": "^2.0.0",
     "@material/menu-surface": "^1.1.1",
-    "@authentic/mwc-base": "^0.5.0",
     "@material/typography": "^1.0.0",
     "lit-element": "^2.0.1"
   },
   "publishConfig": {
     "access": "public"
   },
-  "private": false
+  "private": false,
+  "gitHead": "d30e08593e48e3e7bd9fd4fb57fc777ef6f6781c"
 }
