@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-linear-progress",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "",
   "main": "mwc-linear-progress.js",
   "scripts": {
