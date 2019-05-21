@@ -173,7 +173,7 @@ export class Select extends FormElement {
   /**
    * Enables or disables the use of native validation. Use this for custom validation.
    */
-  protected _useNativeValidation = false;
+  protected _useNativeValidation = true;
   public set useNativeValidation(value: boolean) {
     this._useNativeValidation = value;
   }
@@ -279,7 +279,9 @@ export class Select extends FormElement {
         this._nativeControl!.disabled = isDisabled;
       },
       setValid: (isValid: boolean) => {
+        console.log('isValid', this._useNativeValidation);
         if (!this._useNativeValidation) return;
+
 
         if (isValid) {
           this.mdcRoot.classList.remove(cssClasses.INVALID);
@@ -289,7 +291,14 @@ export class Select extends FormElement {
 
         this._setValidity(isValid);
       },
-      checkValidity: () => this._nativeControl!.checkValidity(),
+      checkValidity: () => {
+        const classList = this.mdcRoot.classList;
+        if (!classList.contains(cssClasses.DISABLED)) {
+          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
+        } else {
+          return true;
+        }
+      },
     };
   }
 
@@ -327,7 +336,7 @@ export class Select extends FormElement {
       },
       checkValidity: () => {
         const classList = this.mdcRoot.classList;
-        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
+        if (!classList.contains(cssClasses.DISABLED)) {
           // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
           // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
           return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
@@ -537,7 +546,7 @@ export class Select extends FormElement {
    */
   protected _onFocus(evt) {
     this.mdcFoundation.handleFocus();
-    emit(this.mdcRoot, evt.type, {}, false);
+    emit(this.mdcRoot, evt.type, {}, true);
   }
 
   /**
@@ -545,7 +554,7 @@ export class Select extends FormElement {
    */
   protected _onBlur(evt) {
     this.mdcFoundation.handleBlur();
-    emit(this.mdcRoot, evt.type, {}, false);
+    emit(this.mdcRoot, evt.type, {}, true);
   }
 
   /**
@@ -634,6 +643,7 @@ export class Select extends FormElement {
     if (this._helperText && this.validationMessage) {
       this.mdcFoundation && this.mdcFoundation.setHelperTextContent(isValid ? this.helperTextContent : this.validationMessage);
       this._helperText.foundation.setValidation(!isValid);
+      this.requestUpdate();
     }
   }
 
