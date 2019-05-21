@@ -28,6 +28,7 @@ import {
   observer
 } from '@material/mwc-base/form-element';
 import { MDCFloatingLabel, MDCFloatingLabelFactory } from '@material/floating-label';
+import { cssClasses as floatingLabelCssClasses } from '@material/floating-label/constants';
 import { MDCLineRipple, MDCLineRippleFactory } from '@material/line-ripple';
 import { MDCNotchedOutline, MDCNotchedOutlineFactory } from '@material/notched-outline';
 import {
@@ -262,8 +263,6 @@ export class TextField extends FormElement {
     this.mdcFoundation.setUseNativeValidation(value);
   }
 
-  protected _shouldValidate = false;
-
   protected _characterCounter!: MDCTextFieldCharacterCounter | null;
 
   protected _helperText!: MDCTextFieldHelperText | null;
@@ -336,7 +335,11 @@ export class TextField extends FormElement {
       floatLabel: (shouldFloat) => this._label && this._label.float(shouldFloat),
       getLabelWidth: () => this._label ? this._label.getWidth() : 0,
       hasLabel: () => Boolean(this._label),
-      shakeLabel: (shouldShake) => this._label && this._label.shake(shouldShake)
+      shakeLabel: (shouldShake) => (
+        this._label &&
+        this.labelElement.classList.contains(floatingLabelCssClasses.LABEL_FLOAT_ABOVE) &&
+        this._label.shake(shouldShake)
+      )
     };
   }
 
@@ -617,8 +620,7 @@ export class TextField extends FormElement {
 
   protected _setValidity(isValid: boolean) {
     if (this._helperText && this.validationMessage) {
-      // this.mdcFoundation && this.mdcFoundation.setHelperTextContent(isValid ? this.helperTextContent : this.validationMessage);
-      this._shouldValidate = true;
+      this.mdcFoundation && this.mdcFoundation.setHelperTextContent(isValid ? this.helperTextContent : this.validationMessage);
       this._helperText.foundation.setValidation(!isValid);
       this.requestUpdate();
     }
