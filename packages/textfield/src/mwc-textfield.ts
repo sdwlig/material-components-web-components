@@ -449,7 +449,7 @@ export class TextField extends FormElement {
 
     return html`
       <div class="mdc-text-field-helper-line">
-        ${this.helperTextContent || this.validationMessage ? this._renderHelperText() : ''}
+        ${this._renderHelperText()}
         ${hasCharacterCounter && !isTextarea ? this._renderCharacterCounter() : ''}
       </div>
     `;
@@ -479,11 +479,6 @@ export class TextField extends FormElement {
     const hasLeadingIcon = this.leadingIconContent;
     const hasTrailingIcon = this.trailingIconContent;
     const hasCharacterCounter = this.maxLength && this.maxLength > 0;
-    const hasHelperLine = !!(
-      this.helperTextContent || this.validationMessage
-    ) || !!(
-      hasCharacterCounter && !isTextarea
-    );
     const classes = {
       'mdc-text-field': true,
       'mdc-text-field--no-label': !hasLabel,
@@ -505,7 +500,7 @@ export class TextField extends FormElement {
         ${hasTrailingIcon ? this._renderIcon('trailing') : ''}
         ${hasOutline ? this._renderNotchedOutline() : this._renderLineRipple()}
       </div>
-      ${hasHelperLine ? this._renderHelperLine() : ''}
+      ${this._renderHelperLine()}
     `;
   }
 

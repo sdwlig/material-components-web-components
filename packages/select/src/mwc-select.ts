@@ -434,7 +434,6 @@ export class Select extends FormElement {
     const hasLeadingIcon = this.leadingIconContent;
     const hasOutline = this.outlined;
     const hasLabel = this.label;
-    const hasHelperText = !!(this.helperTextContent || this.validationMessage);
     const classes = {
       'mdc-select': true,
       'mdc-select--outlined': hasOutline
@@ -450,7 +449,7 @@ export class Select extends FormElement {
         ${hasLabel && !hasOutline ? this._renderFloatingLabel() : ''}
         ${hasOutline ? this._renderNotchedOutline() : this._renderLineRipple()}
       </div>
-      ${hasHelperText ? this._renderHelperText() : ''}
+      ${this._renderHelperText()}
       <slot name="menu"></slot>
     `;
   }
