@@ -182,7 +182,7 @@ export class Chip extends BaseElement {
   protected _renderAvatar() {
     const isImage = IMAGE_FORMATS_REGEX.test(this.avatar);
     const isColor = !isImage && COLOR_REGEX.test(this.avatar);
-    const isText = !isImage && !isColor && this.avatar.length === 1;
+    const isText = !isImage && !isColor && this.avatar.length < 3;
     const isIcon = !isImage && !isText && !isColor;
     const classes = {
       'mdc-chip__avatar': true,
