@@ -279,9 +279,7 @@ export class Select extends FormElement {
         this._nativeControl!.disabled = isDisabled;
       },
       setValid: (isValid: boolean) => {
-        console.log('isValid', this._useNativeValidation);
         if (!this._useNativeValidation) return;
-
 
         if (isValid) {
           this.mdcRoot.classList.remove(cssClasses.INVALID);
