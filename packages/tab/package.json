@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-tab",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "",
   "main": "mwc-tab.js",
   "repository": {
@@ -14,10 +14,10 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.3",
-    "@authentic/mwc-icon": "^0.5.3",
-    "@authentic/mwc-ripple": "^0.5.3",
-    "@authentic/mwc-tab-indicator": "^0.5.3",
+    "@authentic/mwc-base": "^0.5.4",
+    "@authentic/mwc-icon": "^0.5.4",
+    "@authentic/mwc-ripple": "^0.5.4",
+    "@authentic/mwc-tab-indicator": "^0.5.4",
     "@material/tab": "^2.0.0"
   },
   "publishConfig": {
