@@ -22,8 +22,8 @@ import {
     property
 } from '@material/mwc-base/base-element.js';
 import { styleMap } from 'lit-html/directives/style-map';
-import { MDCTooltipFoundation } from './mdc-tooltip/foundation.js';
-import { MDCTooltipAdapter } from './mdc-tooltip/adapter.js';
+import { MDCTooltipFoundation } from './foundation.js';
+import { MDCTooltipAdapter } from './adapter.js';
 import { style } from './mwc-tooltip-css.js';
 import { addHasRemoveClass } from '@material/mwc-base/base-element.js';
 
