@@ -62,7 +62,7 @@ export class Drawer extends BaseElement {
 
   protected mdcFoundation!: MDCDismissibleDrawerFoundation;
 
-  protected get mdcFoundationClass() {
+  protected get mdcFoundationClass(): any {
     return this.type === 'modal' ? MDCModalDrawerFoundation : MDCDismissibleDrawerFoundation;
   }
 

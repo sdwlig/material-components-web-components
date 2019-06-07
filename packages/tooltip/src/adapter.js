@@ -40,6 +40,9 @@ export class MDCTooltipAdapter {
     /** @param {string} className */
     removeClass(className) { }
 
+    /** @param {string} className */
+    hasClass(className) { }
+
     /** @return {number} */
     getRootWidth() { }
 
