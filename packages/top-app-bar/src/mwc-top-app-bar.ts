@@ -44,7 +44,7 @@ export class TopAppBar extends BaseElement {
 
   protected mdcFoundation!: MDCTopAppBarBaseFoundation;
 
-  protected get mdcFoundationClass() {
+  protected get mdcFoundationClass(): any {
     return this.type === 'fixed' || this.type === 'prominentFixed' ? MDCFixedTopAppBarFoundation :
       (this.type === 'short' || this.type === 'shortCollapsed' ? MDCShortTopAppBarFoundation : MDCTopAppBarFoundation);
   }
