@@ -54,10 +54,10 @@ export class Formfield extends BaseElement {
 
   protected createAdapter(): MDCFormFieldAdapter {
     return {
-      registerInteractionHandler: (type: string, handler: EventListener) => {
+      registerInteractionHandler: (type: string, handler: any) => {
         this.labelEl.addEventListener(type, handler);
       },
-      deregisterInteractionHandler: (type: string, handler: EventListener) => {
+      deregisterInteractionHandler: (type: string, handler: any) => {
         this.labelEl.removeEventListener(type, handler);
       },
       activateInputRipple: () => {

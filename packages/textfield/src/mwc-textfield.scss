@@ -37,8 +37,26 @@ limitations under the License.
 
 // Textarea fullWidth placeholder overlap fixed
 .mdc-text-field__input {
-  .mdc-text-field--textarea:not(.mdc-text-field--focused):not(.mdc-text-field--no-label) &::placeholder {
-    opacity: 0;
+  .mdc-text-field--textarea:not(.mdc-text-field--focused):not(.mdc-text-field--no-label) & {
+    &::placeholder {
+      opacity: 0;
+    }
+  }
+}
+
+// Fixes placeholder for IE
+.mdc-text-field__input {
+  .mdc-text-field--textarea:not(.mdc-text-field--focused):not(.mdc-text-field--no-label) &,
+  & {
+    &:-ms-input-placeholder {
+      color: rgba(0, 0, 0, 0) !important;
+    }
+  }
+
+  .mdc-text-field--fullwidth &:-ms-input-placeholder,
+  .mdc-text-field--no-label &:-ms-input-placeholder,
+  .mdc-text-field--focused &:-ms-input-placeholder {
+    color: $mdc-text-field-placeholder-ink-color !important;
   }
 }
 

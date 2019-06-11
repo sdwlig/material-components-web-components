@@ -126,7 +126,7 @@ export class TopAppBar extends BaseElement {
       setStyle: (property: string, value: string) => this.mdcRoot.style.setProperty(property, value),
       getTopAppBarHeight: () => this.mdcRoot.clientHeight,
       // TODO(sorvell): don't understand why the top-app-bar knows about navigation
-      registerNavigationIconInteractionHandler: (type: string, handler: EventListenerOrEventListenerObject) => {
+      registerNavigationIconInteractionHandler: (type: string, handler: any) => {
         if (this._navIconSlot) {
           this._navIconSlot.addEventListener(type, handler);
         }
