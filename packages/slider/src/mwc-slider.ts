@@ -161,17 +161,17 @@ export class Slider extends FormElement {
       removeAttribute: (name: string) => this.mdcRoot.removeAttribute(name),
       computeBoundingRect: () => this.mdcRoot.getBoundingClientRect(),
       getTabIndex: () => this.mdcRoot.tabIndex,
-      registerInteractionHandler: (type: string, handler: EventListener) =>
+      registerInteractionHandler: (type: string, handler: any) =>
         this.mdcRoot.addEventListener(type, handler),
-      deregisterInteractionHandler: (type: string, handler: EventListener) =>
+      deregisterInteractionHandler: (type: string, handler: any) =>
         this.mdcRoot.removeEventListener(type, handler),
-      registerThumbContainerInteractionHandler: (type: string, handler: EventListener) =>
+      registerThumbContainerInteractionHandler: (type: string, handler: any) =>
         this.thumbContainer.addEventListener(type, handler),
-      deregisterThumbContainerInteractionHandler: (type: string, handler: EventListener) =>
+      deregisterThumbContainerInteractionHandler: (type: string, handler: any) =>
         this.thumbContainer.removeEventListener(type, handler),
-      registerBodyInteractionHandler: (type: string, handler: EventListener) =>
+      registerBodyInteractionHandler: (type: string, handler: any) =>
         document.body.addEventListener(type, handler),
-      deregisterBodyInteractionHandler: (type: string, handler: EventListener) =>
+      deregisterBodyInteractionHandler: (type: string, handler: any) =>
         document.body.removeEventListener(type, handler),
       registerResizeHandler: (handler: SpecificEventListener<'resize'>) =>
         window.addEventListener('resize', handler),
