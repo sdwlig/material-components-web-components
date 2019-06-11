@@ -34,7 +34,6 @@ import { style } from './mwc-table-css';
 import '@material/mwc-circular-progress';
 import '@material/mwc-icon/mwc-icon-font';
 import '@material/mwc-tooltip';
-// import 'element-matches';
 
 declare global {
   interface HTMLElementTagNameMap {
