@@ -39,6 +39,12 @@ limitations under the License.
   @include mdc-typography(caption);
   
   overflow: hidden;
+  position: relative; 
+  
+}
+
+.mwc-table__content {
+  overflow: auto;
   position: relative;
   
   @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
@@ -46,11 +52,6 @@ limitations under the License.
     border: 0.1px solid #dad8d8;
     border-radius: 4px;
   }
-}
-
-.mwc-table__content {
-  overflow: auto;
-  position: relative;
 }
 
 table {
