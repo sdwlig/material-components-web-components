@@ -181,27 +181,25 @@ export class CircularProgress extends LitElement {
   updated(changedProperties) {
     super.update(changedProperties);
 
-    if (changedProperties.has('size')) {
-        const { fixed, determinate, SIZE, size, thickness, progress } = this;
+    const { fixed, determinate, SIZE, size, thickness, progress } = this;
 
-        if (determinate || fixed) {
-            const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
-            const strokeDasharray = circumference.toFixed(3);
-            const strokeDashoffset = fixed
-              ? `${(((100 - progress) / 100) * circumference).toFixed(3)}px`
-              : `${(easeIn((100 - progress) / 100) * circumference).toFixed(3)}px`;
-            const transform = fixed
-              ? 'rotate(-90deg)'
-              : `rotate(${(easeOut(progress / 70) * 270).toFixed(3)}deg)`;
+    if (determinate || fixed) {
+        const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
+        const strokeDasharray = circumference.toFixed(3);
+        const strokeDashoffset = fixed
+          ? `${(((100 - progress) / 100) * circumference).toFixed(3)}px`
+          : `${(easeIn((100 - progress) / 100) * circumference).toFixed(3)}px`;
+        const transform = fixed
+          ? 'rotate(-90deg)'
+          : `rotate(${(easeOut(progress / 70) * 270).toFixed(3)}deg)`;
 
-            this.mdcRoot.style.transform = transform;
-            this.circleEl.style.strokeDasharray = strokeDasharray;
-            this.circleEl.style.strokeDashoffset = strokeDashoffset;
-        }
-
-        this.mdcRoot.style.width = `${size}px`;
-        this.mdcRoot.style.height = `${size}px`;
+        this.mdcRoot.style.transform = transform;
+        this.circleEl.style.strokeDasharray = strokeDasharray;
+        this.circleEl.style.strokeDashoffset = strokeDashoffset;
     }
+
+    this.mdcRoot.style.width = `${size}px`;
+    this.mdcRoot.style.height = `${size}px`;
   }
 
   open() {

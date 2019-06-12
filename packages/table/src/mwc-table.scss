@@ -40,6 +40,12 @@ limitations under the License.
   
   overflow: hidden;
   position: relative;
+  
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+    /* IE10+ specific styles go here */  
+    border: 0.1px solid #dad8d8;
+    border-radius: 4px;
+  }
 }
 
 .mwc-table__content {

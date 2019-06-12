@@ -104,7 +104,7 @@ export class Table extends LitElement {
   public data;
 
   protected get templateEl() {
-    return this.slotEl && findAssignedElement(this.slotEl, 'template') as HTMLTemplateElement;
+    return this.slotEl && findAssignedElement(this.slotEl, '#template') as HTMLScriptElement;
   }
 
   protected get _bodyRows(): HTMLTableRowElement[] {
@@ -206,15 +206,22 @@ export class Table extends LitElement {
     `;
   }
 
+  _getTemplateContent(templateEl: HTMLScriptElement) {
+    const content = templateEl.text; 
+    const target = document.createElement("TABLE")
+    target.innerHTML = content
+    return target
+  }
+
   /**
    * Creates a table from slotted template
    */
   protected _getElementsFromTemplate(): ITableElements {
     const headEl = this.templateEl
-      ? this.templateEl.content.querySelector('thead')
+      ? this._getTemplateContent(this.templateEl).querySelector('thead')
       : undefined;
     const columns = headEl ? headEl.querySelectorAll('tr') : [];
-    const bodyEl = this.templateEl ? this.templateEl.content.querySelector('tbody') : undefined;
+    const bodyEl = this.templateEl ? this._getTemplateContent(this.templateEl).querySelector('tbody') : undefined;
 
     const head = this._shouldDisplayHeader && headEl && columns
       ? this._getHeadFromElement(headEl)
@@ -289,7 +296,6 @@ export class Table extends LitElement {
     const rows = [...element.querySelectorAll('tr')];
 
     return html`
-      <tbody>
         ${rows.map(item => {
           return html`
             <tr tabindex="-1">
@@ -297,7 +303,6 @@ export class Table extends LitElement {
             </tr>
           `;
         })}
-      </thead>
     `;
   }
 
@@ -308,7 +313,6 @@ export class Table extends LitElement {
    */
   protected _getBody(data: IDataItem[]): TemplateResult {
     return html`
-      <tbody>
         ${data.map(item => {
           const row = this._parsedColumns
             ? this._parsedColumns
@@ -328,7 +332,6 @@ export class Table extends LitElement {
             </tr>
           `;
         })}
-      </tbody>
     `;
   }
 
@@ -339,13 +342,11 @@ export class Table extends LitElement {
    */
   protected _getEmptyBody(cols: number) {
     return html`
-      <tbody>
         <tr>
           <td align="center" colspan="${cols}">
             ${this._getEmptyDataMessage()}
           </td>
         </tr>
-      </tbody>
     `;
   }
 
