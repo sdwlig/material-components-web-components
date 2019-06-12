@@ -54,7 +54,6 @@ var embed = function(where, name, url) {
   var script = document.createElement('script');
   script.onload = function() {
     console.log(name, "loaded and ready");
-    alert(name + ' loaded and ready');
   };
   script.src = url;
   where.appendChild(script);

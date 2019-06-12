@@ -19,7 +19,8 @@ limitations under the License.
   <head>
     <title>list demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="./polyfills.js"></script>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
     <script type="module" src="../node_modules/@material/mwc-list/mwc-list-item.js"
     ></script>
     <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
@@ -32,9 +33,8 @@ limitations under the License.
   </head>
   <body class="unresolved">
     <header>
-      <a href="index.html"
-        ><mwc-icon>arrow_back</mwc-icon> <span>List item</span></a
-      >
+        <a href="index.html"><mwc-icon>arrow_back</mwc-icon></a>
+        <span>List item</span>
     </header>
 
     <div class='main'>
