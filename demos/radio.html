@@ -30,15 +30,21 @@ limitations under the License.
     <span>Radio Button</span></a>
   </header>
 
-  <main>
-    <mwc-radio id="s.1" name="s"></mwc-radio>
-    <mwc-radio id="s.2" name="s" checked></mwc-radio>
-    <mwc-radio id="s.3" name="s"></mwc-radio>
-    <br>
-    <mwc-radio id="b.1" name="b"></mwc-radio>
-    <mwc-radio id="b.2" name="b"></mwc-radio>
-    <mwc-radio id="b.3" name="b" checked></mwc-radio>
-  </main>
+  <div class='main'>
+      <div class="demo-group">
+
+        <mwc-radio id="s.1" name="s"></mwc-radio>
+        <mwc-radio id="s.2" name="s" checked></mwc-radio>
+        <mwc-radio id="s.3" name="s"></mwc-radio>
+      </div>
+      <div class="demo-group">
+
+        <mwc-radio id="b.1" name="b"></mwc-radio>
+        <mwc-radio id="b.2" name="b"></mwc-radio>
+        <mwc-radio id="b.3" name="b" checked></mwc-radio>
+    
+      </div>
+  </div>
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
   </script>

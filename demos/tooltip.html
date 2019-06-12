@@ -34,10 +34,10 @@ limitations under the License.
 <body class="unresolved">
   <header>
     <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Icon Toggle</span></a>
+    <span>Tooltip</span></a>
   </header>
 
-  <main>
+  <div class='main'>
 
     <h2>This is the header title
       <mwc-tooltip text="title tooltip"></mwc-tooltip>
@@ -58,7 +58,7 @@ limitations under the License.
         <mwc-icon-button icon="done_all" offIcon="done" id="third"></mwc-icon-button>
         <mwc-tooltip for="third" text="after w/ fast appearance" placement="after" showDelay="300"></mwc-tooltip>
     </div>
-  </main>
+  </div>
 
   <script type="module">
     Array.from(document.querySelectorAll('mwc-icon-button')).forEach((e) => {

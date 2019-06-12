@@ -46,15 +46,17 @@ body {
     margin: auto;
   }
 
-  main {
+  div.main {
     margin-top: 64px;
     padding: 16px;
+    display: block;
   }
 
   .demo-group, .demo-group-spaced {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;  
+    flex-wrap: wrap;
+    margin-top: 5em;
   }
 
   .demo-group-spaced {
