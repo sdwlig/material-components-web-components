@@ -1,6 +1,6 @@
 # Material Web Components
 
-> :warning: These components are still a work in progress. Not all elements are available on NPM yet. We are working on the remaining elements and publish them to the NPM registry once we have a first working version. :warning:
+> :warning: These components are still a work in progress. :warning:
 
 Material Web Components helps developers execute [Material Design](https://www.material.io) using [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
 
@@ -8,29 +8,73 @@ Built on top of the [Material Components Web](https://github.com/material-compon
 
 Web Components can be seamlessly incorporated into a wide range of usage contexts. Whether you're already heavily invested in another framework or not, it's easy to incorporate Material Web Components into your site in a lightweight, idiomatic fashion.
 
+**[DEMOS](https://material-components.github.io/material-components-web-components/demos/index.html)**
+
 <!-- TODO
 Insert screenshot of a demo page, including a code snippet.
 -->
 
-## Authentic publishing instructions
-````
-rm -Rf node_modules
-git merge develop
-	-- "fix all the conflicts"
-rm package-lock.json
-npm run rescope:authentic
-npm run bootstrap
-npm run dev
-	-- "test the new functionality"
+## Authentic `release` instructions
 
-find and replace version 0.3.x with new version number
-git commit -am "version bump"
-git push origin publish-auth
+1. Merge with `develop` branch
 
-lerna publish from-package
-````
+    ```git merge origin develop```
 
-**[Demos](https://material-components.github.io/material-components-web-components/demos/index.html)**
+    > Fix all merge conflicts.
+
+    > Don't worry about renaming `@material` to `@authentic` at this point.
+
+2. Rename packages names from `@material` to `@authentic`
+
+    ```npm run rescope:authentic```
+
+3. Remove `node_modules` folder and `package-lock.json` file
+
+    ```rm -Rf node_modules && rm package-lock.json```
+
+4. Install dependencies and create the `@authentic` folder
+
+    ```npm i && mkdir node_modules/@authentic```
+
+    > TODO: automate this step
+
+5. Bootstrap the project
+
+    ```npm run bootstrap```
+
+6. Test the project
+
+    ```npm run dev```
+
+    > Test the new functionality.
+
+    > :warning: If something is broken at this point: roll back your changes, fix the issue on `develop` branch and start again from step 1. :warning:
+
+7. `PUSH` your changes
+
+    > If you have new changes at this point, add them to the stash and combine them with the previous commit.
+
+    ```git commit -a --amend```
+
+    > A new screen will appear with the previous commit description, you just need to `save an quit` by typing `:wq` and then clicking `ENTER`.
+
+    > Then:
+
+    ```git push origin publish```
+
+8. Use lerna to help you with the release
+
+    ```lerna pubish```
+
+    > Follow lerna instructions in order to move forward with the release
+
+    > Every new release will follow the `PATCH release` approach based on `master`'s version currently at `0.5.0`, so from now on it will continue with 0.5.**`X`**.
+
+    > Lerna will automatically change all packages versions and push a new `commit` & `tag` labeled as `v0.5.X`, right after that it will update the git head of them.
+
+9. Since at this point lerna has updated all of our package.json again, we will need to `COMMIT` and `PUSH` our changes.
+
+    ```git commit -am 'git head updated' && git push origin publish```
 
 ## Quick start
 
@@ -48,44 +92,44 @@ When you're ready to use the Material Web Components in your web application:
 
 1. Ensure the webcomponents polyfills are included in your HTML page
 
-      - Install webcomponents polyfills
+    - Install webcomponents polyfills
 
-          ```npm i @webcomponents/webcomponentsjs```
+        ```npm i @webcomponents/webcomponentsjs```
 
-      - Add webcomponents polyfills to your HTML page
+    - Add webcomponents polyfills to your HTML page
 
-          ```<script src="@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>```
+        ```<script src="@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>```
 
-  1. Add one of the MWC elements to your project, for example for icon:
+2. Add one of the MWC elements to your project, for example for icon:
 
-      ```npm i @material/mwc-icon```
+    ```npm i @material/mwc-icon```
 
-  1. Import the element definition into your HTML page:
+3. Import the element definition into your HTML page:
 
-      ```<script type="module" src="@material/mwc-icon/index.js"></script>```
+    ```<script type="module" src="@material/mwc-icon/index.js"></script>```
 
-      Or into your module script:
+    Or into your module script:
 
-      ```import {Icon} from "@material/mwc-icon"```
+    ```import {Icon} from "@material/mwc-icon"```
 
-  1. Create an instance of element in your HTML page, or via any framework that [supports rendering Custom Elements](https://custom-elements-everywhere.com/):
+4. Create an instance of element in your HTML page, or via any framework that [supports rendering Custom Elements](https://custom-elements-everywhere.com/):
 
-      ```<mwc-icon>sentiment_very_satisfied</mwc-icon>```
+    ```<mwc-icon>sentiment_very_satisfied</mwc-icon>```
 
-  1. Install the Polymer CLI:
+5. Install the Polymer CLI:
 
-      ```npm i -g polymer-cli```
+    ```npm i -g polymer-cli```
 
-  1. Run the development server and open a browser pointing to its URL:
+6. Run the development server and open a browser pointing to its URL:
 
-      ```polymer serve```
+    ```polymer serve```
 
-  > The Material Web Components are published on [npm](https://www.npmjs.com) using JavaScript Modules.
-  This means it can take advantage of the standard native JavaScript module loader available in all current major browsers.
-  >
-  > However, since the Material Web Components use npm convention to reference dependencies by name, a light transform to rewrite specifiers to URLs is required to get it to run in the browser. The polymer-cli's development server `polymer serve` automatically handles this transform.
+> The Material Web Components are published on [npm](https://www.npmjs.com) using JavaScript Modules.
+This means it can take advantage of the standard native JavaScript module loader available in all current major browsers.
+>
+> However, since the Material Web Components use npm convention to reference dependencies by name, a light transform to rewrite specifiers to URLs is required to get it to run in the browser. The polymer-cli's development server `polymer serve` automatically handles this transform.
 
-  Tools like [WebPack](https://webpack.js.org/) and [Rollup](https://rollupjs.org/) can also be used to serve and/or bundle.
+Tools like [WebPack](https://webpack.js.org/) and [Rollup](https://rollupjs.org/) can also be used to serve and/or bundle.
 
 ## Contributing guide
 Below are instructions for setting up project development.
