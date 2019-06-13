@@ -64,7 +64,7 @@ Insert screenshot of a demo page, including a code snippet.
 
 8. Use lerna to help you with the release
 
-    ```lerna pubish```
+    ```lerna publish```
 
     > Follow lerna instructions in order to move forward with the release
 
