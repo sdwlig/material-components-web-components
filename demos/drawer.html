@@ -19,9 +19,10 @@ limitations under the License.
 <head>
   <title>drawer demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-drawer/mwc-drawer.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-drawer/mwc-drawer.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
     .drawerView {
@@ -50,11 +51,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Drawer</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Drawer</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="drawerView">
 
       <mwc-drawer hasHeader>
@@ -84,7 +85,7 @@ limitations under the License.
       </mwc-drawer>
       <div class="mainContent">Main Content!</div>
     </div>
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

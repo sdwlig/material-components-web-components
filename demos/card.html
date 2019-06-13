@@ -19,7 +19,8 @@ limitations under the License.
   <head>
     <title>card demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="./polyfills.js"></script>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
     <script
       type="module"
       src="../node_modules/@authentic/mwc-button/mwc-button.js"
@@ -71,11 +72,11 @@ limitations under the License.
   </head>
   <body class="unresolved">
     <header>
-      <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-      <span>Card</span></a>
+      <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+      <span>Card</span>
     </header>
 
-    <main>
+    <div class='main'>
       <div class="presentCard">
         <mwc-card aspectRatio="16-9">
           <div slot="media" class="my-media"></div>
@@ -103,7 +104,7 @@ limitations under the License.
           </div>
         </mwc-card>
       </div>
-    </main>
+    </div>
 
     <script>
       addEventListener("load", () =>

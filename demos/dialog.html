@@ -20,10 +20,11 @@ limitations under the License.
 <head>
   <title>dialog demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-button/mwc-button.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-dialog/mwc-dialog.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-button/mwc-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-dialog/mwc-dialog.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
   <link rel="stylesheet" href="demo-component.css">
 
   <style>
@@ -40,13 +41,11 @@ limitations under the License.
 
 <body class="unresolved">
   <header>
-    <a href="index.html">
-      <mwc-icon>arrow_back</mwc-icon>
-      <span>Dialog</span>
-    </a>
+    <a href="index.html"><mwc-icon>arrow_back</mwc-icon></a>
+    <span>Dialog</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-group">
       <div>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
@@ -238,7 +237,7 @@ limitations under the License.
         console.log(e.type, e.detail);
       });
     </script>
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

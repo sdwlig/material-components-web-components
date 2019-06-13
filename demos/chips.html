@@ -20,11 +20,12 @@ limitations under the License.
   <title>chips demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-textfield/mwc-textfield.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-button/mwc-button.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-chips/mwc-chip.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-chips/mwc-chip-set.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-textfield/mwc-textfield.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-button/mwc-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-chips/mwc-chip.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-chips/mwc-chip-set.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
     mwc-chip-set {
@@ -43,11 +44,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Chips</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Chips</span>
   </header>
 
-  <main>
+  <div class='main'>
 
   <h3>Choice</h3>
 
@@ -109,7 +110,7 @@ limitations under the License.
     <mwc-chip label="Jhon Pella" avatar="http://lorempixel.com/20/20/people/2" trailingIcon="cancel"></mwc-chip>
   </mwc-chip-set>
  
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

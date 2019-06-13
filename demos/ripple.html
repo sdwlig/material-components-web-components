@@ -54,18 +54,18 @@ limitations under the License.
 <body class="unresolved">
 
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Ripple</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Ripple</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-container">
       <div class="demo-box">Primary<mwc-ripple primary></mwc-ripple></div>
       <div class="demo-box">Accent<mwc-ripple accent></mwc-ripple></div>
       <div class="demo-box"><input placeholder="Say something..."><mwc-ripple></mwc-ripple></div>
       <div class="demo-box">Unbounded<mwc-ripple unbounded></mwc-ripple></div>
     </div>
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

@@ -19,9 +19,11 @@ limitations under the License.
 <head>
   <title>slider demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-slider/mwc-slider.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
+  <script src="./polyfills.js"></script>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-slider/mwc-slider.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
     .demo-container {
@@ -37,15 +39,16 @@ limitations under the License.
       --mdc-theme-secondary: orange;
       --mdc-theme-text-primary-on-dark: green;
     }
+
   </style>
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Slider</span></a>
+      <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+      <span>Slider</span>
   </header>
 
-  <main>
+  <div class='main'>
     <h3>Continuous</h3>
     <div class="demo-container">
       <mwc-slider></mwc-slider>
@@ -63,7 +66,7 @@ limitations under the License.
 
     <div id="logInput"></div>
     <div id="logChange"></div>
-  </main>
+  </div>
 
   <script type="module">
     function show(element, e) {

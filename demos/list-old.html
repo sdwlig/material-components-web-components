@@ -19,8 +19,9 @@ limitations under the License.
   <head>
     <title>list demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./polyfills.js"></script>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-    <script type="module" src="../node_modules/@authentic/mwc-list/mwc-list-item.js"
+    <script type="module" src="../node_modules/@material/mwc-list/mwc-list-item.js"
     ></script>
     <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
     <script type="module" src="../node_modules/@authentic/mwc-radio/mwc-radio.js"></script>
@@ -32,12 +33,11 @@ limitations under the License.
   </head>
   <body class="unresolved">
     <header>
-      <a href="index.html"
-        ><mwc-icon>arrow_back</mwc-icon> <span>List item</span></a
-      >
+        <a href="index.html"><mwc-icon>arrow_back</mwc-icon></a>
+        <span>List item</span>
     </header>
 
-    <main>
+    <div class='main'>
       <div>
         <section>
           <h4>Accordion - Open on modal</h4>
@@ -255,7 +255,7 @@ limitations under the License.
              
           </div>
       
-    </main>
+    </div>
     <script>
       addEventListener("load", () =>
         document.body.classList.remove("unresolved")

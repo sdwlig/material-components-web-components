@@ -20,13 +20,15 @@ limitations under the License.
 <head>
   <title>select demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-select/mwc-select.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-menu/mwc-menu.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-list/mwc-list.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-list/mwc-list-item.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-list/mwc-list-item-separator.js"></script>
-  <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-select/mwc-select.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-menu/mwc-menu.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-list/mwc-list.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-list/mwc-list-item.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-list/mwc-list-item-separator.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
 
   <style>
@@ -39,12 +41,12 @@ limitations under the License.
 <body class="unresolved">
   <header>
     <a href="index.html">
-      <mwc-icon>arrow_back</mwc-icon>
-      <span>Select</span>
+        <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+        <span>Select</span>
     </a>
   </header>
 
-  <main>
+  <div class='main'>
 
     <div class="demo-group">
       <div>
@@ -102,7 +104,7 @@ limitations under the License.
 
       <div>
         <h3>box disabled</h3>
-      
+
         <mwc-select leadingIconContent="event" box disabled label="Disabled...">
           <mwc-menu slot="menu">
             <mwc-list>
@@ -267,7 +269,7 @@ limitations under the License.
       </div>
     </div>
 
-  </main>
+  </div>
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
 
