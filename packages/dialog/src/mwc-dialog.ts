@@ -132,7 +132,7 @@ export class Dialog extends BaseElement {
   }
 
   protected get _defaultButton() {
-    return this._buttons.find(item => item.hasAttribute('data-mdc-dialog-default-action'))
+    return this._buttons.filter(item => item.hasAttribute('data-mdc-dialog-default-action'))[0]
   }
 
   // Commented due to focus-trap incompatibility
@@ -198,7 +198,6 @@ export class Dialog extends BaseElement {
       transformOriginY = 'top'
       topPosition = controllerSettings.top
     }
-
     return { top: topPosition + 'px', left: leftPosition + 'px', transformOrigin: `${transformOriginX} ${transformOriginY}` }
   }
 
@@ -284,7 +283,7 @@ export class Dialog extends BaseElement {
     return html`
       <aside
         class="mdc-dialog
-          ${this.popover ? ' mdc-dialog--popover' : ''}
+          ${this.popover ? ' mdc-dialog--popover' : 'mdc-dialog--normal'}
           ${this.popover && this.popoverSize ? ` mdc-dialog--popover-${this.popoverSize}` : ''}
           ${this.openingPopover ? ' mdc-dialog--pre-open' : ''}
         "
