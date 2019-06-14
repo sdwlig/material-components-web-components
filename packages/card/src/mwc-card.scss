@@ -15,13 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 @import "@material/card/mdc-card.scss";
-@import "@material/mwc-icon/src/_mwc-icon.scss";
-@import "@material/ripple/mdc-ripple.scss";
-@import "@material/mwc-typography/mwc-typography.scss";
-@import "@material/typography/mixins";
-@import "@material/typography/variables";
 
-// TODO(sorvell): flex for sizing, border inherit
+$query: mdc-feature-all();
+$feat-color: mdc-feature-create-target($query, color);
+$feat-structure: mdc-feature-create-target($query, structure);
 
 :host {
   display: inline-flex;
@@ -29,4 +26,100 @@ limitations under the License.
 
 .mdc-card {
   max-width: 350px;
+}
+
+.mdc-card__primary-action {
+  flex-grow: 1;
+
+  &--empty {
+    display: none;
+  }
+}
+
+.mdc-card__actions {
+  &--empty {
+    display: none;
+  }
+
+  //
+  // Slotted Action items
+  //
+  
+  ::slotted(*) {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-card-actions-layout_(inline-flex);
+  
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+  
+    &:focus {
+      @include mdc-feature-targets($feat-structure) {
+        outline: none;
+      }
+    }
+  }
+  
+  //
+  // Slotted Action buttons
+  //
+  
+  ::slotted(mwc-button) {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-box(margin, right, 8px);
+  
+      // padding: 0 8px;
+    }
+  
+    &:last-child {
+      @include mdc-feature-targets($feat-structure) {
+        @include mdc-rtl-reflexive-box(margin, right, 0);
+      }
+    }
+  }
+  
+  // &--full-bleed {
+  //   .mdc-card__action-icons {
+  //     display: none;
+  //   }
+
+  //   ::slotted(mwc-button) {
+  //     @include mdc-feature-targets($feat-structure) {
+  //       justify-content: space-between;
+  //       width: 100%;
+  //       height: auto;
+  //       max-height: none;
+  //       margin: 0;
+  //       // padding: 8px 16px;
+  //       /* @noflip */
+  //       text-align: left;
+  //     }
+    
+  //     @include mdc-rtl {
+  //       @include mdc-feature-targets($feat-structure) {
+  //         /* @noflip */
+  //         text-align: right;
+  //       }
+  //     }
+  //   }
+  // }
+
+  //
+  // Slotted Action icons
+  //
+
+  ::slotted(mwc-icon-button) {
+    @include mdc-feature-targets($feat-structure) {
+      // Icon buttons are taller than buttons, so we need to adjust their margins to prevent the action row from
+      // expanding.
+      margin: -6px 0;
+    }
+  }
+
+  ::slotted(mwc-icon-button:not(:disabled)) {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $mdc-card-action-icon-color);
+    }
+  }
 }
