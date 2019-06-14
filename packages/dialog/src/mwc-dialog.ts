@@ -283,7 +283,7 @@ export class Dialog extends BaseElement {
     return html`
       <aside
         class="mdc-dialog
-          ${this.popover ? ' mdc-dialog--popover' : 'mdc-dialog--normal'}
+          ${this.popover ? ' mdc-dialog--popover' : ''}
           ${this.popover && this.popoverSize ? ` mdc-dialog--popover-${this.popoverSize}` : ''}
           ${this.openingPopover ? ' mdc-dialog--pre-open' : ''}
         "

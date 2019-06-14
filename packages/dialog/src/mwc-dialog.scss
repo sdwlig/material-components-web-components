@@ -75,11 +75,9 @@ limitations under the License.
   }
 }
 
-.mdc-dialog--normal {
-  .mdc-dialog__surface {
+.mdc-dialog:not(.mdc-dialog--popover) .mdc-dialog__surface {
     @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
       /* IE10+ specific styles go here */  
       overflow: scroll;
     }
-  }
 }
