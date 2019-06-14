@@ -11,7 +11,7 @@ body {
     transition: opacity ease-in 0.2s;
   }
 
-  header {
+  body > header {
     background-color: #6200ee;
     position: fixed;
     top: 0;
