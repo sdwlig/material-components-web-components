@@ -21,7 +21,8 @@ import {
   property,
   classMap,
   findAssignedElements,
-  query
+  query,
+  PropertyValues
 } from "@material/mwc-base/base-element";
 import { ripple } from  "@material/mwc-ripple/ripple-directive";
 
@@ -133,7 +134,9 @@ export class Card extends LitElement {
     `;
   }
 
-  updated() {
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+    
     const _hasHeaderEls = this.headerEls.length > 0;
     const _hasMediaEls = this.mediaEls.length > 0;
     const _hasContentEls = this.contentEls.length > 0;

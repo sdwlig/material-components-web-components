@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { html, BaseElement, property, query, observer, classMap } from '@material/mwc-base/base-element.js';
+import { html, BaseElement, property, query, observer, classMap } from '@material/mwc-base/base-element';
 import { FormElement } from '@material/mwc-base/form-element.js';
 import { findAssignedElement } from '@material/mwc-base/utils.js';
 import { style } from './mwc-formfield-css.js';

@@ -21,7 +21,8 @@ import {
   query,
   customElement,
   classMap,
-} from '@material/mwc-base/base-element.js';
+  PropertyValues
+} from '@material/mwc-base/base-element';
 import { List as MWCList } from './mwc-list';
 
 import { style } from './mwc-list-item-css';
@@ -138,7 +139,8 @@ export class ListItem extends LitElement {
     this.requestUpdate();
   }
 
-  public updated() {
+  public updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
     this.focused = this.tabindex >= 0;
   }
 

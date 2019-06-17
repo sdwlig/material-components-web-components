@@ -24,7 +24,7 @@ import {
   PropertyValues,
   classMap,
   addHasRemoveClass
-} from '@material/mwc-base/base-element.js';
+} from '@material/mwc-base/base-element';
 import MDCModalDrawerFoundation from '@material/drawer/modal/foundation.js';
 import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation.js';
 import { MDCDrawerAdapter } from '@material/drawer/adapter.js';
@@ -166,8 +166,8 @@ export class Drawer extends BaseElement {
     this.mdcRoot.addEventListener('transitionend', (e) => this.mdcFoundation.handleTransitionEnd(e));
   }
 
-  updated(changedProperties: PropertyValues) {
-    if (changedProperties.has('type')) {
+  updated(_changedProperties: PropertyValues) {
+    if (_changedProperties.has('type')) {
       this.createFoundation();
     }
   }

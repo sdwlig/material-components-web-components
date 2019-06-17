@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { query, property, LitElement, customElement, html, svg } from 'lit-element';
+import { query, property, LitElement, customElement, html, svg, PropertyValues } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { observer } from '@material/mwc-base/observer';
 import { cssClasses } from './constants';
@@ -178,8 +178,8 @@ export class CircularProgress extends LitElement {
     this.createFoundation();
   }
 
-  updated(changedProperties) {
-    super.update(changedProperties);
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
 
     const { fixed, determinate, SIZE, size, thickness, progress } = this;
 
