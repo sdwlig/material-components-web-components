@@ -24,7 +24,7 @@ import {
   observer,
   emit,
   findAssignedElement
-} from '@authentic/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element';
 import { MDCMenuFoundation, MDCMenuAdapter, Corner } from '@material/menu';
 import { cssClasses, DefaultFocusState, strings } from '@material/menu/constants';
 import { MDCMenuSurface, MDCMenuSurfaceFactory } from '@material/menu-surface/component';

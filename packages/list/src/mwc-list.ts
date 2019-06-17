@@ -24,7 +24,7 @@ import {
   classMap,
   addHasRemoveClass,
   findAssignedElements,
-} from '@authentic/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element';
 import { emit } from '@authentic/mwc-base/utils';
 import { closest, matches } from '@material/dom/ponyfill';
 // import { ripple } from '@authentic/mwc-ripple/ripple-directive';

@@ -19,13 +19,14 @@ import {
     customElement,
     query,
     html,
-    property
-} from '@authentic/mwc-base/base-element.js';
+    property,
+    addHasRemoveClass,
+    PropertyValues
+} from '@authentic/mwc-base/base-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import { MDCTooltipFoundation } from './foundation.js';
 import { MDCTooltipAdapter } from './adapter.js';
 import { style } from './mwc-tooltip-css.js';
-import { addHasRemoveClass } from '@authentic/mwc-base/base-element.js';
 
 declare global {
     interface HTMLElementTagNameMap {
@@ -94,7 +95,9 @@ export class Tooltip extends BaseElement {
         this.initListeners();
     }
 
-    updated() {
+    updated(_changedProperties: PropertyValues) {
+        super.updated(_changedProperties);
+        
         this.mdcFoundation.showDelay = this.showDelay;
         this.mdcFoundation.hideDelay = this.hideDelay;
         this.mdcFoundation.gap = this.gap;

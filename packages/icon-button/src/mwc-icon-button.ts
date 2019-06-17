@@ -17,7 +17,7 @@ limitations under the License.
 
 import {IconButtonBase} from './icon-button-base.js';
 import {style} from './mwc-icon-button-css.js';
-import {customElement} from '@authentic/mwc-base/base-element.js';
+import {customElement} from '@authentic/mwc-base/base-element';
 import '@authentic/mwc-icon/mwc-icon-font.js';
 
 declare global {

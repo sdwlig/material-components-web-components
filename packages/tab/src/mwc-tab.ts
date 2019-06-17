@@ -22,7 +22,7 @@ import {
   customElement,
   classMap,
   addHasRemoveClass
-} from '@authentic/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element';
 import { TabIndicator } from '@authentic/mwc-tab-indicator';
 import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 import MDCTabFoundation from '@material/tab/foundation';
