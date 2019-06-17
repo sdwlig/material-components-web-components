@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-tab-indicator",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "",
   "main": "mwc-tab-indicator.js",
   "repository": {
@@ -14,8 +14,8 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.10",
-    "@authentic/mwc-icon": "^0.5.10",
+    "@authentic/mwc-base": "^0.5.11",
+    "@authentic/mwc-icon": "^0.5.11",
     "@material/tab-indicator": "^1.1.0"
   },
   "publishConfig": {

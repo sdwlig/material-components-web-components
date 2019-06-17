@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-typography",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "",
   "main": "mwc-typography-css.js",
   "scripts": {
