@@ -19,7 +19,9 @@ import {
   customElement,
   html,
   property,
-  classMap
+  classMap,
+  findAssignedElements,
+  query
 } from "@authentic/mwc-base/base-element";
 import { ripple } from  "@authentic/mwc-ripple/ripple-directive";
 
@@ -35,21 +37,79 @@ declare global {
 
 @customElement("mwc-card" as any)
 export class Card extends LitElement {
-  @property({ type: Boolean })
-  stroke = false;
 
+  @query('.mdc-card__primary-action')
+  protected primaryActionEl!: HTMLElement;
+
+  @query('.mdc-card__actions')
+  protected actionsEl!: HTMLElement;
+
+  @query('.mdc-card__action-buttons')
+  protected actionButtonsEl!: HTMLElement;
+
+  @query('.mdc-card__action-icons')
+  protected actionIconsEl!: HTMLElement;
+
+  @query('slot[name="header"]')
+  protected slotHeaderEl!: HTMLSlotElement;
+
+  @query('slot[name="media"]')
+  protected slotMediaEl!: HTMLSlotElement;
+
+  @query('slot[name="content"]')
+  protected slotContentEl!: HTMLSlotElement;
+
+  @query('slot[name="action-buttons"]')
+  protected slotActionButtonsEl!: HTMLSlotElement;
+
+  @query('slot[name="action-icons"]')
+  protected slotActionIconsEl!: HTMLSlotElement;
+
+  @property({ type: Boolean })
+  outlined = false;
+  
   @property({ type: String })
   aspectRatio =  '';
+
+  protected get headerEls() {
+    return this.slotHeaderEl && findAssignedElements(this.slotHeaderEl, '*');
+  }
+
+  protected get mediaEls() {
+    return this.slotMediaEl && findAssignedElements(this.slotMediaEl, '*');
+  }
+
+  protected get contentEls() {
+    return this.slotContentEl && findAssignedElements(this.slotContentEl, '*');
+  }
+
+  protected get actionButtons() {
+    return this.slotActionButtonsEl && findAssignedElements(this.slotActionButtonsEl, 'mwc-button');
+  }
+
+  protected get actionIcons() {
+    return this.slotActionIconsEl && findAssignedElements(this.slotActionIconsEl, 'mwc-icon-button');
+  }
 
   static styles = style;
 
   render() {
-    const mediaStyles = this.aspectRatio ? 'mdc-card__media--' + this.aspectRatio : '';
+    const styles = {
+      'mdc-card': true,
+      'mdc-card--outlined': this.outlined
+    };
+
+    const mediaStyles = {
+      'mdc-card__media': true,
+      [`mdc-card__media--${this.aspectRatio}`]: this.aspectRatio !== '',
+    };
 
     return html`
-      <div class="mdc-card ${classMap({ "mdc-card--stroked": this.stroke })}">
+      <div class="${classMap(styles)}">
         <div class="mdc-card__primary-action" tabindex="0" .ripple="${ripple({ unbounded: false })}">
-          <div class="mdc-card__media ${mediaStyles}">
+          <slot name="header"></slot>
+          
+          <div class="${classMap(mediaStyles)}">
             <div class="mdc-card__media-content">
               <slot name="media"></slot>
             </div>
@@ -57,6 +117,8 @@ export class Card extends LitElement {
 
           <slot name="content"></slot>
         </div>
+
+        <slot></slot>
 
         <div class="mdc-card__actions">
           <div class="mdc-card__action-buttons">
@@ -69,5 +131,20 @@ export class Card extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  updated() {
+    const _hasHeaderEls = this.headerEls.length > 0;
+    const _hasMediaEls = this.mediaEls.length > 0;
+    const _hasContentEls = this.contentEls.length > 0;
+    const _hasPrimaryAction = _hasHeaderEls || _hasMediaEls || _hasContentEls;
+    const _hasActionButtons = this.actionButtons.length > 0;
+    const _hasActionIcons = this.actionIcons.length > 0;
+    const _hasActions = _hasActionButtons || _hasActionIcons;
+
+    this.primaryActionEl!.classList.toggle('mdc-card__primary-action--empty', !_hasPrimaryAction)
+    this.actionButtonsEl!.classList.toggle('mdc-card__action-buttons--empty', !_hasActionButtons);
+    this.actionButtonsEl!.classList.toggle('mdc-card__action-icons--empty', !_hasActionIcons);
+    this.actionsEl!.classList.toggle('mdc-card__actions--empty', !_hasActions);
   }
 }
