@@ -34,6 +34,10 @@ limitations under the License.
 
 .mdc-select {
   width: 100%;
+
+  .mdc-select__selected-text {
+    cursor: pointer;
+  }
 }
 
 // Fixes selected-text bottom-line hover state
