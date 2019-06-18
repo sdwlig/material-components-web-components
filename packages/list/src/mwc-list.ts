@@ -317,11 +317,11 @@ export class List extends BaseElement {
 
   protected selectItem(item: ListItem) {
     console.log('select item', this, item)
+    this.deselectAllItems();
     if (item) {
       this.focusItem(item, false);
       item.selected = true;
     }
-    this.deselectAllItems();
   }
 
   public selectItemAtIndex(index: number) {
