@@ -263,6 +263,8 @@ export class TextField extends FormElement {
     this.mdcFoundation.setUseNativeValidation(value);
   }
 
+  protected _formElementId = `_${Math.random().toString(36).substr(2, 9)}`;
+
   protected _characterCounter!: MDCTextFieldCharacterCounter | null;
 
   protected _helperText!: MDCTextFieldHelperText | null;
@@ -379,7 +381,7 @@ export class TextField extends FormElement {
     return isTextArea
       ? html`
         <textarea
-          id="form-element"
+          id="${this._formElementId}"
           class="mdc-text-field__input"
           placeholder="${this.placeholder}"
           aria-label="${this.label}"
@@ -392,7 +394,7 @@ export class TextField extends FormElement {
       `
       : html`
         <input
-          id="form-element"
+          id="${this._formElementId}"
           class="mdc-text-field__input"
           type="${this.type}"
           placeholder="${this.placeholder}"
@@ -407,7 +409,7 @@ export class TextField extends FormElement {
 
   _renderFloatingLabel() {
     return html`
-      <label class="mdc-floating-label" for="form-element">${this.label}</label>
+      <label class="mdc-floating-label" for="${this._formElementId}">${this.label}</label>
     `;
   }
 
