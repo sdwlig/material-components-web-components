@@ -646,6 +646,7 @@ export class Select extends FormElement {
     this.slottedSelect!.style.top = '0';
     this.slottedSelect!.style.width = '100%';
     this.slottedSelect!.style.zIndex = '1';
+    this.slottedSelect!.style.cursor = 'pointer';
     this.slottedSelect!.style.font = getComputedStyle(this._selectedText).font;
     this.slottedSelect!.style.fontSize = getComputedStyle(this._selectedText).fontSize;
     this.slottedSelect!.style.padding = getComputedStyle(this._selectedText).padding;
