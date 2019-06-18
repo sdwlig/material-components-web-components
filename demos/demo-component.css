@@ -56,7 +56,6 @@ body {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 5em;
   }
 
   .demo-group-spaced {
