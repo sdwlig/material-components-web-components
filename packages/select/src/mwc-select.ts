@@ -215,6 +215,8 @@ export class Select extends FormElement {
     return this.slottedSelect;
   }
 
+  protected _formElementId = `_${Math.random().toString(36).substr(2, 9)}`;
+
   protected _selectedItem!: MWCListItem;
   
   protected _isMenuOpen: boolean = false;
@@ -394,7 +396,7 @@ export class Select extends FormElement {
 
   _renderFloatingLabel() {
     return html`
-      <label class="mdc-floating-label" for="form-element">${this.label}</label>
+      <label class="mdc-floating-label" for="${this._formElementId}">${this.label}</label>
     `;
   }
 
@@ -459,7 +461,7 @@ export class Select extends FormElement {
       this._nativeControl = this.slottedSelect;
     }
 
-    this.formElement.id = 'form-element';
+    this.formElement.id = this._formElementId;
 
     this._label = this.labelElement ? labelFactory(this.labelElement) : null;
     this._lineRipple = this.lineRippleElement ? lineRippleFactory(this.lineRippleElement) : null;
@@ -552,7 +554,10 @@ export class Select extends FormElement {
     this.mdcFoundation.handleChange(true);
 
     if (this.slottedSelect) {
-      this._setNativeSelectedIndex(this.slottedSelect.selectedIndex);
+      setTimeout(() => {
+        this._setNativeSelectedIndex(this.slottedSelect!.selectedIndex);
+        window && window.focus(); // Fixes IE11 selection
+      });
     }
   }
   
@@ -643,6 +648,7 @@ export class Select extends FormElement {
     this.slottedSelect!.style.zIndex = '1';
     this.slottedSelect!.style.font = getComputedStyle(this._selectedText).font;
     this.slottedSelect!.style.fontSize = getComputedStyle(this._selectedText).fontSize;
+    this.slottedSelect!.style.padding = getComputedStyle(this._selectedText).padding;
   }
 
   /**
