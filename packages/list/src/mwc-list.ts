@@ -50,49 +50,49 @@ export class List extends BaseElement {
   protected slotEl!: HTMLSlotElement;
 
   @property({ type: Number })
-  lines = 1;
+  public lines = 1;
 
   @property({ type: Boolean })
-  ripple = false;
+  public ripple = true;
 
   @property({ type: Boolean })
-  avatarList = false;
+  public avatarList = false;
 
   @property({ type: Boolean })
-  nonInteractive = false;
+  public nonInteractive = false;
 
   @property({ type: Boolean })
-  useActivated = false;
+  public useActivated = false;
 
   @property({ type: String })
-  inputType = 'none';
+  public inputType = 'none';
 
   @property({ type: String })
-  inputAction = 'primary';
+  public inputAction = 'primary';
 
   @observer(function (this: List, value: boolean) {
     this.mdcFoundation && this.mdcFoundation.setVerticalOrientation(!value);
   })
   @property({ type: Boolean })
-  horizontal = false;
+  public horizontal = false;
 
   @observer(function (this: List, value: boolean) {
     this.mdcFoundation && this.mdcFoundation.setWrapFocus(value);
   })
   @property({ type: Boolean })
-  wrapFocus = true;
+  public wrapFocus = true;
 
   @observer(function (this: List, value: boolean) {
     this.mdcFoundation && this.mdcFoundation.setSingleSelection(value);
   })
   @property({ type: Boolean })
-  singleSelection = true;
+  public singleSelection = true;
 
   @observer(function (this: List, value: number) {
     this.mdcFoundation && this.mdcFoundation.setSelectedIndex(value);
   })
   @property({ type: Number })
-  selectedIndex = -1;
+  public selectedIndex = -1;
 
   protected mdcFoundation!: MDCListFoundation;
   protected readonly mdcFoundationClass = MDCListFoundation;
@@ -101,6 +101,7 @@ export class List extends BaseElement {
     super.firstUpdated();
     this.layout();
     this.initializeListType();
+    // this.watchForWindowFocus();
   }
 
   static styles = style;
@@ -113,7 +114,8 @@ export class List extends BaseElement {
         @keydown=${this.handleKeydownEvent_}
         @click=${this.handleClickEvent_}
         @focusin=${this.handleFocusInEvent_}
-        @focusout=${this.handleFocusOutEvent_}>
+        @focusout=${this.handleFocusOutEvent_}
+        tabindex="0">
         <slot></slot>
       </ul>
     `;
@@ -164,7 +166,8 @@ export class List extends BaseElement {
         if (ele && ele.disabled === false) ele.setFocused(true);
       },
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
-        return `${listItemIndex} , ${tabIndexValue}`; // TODO
+        const ele = this.listElements[listItemIndex] as ListItem;
+        if (ele) ele.tabindex = Number(tabIndexValue);
       },
       hasRadioAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
@@ -218,6 +221,7 @@ export class List extends BaseElement {
    * Used to figure out which element was clicked before sending the event to the foundation.
    */
   protected handleFocusInEvent_(evt: FocusEvent) {
+    console.log('handle focus in event', this)
     const index = this.getListItemIndex_(evt);
     this.mdcFoundation!.handleFocusIn(evt, index);
   }
@@ -226,6 +230,8 @@ export class List extends BaseElement {
  * Used to figure out which element was clicked before sending the event to the foundation.
  */
   protected handleFocusOutEvent_(evt: FocusEvent) {
+    const target = evt.target as Element;
+    console.log('handleFocudOutEvent', this, target);
     const index = this.getListItemIndex_(evt);
     this.mdcFoundation!.handleFocusOut(evt, index);
   }
@@ -265,6 +271,37 @@ export class List extends BaseElement {
     this.listElements.forEach(e => e.setFocused(false))
   }
 
+  protected watchForWindowFocus() {
+    // if (this.selectedIndex !== -1) {
+    //   this.listElements[this.selectedIndex].tabIndex = 0;
+    //   this.focusItemAtIndex(this.selectedIndex, true);
+    // } else {
+    //   this.listElements[0].tabIndex = 0;
+    //   // this.focusItemAtIndex(0, true)
+    // }
+    const list_component = this;
+    console.log('added watch focus')
+    window.addEventListener("focus", (evt) => {
+      const targetThis = evt.target === list_component;
+      const focusedInnerElements = list_component.mdcRoot.querySelectorAll(":focus");
+      const focusIsInside = focusedInnerElements.length > 0;
+      if (targetThis && !focusIsInside) {
+        console.log('focus event from watchForWindowFocus', evt.target);
+        list_component.focusItemAtIndex(0, true);
+        // this.tabindex = -1;
+      }
+    },true);
+    window.addEventListener("focusout", (evt) => {
+      const targetThis = evt.target === list_component;
+      const listRoot = list_component.mdcRoot;
+      const isList = listRoot && listRoot.matches('.mdc-list');
+
+      if (targetThis && isList) {
+        console.log('blur event from watchForWindowFocus', evt.target, list_component);
+      }
+    },true);
+  }
+
   protected focusItem(item: ListItem, hard: boolean = false) {
     this.defocusAllItems();
 
@@ -279,11 +316,11 @@ export class List extends BaseElement {
   }
 
   protected selectItem(item: ListItem) {
+    console.log('select item', this, item)
     if (item) {
       this.focusItem(item, false);
       item.selected = true;
     }
-    
     this.deselectAllItems();
   }
 
