@@ -21,10 +21,14 @@ limitations under the License.
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@material/mwc-drawer/mwc-drawer.js"></script>
   <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-drawer/mwc-drawer.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
+    body > header {
+      z-index: 7;
+    }
+    
     .drawerView {
       border: 1px solid gray;
       display: flex;
@@ -44,9 +48,6 @@ limitations under the License.
       flex: 1;
     }
 
-    [type=dismissible][open] + .mainContent {
-      margin-left: 256px;
-    }
   </style>
 </head>
 <body class="unresolved">
@@ -56,34 +57,46 @@ limitations under the License.
   </header>
 
   <div class='main'>
+    <h2>Standard Drawer</h2>
     <div class="drawerView">
-
       <mwc-drawer hasHeader>
         <span slot="title">Title!</span>
         <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">Drawer Content!</div>
+        <div class="drawerContent">
+            Drawer Content!
+            <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+        </div>
+        <div slot="appContent" class="mainContent">Main Content!</div>
       </mwc-drawer>
-      <div class="mainContent">Main Content!</div>
     </div>
 
+    <h2>Dismissible Drawer</h2>
     <div class="drawerView">
-
       <mwc-drawer hasHeader type="dismissible">
         <span slot="title">Title!</span>
         <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">Drawer Content!</div>
+        <div class="drawerContent">
+            Drawer Content!
+            <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+        </div>
+        <div slot="appContent" class="mainContent">Main Content!</div>
       </mwc-drawer>
-      <div class="mainContent">Main Content!</div>
     </div>
 
+    <h2>Modal Drawer</h2>
     <div class="drawerView">
-
-      <mwc-drawer hasHeader type="modal">
+      <mwc-drawer id="drawerModal" hasHeader type="modal">
         <span slot="title">Title!</span>
         <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">Drawer Content!</div>
+        <div class="drawerContent">
+            Drawer Content!
+            <br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+        </div>
+        <div slot="appContent" class="mainContent">Main Content!</div>
       </mwc-drawer>
-      <div class="mainContent">Main Content!</div>
     </div>
   </div>
 
@@ -96,11 +109,13 @@ limitations under the License.
         drawer.open = !drawer.open;
       });
       drawer.addEventListener('MDCDrawer:opened', (e) => {
-        e.target.nextElementSibling.style.marginLeft = e.g
+        console.log('Into MDCDrawer:opened event');
+        if(drawer.id == 'drawerModal') {
+          e.target.shadowRoot.querySelector("aside").setAttribute('style', 'position:absolute;');
+        }
       });
-
       drawer.addEventListener('MDCDrawer:closed', (e) => {
-
+        console.log('Into MDCDrawer:closed event');
       });
     });
   </script>
