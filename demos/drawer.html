@@ -22,33 +22,14 @@ limitations under the License.
   <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
-  <script type="module" src="../node_modules/@material/mwc-drawer/mwc-drawer.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
-    body > header {
-      z-index: 7;
-    }
-    
-    .drawerView {
-      border: 1px solid gray;
-      display: flex;
-      margin-bottom: 36px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .drawerContent {
-      padding: 24px 8px;
-    }
-
-    .mainContent {
-      min-height: 300px;
-      padding: 8px;
-      position: relative;
-      flex: 1;
-    }
-
-  </style>
+      iframe {
+        border: 1px solid gray;
+        height: 300px;
+        width: 100%;
+      }
+    </style>
 </head>
 <body class="unresolved">
   <header>
@@ -58,66 +39,17 @@ limitations under the License.
 
   <div class='main'>
     <h2>Standard Drawer</h2>
-    <div class="drawerView">
-      <mwc-drawer hasHeader>
-        <span slot="title">Title!</span>
-        <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">
-            Drawer Content!
-            <br>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-        </div>
-        <div slot="appContent" class="mainContent">Main Content!</div>
-      </mwc-drawer>
-    </div>
+    <iframe src="drawer/standard.html"></iframe>
 
     <h2>Dismissible Drawer</h2>
-    <div class="drawerView">
-      <mwc-drawer hasHeader type="dismissible">
-        <span slot="title">Title!</span>
-        <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">
-            Drawer Content!
-            <br>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-        </div>
-        <div slot="appContent" class="mainContent">Main Content!</div>
-      </mwc-drawer>
-    </div>
-
+    <iframe src="drawer/dismissible.html"></iframe>
+    
     <h2>Modal Drawer</h2>
-    <div class="drawerView">
-      <mwc-drawer id="drawerModal" hasHeader type="modal">
-        <span slot="title">Title!</span>
-        <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">
-            Drawer Content!
-            <br>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-        </div>
-        <div slot="appContent" class="mainContent">Main Content!</div>
-      </mwc-drawer>
-    </div>
+    <iframe src="drawer/modal.html"></iframe>
   </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
-
-    Array.from(document.querySelectorAll('mwc-drawer[type]')).forEach((drawer) => {
-      const container = drawer.parentNode;
-      container.addEventListener('click', (e) => {
-        drawer.open = !drawer.open;
-      });
-      drawer.addEventListener('MDCDrawer:opened', (e) => {
-        console.log('Into MDCDrawer:opened event');
-        if(drawer.id == 'drawerModal') {
-          e.target.shadowRoot.querySelector("aside").setAttribute('style', 'position:absolute;');
-        }
-      });
-      drawer.addEventListener('MDCDrawer:closed', (e) => {
-        console.log('Into MDCDrawer:closed event');
-      });
-    });
   </script>
 </body>
 </html>
