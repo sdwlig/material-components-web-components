@@ -104,7 +104,7 @@ export class Table extends LitElement {
   public data;
 
   protected get templateEl() {
-    return this.slotEl && findAssignedElement(this.slotEl, '#template') as HTMLScriptElement;
+    return this.slotEl && findAssignedElement(this.slotEl, '*') as HTMLScriptElement;
   }
 
   protected get _bodyRows(): HTMLTableRowElement[] {
@@ -201,7 +201,7 @@ export class Table extends LitElement {
     return html`
       <table>
         ${head}
-        ${body || this._getEmptyBody(columnsCount)}
+        <tbody>${body || this._getEmptyBody(columnsCount)}</tbody>
       </table>
     `;
   }
@@ -296,13 +296,13 @@ export class Table extends LitElement {
     const rows = [...element.querySelectorAll('tr')];
 
     return html`
-        ${rows.map(item => {
-          return html`
-            <tr tabindex="-1">
-              ${unsafeHTML(item!.innerHTML)}
-            </tr>
-          `;
-        })}
+      ${rows.map(item => {
+        return html`
+          <tr tabindex="-1">
+            ${unsafeHTML(item!.innerHTML)}
+          </tr>
+        `;
+      })}
     `;
   }
 
@@ -313,25 +313,25 @@ export class Table extends LitElement {
    */
   protected _getBody(data: IDataItem[]): TemplateResult {
     return html`
-        ${data.map(item => {
-          const row = this._parsedColumns
-            ? this._parsedColumns
-              .map(col => ({
-                  field: col.field,
-                  value: item[col.field],
-                  align: col.align
-              }))
-            : Object.keys(item)
-              .map(key => ({
-                field: key,
-                value: item[key]
-              }))
-          return html`
-            <tr tabindex="-1">
-              ${this._getCells(row)}
-            </tr>
-          `;
-        })}
+      ${data.map(item => {
+        const row = this._parsedColumns
+          ? this._parsedColumns
+            .map(col => ({
+                field: col.field,
+                value: item[col.field],
+                align: col.align
+            }))
+          : Object.keys(item)
+            .map(key => ({
+              field: key,
+              value: item[key]
+            }))
+        return html`
+          <tr tabindex="-1">
+            ${this._getCells(row)}
+          </tr>
+        `;
+      })}
     `;
   }
 
@@ -342,11 +342,11 @@ export class Table extends LitElement {
    */
   protected _getEmptyBody(cols: number) {
     return html`
-        <tr>
-          <td align="center" colspan="${cols}">
-            ${this._getEmptyDataMessage()}
-          </td>
-        </tr>
+      <tr>
+        <td align="center" colspan="${cols}">
+          ${this._getEmptyDataMessage()}
+        </td>
+      </tr>
     `;
   }
 
