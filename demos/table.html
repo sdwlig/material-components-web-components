@@ -27,7 +27,7 @@ limitations under the License.
   <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@material/mwc-tooltip/mwc-tooltip.js"></script>
   <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
-<link rel="stylesheet" href="demo-component.css">
+  <link rel="stylesheet" href="demo-component.css">
   <style>
     h3 {
       text-align: center;
@@ -162,6 +162,10 @@ limitations under the License.
         }, 3000);
       });
     };
+
+    table_4.addEventListener('load', () => {
+      console.log('TABLE 4: data loaded');
+    })
 
     // Table 5: In a Card
 

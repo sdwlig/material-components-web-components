@@ -24,7 +24,7 @@ import {
 } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { findAssignedElement } from '@material/mwc-base/utils';
+import { findAssignedElement, emit } from '@material/mwc-base/utils';
 import { observer } from '@material/mwc-base/observer';
 import { cssClasses } from './constants';
 
@@ -178,12 +178,14 @@ export class Table extends LitElement {
   protected _loadData(value: Function): Promise<ICellItem[]> {
     this._isLoading = true;
     this.requestUpdate();
+    emit(this, 'beforeload');
 
     return value()
       .then(response => {
         setTimeout(() => {
           this._isLoading = false;
           this.requestUpdate();
+          emit(this, 'load');
         }, 0);
 
         return response;
