@@ -20,6 +20,7 @@ limitations under the License.
   <title>menu demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-button/mwc-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-menu/mwc-menu.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-list/mwc-list-item.js"></script>
@@ -45,11 +46,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Menu</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Menu</span>
   </header>
 
-  <main>
+  <div class='main'>
 
     <div class="demo-mdc-menu-anchor">
       <mwc-button id="button" raised ripple label="Go"></mwc-button>
@@ -66,7 +67,7 @@ limitations under the License.
       </mwc-menu>
     </div>
     <div class="demo-log" id="log"></div>
-  </main>
+  </div>
   <script>
     button.addEventListener('click', (e) => {
       menu.setAnchorCorner(menu.Corner.BOTTOM_START);

@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { html, BaseElement, property, query, observer, classMap } from '@authentic/mwc-base/base-element.js';
+import { html, BaseElement, property, query, observer, classMap } from '@authentic/mwc-base/base-element';
 import { FormElement } from '@authentic/mwc-base/form-element.js';
 import { findAssignedElement } from '@authentic/mwc-base/utils.js';
 import { style } from './mwc-formfield-css.js';
@@ -54,10 +54,10 @@ export class Formfield extends BaseElement {
 
   protected createAdapter(): MDCFormFieldAdapter {
     return {
-      registerInteractionHandler: (type: string, handler: EventListener) => {
+      registerInteractionHandler: (type: string, handler: any) => {
         this.labelEl.addEventListener(type, handler);
       },
-      deregisterInteractionHandler: (type: string, handler: EventListener) => {
+      deregisterInteractionHandler: (type: string, handler: any) => {
         this.labelEl.removeEventListener(type, handler);
       },
       activateInputRipple: () => {

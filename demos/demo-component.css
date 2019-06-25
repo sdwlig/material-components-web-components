@@ -11,7 +11,7 @@ body {
     transition: opacity ease-in 0.2s;
   }
 
-  header {
+  body > header {
     background-color: #6200ee;
     position: fixed;
     top: 0;
@@ -46,15 +46,16 @@ body {
     margin: auto;
   }
 
-  main {
+  div.main {
     margin-top: 64px;
     padding: 16px;
+    display: block;
   }
 
   .demo-group, .demo-group-spaced {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;  
+    flex-wrap: wrap;
   }
 
   .demo-group-spaced {

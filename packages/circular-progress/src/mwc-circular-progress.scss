@@ -50,10 +50,12 @@ limitations under the License.
 }
 
 .mwc-circular-progress.mwc-circular-progress--indeterminate {
-  animation: mwc-circular-progress-rotate 1.4s linear infinite;
+  animation: 1.4s linear 0s infinite normal none mwc-circular-progress-rotate;
+  animation-play-state: unset;
 
   circle {
-    animation: mwc-circular-progress-dash 1.4s ease-in-out infinite;
+    animation: 1.4s ease-in-out 0s infinite normal none mwc-circular-progress-dash;
+    animation-play-state: unset;
     stroke-dasharray: 80px, 200px;
     stroke-dashoffset: 0px;
   }

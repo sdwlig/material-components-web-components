@@ -37,9 +37,11 @@ limitations under the License.
 }
 
 // Fixes selected-text bottom-line hover state
-.mdc-select__selected-text:hover {
-  &:not(.mdc-select--disabled):not(.mdc-select--invalid) {
-    @include mdc-select-native-control-bottom-line-color_($mdc-select-bottom-line-hover-color);
+.mdc-select:hover {
+  &:not(.mdc-select--outlined):not(.mdc-select--disabled):not(.mdc-select--invalid) {
+    .mdc-select__selected-text {
+      @include mdc-select-native-control-bottom-line-color_($mdc-select-bottom-line-hover-color);
+    }
   }
 }
 
@@ -58,11 +60,3 @@ limitations under the License.
   position: relative;
   width: 100%;
 }
-
-::slotted(select) {
-  @extend .mdc-select__native-control;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-

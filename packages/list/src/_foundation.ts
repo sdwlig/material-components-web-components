@@ -139,6 +139,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   handleFocusIn(_: FocusEvent, listItemIndex: number) {
     if (listItemIndex >= 0) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, '0');
+    } else {
+      var idx = this.adapter_.getFocusedElementIndex()
+      this.adapter_.focusItemAtIndex(idx || 0);
     }
   }
 

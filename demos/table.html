@@ -20,13 +20,14 @@ limitations under the License.
   <title>table demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <script src="./polyfills.js"></script>
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-card/mwc-card.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-table/mwc-table.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-tooltip/mwc-tooltip.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
-<link rel="stylesheet" href="demo-component.css">
+  <link rel="stylesheet" href="demo-component.css">
   <style>
     h3 {
       text-align: center;
@@ -47,15 +48,15 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Tables</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Tables</span>
   </header>
 
-  <main>
+  <div class='main'>
     <h3>Template Data</h3>
     <div class="demo-container">
       <mwc-table id="table_1">
-        <template>
+        <script id="template" type="text/template">
           <thead>
             <tr>
               <th>Dessert (100g serving)</th>
@@ -80,7 +81,7 @@ limitations under the License.
               <td align="right">37</td>
             </tr>
           </tbody>
-        </template>
+        </script>
       </mwc-table>
     </div>
 
@@ -104,16 +105,16 @@ limitations under the License.
       <mwc-table id="table_4"></mwc-table>
     </div>
 
-    <h3>In a Card</h3>
     <div class="demo-container">
       <mwc-card>
-        <div slot="content" class="content">
+        <h3>In a Card</h3>
+        <div class="content">
           <mwc-table id="table_5" elevation="0"></mwc-table>
         </div>
       </mwc-card>
     </div>
 
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
@@ -161,6 +162,10 @@ limitations under the License.
         }, 3000);
       });
     };
+
+    table_4.addEventListener('load', () => {
+      console.log('TABLE 4: data loaded');
+    })
 
     // Table 5: In a Card
 

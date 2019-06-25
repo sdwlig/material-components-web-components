@@ -19,7 +19,8 @@ limitations under the License.
 <head>
   <title>icon demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
@@ -32,11 +33,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Icon</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Icon</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-group">
       <mwc-icon>sentiment_very_dissatisfied</mwc-icon>
       <mwc-icon>sentiment_dissatisfied</mwc-icon>
@@ -52,7 +53,7 @@ limitations under the License.
       <mwc-icon>exit_to_app</mwc-icon>
       <mwc-icon>camera</mwc-icon>
     </div>
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

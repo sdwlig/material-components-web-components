@@ -37,11 +37,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Snackbar</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Snackbar</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-group">
       <mwc-button id="snack1" raised ripple label="DEFAULT"></mwc-button>
       <mwc-button id="snack2" raised ripple label="LEADING"></mwc-button>
@@ -53,7 +53,7 @@ limitations under the License.
       <mwc-icon-button id="iconButton" icon="close" slot="dismiss"></mwc-icon-button>
     </mwc-snackbar>
 
-  </main>
+  </div>
   <script>
     snack1.onclick = () => {
       snack.stacked = false;

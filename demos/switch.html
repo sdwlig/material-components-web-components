@@ -19,25 +19,27 @@ limitations under the License.
 <head>
   <title>switch demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-switch/mwc-switch.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Switch</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Switch</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-group">
 
       <mwc-switch></mwc-switch>
       <mwc-switch checked></mwc-switch>
 
     </div>
-  </main>
+  </div>
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
   </script>

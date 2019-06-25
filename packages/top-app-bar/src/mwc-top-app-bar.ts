@@ -24,7 +24,7 @@ import {
   classMap,
   SpecificEventListener,
   addHasRemoveClass
-} from '@authentic/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element';
 import MDCTopAppBarBaseFoundation from '@material/top-app-bar/foundation';
 import MDCTopAppBarFoundation from '@material/top-app-bar/standard/foundation.js';
 import MDCShortTopAppBarFoundation from '@material/top-app-bar/short/foundation.js';
@@ -126,7 +126,7 @@ export class TopAppBar extends BaseElement {
       setStyle: (property: string, value: string) => this.mdcRoot.style.setProperty(property, value),
       getTopAppBarHeight: () => this.mdcRoot.clientHeight,
       // TODO(sorvell): don't understand why the top-app-bar knows about navigation
-      registerNavigationIconInteractionHandler: (type: string, handler: EventListenerOrEventListenerObject) => {
+      registerNavigationIconInteractionHandler: (type: string, handler: any) => {
         if (this._navIconSlot) {
           this._navIconSlot.addEventListener(type, handler);
         }
@@ -156,9 +156,9 @@ export class TopAppBar extends BaseElement {
   // override that prevents `super.firstUpdated` since we are controlling when `createFoundation` is called.
   firstUpdated() { }
 
-  updated(changedProperties: PropertyValues) {
+  updated(_changedProperties: PropertyValues) {
     // update foundation if `type` or `scrollTarget` changes
-    if (changedProperties.has('type') || changedProperties.has('scrollTarget')) {
+    if (_changedProperties.has('type') || _changedProperties.has('scrollTarget')) {
       this.createFoundation();
     }
   }

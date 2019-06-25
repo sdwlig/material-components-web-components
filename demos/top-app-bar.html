@@ -19,6 +19,7 @@ limitations under the License.
 <head>
   <title>top app bar demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-top-app-bar/mwc-top-app-bar.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
@@ -84,7 +85,7 @@ limitations under the License.
     <span>Top App Bar</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div id="controls">
       Type: <select>
         <option value="">Standard</option>
@@ -131,7 +132,7 @@ limitations under the License.
       </div>
     </div>
 
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

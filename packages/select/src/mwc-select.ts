@@ -215,6 +215,8 @@ export class Select extends FormElement {
     return this.slottedSelect;
   }
 
+  protected _formElementId = `_${Math.random().toString(36).substr(2, 9)}`;
+
   protected _selectedItem!: MWCListItem;
   
   protected _isMenuOpen: boolean = false;
@@ -268,12 +270,14 @@ export class Select extends FormElement {
       getValue: () => this._nativeControl!.value,
       setValue: (value: string) => {
         this._nativeControl!.value = value;
+        this._setNativeSelectedIndex(this.slottedSelect!.selectedIndex);
       },
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
       setSelectedIndex: (index: number) => {
         this._nativeControl!.selectedIndex = index;
+        this._setNativeSelectedIndex(index);
       },
       setDisabled: (isDisabled: boolean) => {
         this._nativeControl!.disabled = isDisabled;
@@ -392,7 +396,7 @@ export class Select extends FormElement {
 
   _renderFloatingLabel() {
     return html`
-      <label class="mdc-floating-label" for="form-element">${this.label}</label>
+      <label class="mdc-floating-label" for="${this._formElementId}">${this.label}</label>
     `;
   }
 
@@ -442,7 +446,7 @@ export class Select extends FormElement {
         <input type="hidden" name="enhanced-select">
         ${hasLeadingIcon ? this._renderLeadingIcon() : ''}
         <i class="mdc-select__dropdown-icon"></i>
-        <div class="mdc-select__selected-text"></div>
+        <div class="mdc-select__selected-text">&nbsp;</div>
         <slot name="select"></slot>
         ${hasLabel && !hasOutline ? this._renderFloatingLabel() : ''}
         ${hasOutline ? this._renderNotchedOutline() : this._renderLineRipple()}
@@ -455,10 +459,9 @@ export class Select extends FormElement {
   firstUpdated() {
     if (this.slottedSelect) {
       this._nativeControl = this.slottedSelect;
-      this._selectedText.remove();
     }
 
-    this.formElement.id = 'form-element';
+    this.formElement.id = this._formElementId;
 
     this._label = this.labelElement ? labelFactory(this.labelElement) : null;
     this._lineRipple = this.lineRippleElement ? lineRippleFactory(this.lineRippleElement) : null;
@@ -504,10 +507,10 @@ export class Select extends FormElement {
         const enhancedAdapterMethods = this._getEnhancedSelectAdapterMethods();
         enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
       }
+    }
 
-      setTimeout(() => {
-        this._enhancedSelectSetup();
-      }, 0);
+    if (this.slottedSelect) {
+      this._nativeSelectSetup();
     }
 
     // Initially sync floating label
@@ -518,6 +521,19 @@ export class Select extends FormElement {
       (this._nativeControl && this._nativeControl.disabled)
     ) {
       this.disabled = true;
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (this.slottedMenu) {
+      this.slottedMenu.updateComplete
+        .then(
+          () => {
+            this._enhancedSelectSetup();
+          }
+        );
     }
   }
 
@@ -536,6 +552,13 @@ export class Select extends FormElement {
   protected _onChange(evt) {
     evt.stopImmediatePropagation();
     this.mdcFoundation.handleChange(true);
+
+    if (this.slottedSelect) {
+      setTimeout(() => {
+        this._setNativeSelectedIndex(this.slottedSelect!.selectedIndex);
+        window && window.focus(); // Fixes IE11 selection
+      });
+    }
   }
   
   /**
@@ -613,9 +636,26 @@ export class Select extends FormElement {
   }
 
   /**
+   * Handles setup for the native control
+   */
+  protected _nativeSelectSetup() {
+    this.slottedSelect!.style.height = '100%';
+    this.slottedSelect!.style.left = '0';
+    this.slottedSelect!.style.opacity = '0';
+    this.slottedSelect!.style.position = 'absolute';
+    this.slottedSelect!.style.top = '0';
+    this.slottedSelect!.style.width = '100%';
+    this.slottedSelect!.style.zIndex = '1';
+    this.slottedSelect!.style.cursor = 'pointer';
+    this.slottedSelect!.style.font = getComputedStyle(this._selectedText).font;
+    this.slottedSelect!.style.fontSize = getComputedStyle(this._selectedText).fontSize;
+    this.slottedSelect!.style.padding = getComputedStyle(this._selectedText).padding;
+  }
+
+  /**
    * Handles setup for the enhanced menu.
    */
-  private _enhancedSelectSetup() {
+  protected _enhancedSelectSetup() {
     const isDisabled = this.mdcRoot.classList.contains(cssClasses.DISABLED);
     this._selectedText!.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.slottedMenu!.setAnchorElement(this.mdcRoot);
@@ -626,13 +666,13 @@ export class Select extends FormElement {
   /**
    * Calculates where the line ripple should start based on the x coordinate within the component.
    */
-  private _getNormalizedXCoordinate(evt: MouseEvent | TouchEvent): number {
+  protected _getNormalizedXCoordinate(evt: MouseEvent | TouchEvent): number {
     const targetClientRect = (evt.target as Element).getBoundingClientRect();
     const xCoordinate = this.isTouchEvent_(evt) ? evt.touches[0].clientX : evt.clientX;
     return xCoordinate - targetClientRect.left;
   }
 
-  private isTouchEvent_(evt: MouseEvent | TouchEvent): evt is TouchEvent {
+  protected isTouchEvent_(evt: MouseEvent | TouchEvent): evt is TouchEvent {
     return Boolean((evt as TouchEvent).touches);
   }
 
@@ -654,7 +694,11 @@ export class Select extends FormElement {
     };
   }
 
-  private _setEnhancedSelectedIndex(index: number) {
+  protected _setNativeSelectedIndex(index: number) {
+    this._selectedText!.textContent = this.slottedSelect!.options[index].textContent;
+  }
+
+  protected _setEnhancedSelectedIndex(index: number) {
     const selectedItem = this.slottedMenu!.items[index];
     this._selectedText!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
     const previouslySelected = this._selectedItem;
@@ -676,7 +720,7 @@ export class Select extends FormElement {
     this.layout();
   }
 
-  private _initialSyncRequiredState() {
+  protected _initialSyncRequiredState() {
     const isRequired =
         (this.formElement as HTMLSelectElement).required
         || this.formElement.getAttribute('aria-required') === 'true'
@@ -691,7 +735,7 @@ export class Select extends FormElement {
     }
   }
 
-  private _addMutationObserverForRequired() {
+  protected _addMutationObserverForRequired() {
     const observerHandler = (attributesList: string[]) => {
       attributesList.some((attributeName) => {
         if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) === -1) {

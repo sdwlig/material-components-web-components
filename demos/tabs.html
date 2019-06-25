@@ -20,6 +20,7 @@ limitations under the License.
   <title>tabs demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-tab/mwc-tab.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-tab-bar/mwc-tab-bar.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
@@ -34,11 +35,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Tabs</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Tabs</span>
   </header>
 
-  <main>
+  <div class='main'>
 
     <mwc-tab-bar>
       <mwc-tab label="one"></mwc-tab>
@@ -139,7 +140,7 @@ limitations under the License.
 
     <h3>RTL</h3>
     <iframe src="tabs/rtl.html"></iframe>
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

@@ -32,11 +32,11 @@ limitations under the License.
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Icon Button</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Icon Button</span>
   </header>
 
-  <main>
+  <div class='main'>
     <h4>No Toggle</h4>
 
     <mwc-icon-button icon="error"></mwc-icon-button>
@@ -55,9 +55,9 @@ limitations under the License.
       <mwc-icon-button icon="all_out" offIcon="accessibility"></mwc-icon-button>
       <mwc-icon-button icon="exit_to_app" offIcon="camera"></mwc-icon-button>
     </div>
-  </main>
+  </div>
 
-  <script type="module">
+  <script type="application/javascript">
     Array.from(document.querySelectorAll('mwc-icon-button')).forEach((e) => {
       e.addEventListener('MDCIconButtonToggle:change', (e) => console.log(e.type, e.target));
     });

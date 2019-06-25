@@ -23,7 +23,7 @@ import {
   PropertyValues,
   classMap,
   addHasRemoveClass
-} from '@authentic/mwc-base/base-element.js';
+} from '@authentic/mwc-base/base-element';
 import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
 import MDCSlidingTabIndicatorFoundation from '@material/tab-indicator/sliding-foundation.js';
 import MDCFadingTabIndicatorFoundation from '@material/tab-indicator/fading-foundation.js';
@@ -73,8 +73,8 @@ export class TabIndicator extends BaseElement {
       `;
   }
 
-  updated(changedProperties: PropertyValues) {
-    if (changedProperties.has('fade')) {
+  updated(_changedProperties: PropertyValues) {
+    if (_changedProperties.has('fade')) {
       this.createFoundation();
     }
   }

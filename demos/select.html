@@ -20,7 +20,9 @@ limitations under the License.
 <head>
   <title>select demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./polyfills.js"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-select/mwc-select.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-menu/mwc-menu.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-list/mwc-list.js"></script>
@@ -39,17 +41,17 @@ limitations under the License.
 <body class="unresolved">
   <header>
     <a href="index.html">
-      <mwc-icon>arrow_back</mwc-icon>
-      <span>Select</span>
+        <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+        <span>Select</span>
     </a>
   </header>
 
-  <main>
+  <div class='main'>
 
     <div class="demo-group">
       <div>
         <h3>box</h3>
-        <mwc-select label="Choose an item...">
+        <mwc-select leadingIconContent="event" label="Choose an item...">
           <select slot="select">
             <option value="" disabled selected></option>
             <option value="grains">
@@ -84,7 +86,7 @@ limitations under the License.
 
       <div>
         <h3>box required</h3>
-        <mwc-select box required label="Choose an item...">
+        <mwc-select box required leadingIconContent="event" label="Choose an item...">
           <select slot="select">
             <option value="" disabled selected></option>
             <option value="grains">
@@ -102,7 +104,7 @@ limitations under the License.
 
       <div>
         <h3>box disabled</h3>
-      
+
         <mwc-select leadingIconContent="event" box disabled label="Disabled...">
           <mwc-menu slot="menu">
             <mwc-list>
@@ -117,7 +119,7 @@ limitations under the License.
     <div class="demo-group">
       <div>
         <h3>outlined</h3>
-        <mwc-select outlined label="Choose an item...">
+        <mwc-select outlined leadingIconContent="event" label="Choose an item...">
           <select slot="select">
             <option value="" disabled selected></option>
             <option value="grains">
@@ -175,6 +177,7 @@ limitations under the License.
           validationMessage="Validation Message"
           persistentHelperText
           required
+          leadingIconContent="event" 
         >
           <select slot="select">
             <option value="" disabled selected></option>
@@ -227,6 +230,7 @@ limitations under the License.
           persistentHelperText
           id="select_1"
           value="grains"
+          leadingIconContent="event" 
         >
           <select slot="select">
             <option value="" disabled selected></option>
@@ -267,7 +271,7 @@ limitations under the License.
       </div>
     </div>
 
-  </main>
+  </div>
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
 
