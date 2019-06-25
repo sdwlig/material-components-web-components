@@ -147,7 +147,6 @@ export class ListItem extends LitElement {
 
   public updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
-    this.focused = this.tabindex >= 0;
   }
 
   public renderSingleLine() {
