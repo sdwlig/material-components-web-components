@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-table",
-  "version": "0.5.6",
+  "version": "0.5.16",
   "description": "",
   "main": "mwc-table.js",
   "scripts": {
@@ -9,10 +9,10 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.6",
-    "@authentic/mwc-circular-progress": "^0.5.6",
-    "@authentic/mwc-icon": "^0.5.6",
-    "@authentic/mwc-tooltip": "^0.5.6",
+    "@authentic/mwc-base": "^0.5.16",
+    "@authentic/mwc-circular-progress": "^0.5.16",
+    "@authentic/mwc-icon": "^0.5.16",
+    "@authentic/mwc-tooltip": "^0.5.16",
     "@material/elevation": "^1.1.0",
     "@material/shape": "^1.1.1",
     "@material/theme": "^1.1.0",
@@ -23,5 +23,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "eaeed8f0e17a15c048d9337f5973aa8567e2502f"
+  "gitHead": "dcae0b6ce11e206ca58aa47b0d1bd16539339194"
 }

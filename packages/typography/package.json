@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-typography",
-  "version": "0.5.6",
+  "version": "0.5.16",
   "description": "",
   "main": "mwc-typography-css.js",
   "scripts": {
@@ -15,5 +15,5 @@
     "access": "public"
   },
   "private": false,
-  "gitHead": "c28f807e8a31873c54599cce74c176200500d4e1"
+  "gitHead": "dcae0b6ce11e206ca58aa47b0d1bd16539339194"
 }
