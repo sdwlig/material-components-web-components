@@ -111,7 +111,13 @@ export class ListItem extends LitElement {
     };
 
     return html`
-      <li class="${classMap(classes)}" tabindex="${this.tabindex}" aria-current="${this.focused}" aria-selected="${this.selected}">
+      <li
+        class="${classMap(classes)}"
+        tabindex="${this.tabindex}"
+        aria-current="${this.focused}"
+        aria-selected="${this.selected}"
+        @focusout=${this.handleFocusOut}
+      >
         ${this.renderGraphic()}
         <span class="mdc-list-item__text">
           ${this._lines === 1 ? this.renderSingleLine() : this.renderDoubleLine()}
@@ -169,16 +175,17 @@ export class ListItem extends LitElement {
   }
 
   public renderMeta() {
-    let moreorless = this.expanded ? "expand_less" : "expand_more";
+    const moreorless = this.expanded ? "expand_less" : "expand_more";
     const orNot = this._slot_meta ? '' : '-empty';
+    const tab = this.focused ? 0 : -1;
     return this.expandable
       ? html`
         <span class="mdc-list-item__meta${orNot}">
-          <mwc-icon>${moreorless}</mwc-icon>
+          <mwc-icon tabindex="${tab}">${moreorless}</mwc-icon>
         </span>
       `: html`
         <span class="mdc-list-item__meta${orNot}">
-          <slot name='meta'></slot>
+          <slot name='meta' tabindex="${tab}"></slot>
         </span>
       `;
   }
@@ -195,6 +202,9 @@ export class ListItem extends LitElement {
     `;
   }
 
+  protected handleFocusOut(_) {
+    this.focused = false;
+  }
 
   public addClass(className) {
     this.mdcRoot.classList.add(className)
