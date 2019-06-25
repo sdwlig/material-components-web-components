@@ -101,7 +101,6 @@ export class List extends BaseElement {
     super.firstUpdated();
     this.layout();
     this.initializeListType();
-    // this.watchForWindowFocus();
   }
 
   static styles = style;
@@ -128,17 +127,11 @@ export class List extends BaseElement {
       inputType: () => this.inputType,
       setSelectedAtIndex: (index) => {
         this.selectItem(this.listElements[index] as ListItem);
-        // this.listElements.forEach(ele => {
-        //   ele.selected = false;
-        //   ele.setFocused(false);
-        // })
-        // this.listElements[index].selected = true;
-        // this.listElements[index].setFocused(true);
       },
       toggleItemAtIndex: (index) => { this.listElements[index].toggle() },
       getFocusedElementIndex: () => {
         return this.listElements.map((ele, index) => {
-          return (ele && Number(ele.getAttribute('tabindex')) >= 0) ? index : -1;
+          return (ele && ele.focused) ? index : -1;
         }).filter(e => e !== -1)[0];
       },
       getAttributeForElementIndex: (index, attr) => {
@@ -163,7 +156,9 @@ export class List extends BaseElement {
       },
       focusItemAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
-        if (ele && ele.disabled === false) ele.setFocused(true);
+        if (ele && !ele.disabled) {
+          this.focusItem(ele, true);
+        }
       },
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
         const ele = this.listElements[listItemIndex] as ListItem;
@@ -221,7 +216,6 @@ export class List extends BaseElement {
    * Used to figure out which element was clicked before sending the event to the foundation.
    */
   protected handleFocusInEvent_(evt: FocusEvent) {
-    console.log('handle focus in event', this)
     const index = this.getListItemIndex_(evt);
     this.mdcFoundation!.handleFocusIn(evt, index);
   }
@@ -230,8 +224,6 @@ export class List extends BaseElement {
  * Used to figure out which element was clicked before sending the event to the foundation.
  */
   protected handleFocusOutEvent_(evt: FocusEvent) {
-    const target = evt.target as Element;
-    console.log('handleFocudOutEvent', this, target);
     const index = this.getListItemIndex_(evt);
     this.mdcFoundation!.handleFocusOut(evt, index);
   }
@@ -271,37 +263,6 @@ export class List extends BaseElement {
     this.listElements.forEach(e => e.setFocused(false))
   }
 
-  protected watchForWindowFocus() {
-    // if (this.selectedIndex !== -1) {
-    //   this.listElements[this.selectedIndex].tabIndex = 0;
-    //   this.focusItemAtIndex(this.selectedIndex, true);
-    // } else {
-    //   this.listElements[0].tabIndex = 0;
-    //   // this.focusItemAtIndex(0, true)
-    // }
-    const list_component = this;
-    console.log('added watch focus')
-    window.addEventListener("focus", (evt) => {
-      const targetThis = evt.target === list_component;
-      const focusedInnerElements = list_component.mdcRoot.querySelectorAll(":focus");
-      const focusIsInside = focusedInnerElements.length > 0;
-      if (targetThis && !focusIsInside) {
-        console.log('focus event from watchForWindowFocus', evt.target);
-        list_component.focusItemAtIndex(0, true);
-        // this.tabindex = -1;
-      }
-    },true);
-    window.addEventListener("focusout", (evt) => {
-      const targetThis = evt.target === list_component;
-      const listRoot = list_component.mdcRoot;
-      const isList = listRoot && listRoot.matches('.mdc-list');
-
-      if (targetThis && isList) {
-        console.log('blur event from watchForWindowFocus', evt.target, list_component);
-      }
-    },true);
-  }
-
   protected focusItem(item: ListItem, hard: boolean = false) {
     this.defocusAllItems();
 
@@ -316,7 +277,6 @@ export class List extends BaseElement {
   }
 
   protected selectItem(item: ListItem) {
-    console.log('select item', this, item)
     this.deselectAllItems();
     if (item) {
       this.focusItem(item, false);
