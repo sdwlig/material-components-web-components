@@ -213,10 +213,6 @@ export class ListItem extends LitElement {
     this.mdcRoot.classList.remove(className)
   }
 
-  public getAttribute(attr) {
-    return this[attr];
-  }
-
   public setAttribute(attr, value) {
     this[attr] = value;
   }

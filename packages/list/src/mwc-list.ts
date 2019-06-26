@@ -134,10 +134,6 @@ export class List extends BaseElement {
           return (ele && ele.focused) ? index : -1;
         }).filter(e => e !== -1)[0];
       },
-      getAttributeForElementIndex: (index, attr) => {
-        const ele = this.listElements[index] as ListItem;
-        if (ele) return ele.getAttribute(attr); //temporary
-      },
       setAttributeForElementIndex: (index, attr, value) => {
         const ele = this.listElements[index] as ListItem;
         if (ele) ele.setAttribute(attr, value); // temporary
