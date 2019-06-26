@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-list",
-  "version": "0.5.17",
+  "version": "0.5.18",
   "description": "",
   "main": "mwc-list.js",
   "scripts": {
@@ -9,9 +9,9 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.17",
-    "@authentic/mwc-icon": "^0.5.17",
-    "@authentic/mwc-ripple": "^0.5.17",
+    "@authentic/mwc-base": "^0.5.18",
+    "@authentic/mwc-icon": "^0.5.18",
+    "@authentic/mwc-ripple": "^0.5.18",
     "@material/base": "^1.0.0",
     "@material/dom": "^1.1.0",
     "@material/feature-targeting": "^0.44.1",
