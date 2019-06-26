@@ -152,9 +152,7 @@ export class List extends BaseElement {
       },
       focusItemAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
-        if (ele && !ele.disabled) {
-          this.focusItem(ele, true);
-        }
+        if (ele) this.focusItem(ele, true);
       },
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
         const ele = this.listElements[listItemIndex] as ListItem;

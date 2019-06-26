@@ -54,10 +54,6 @@
     $mdc-list-divider-color-on-light-bg
   );
 
-  .mdc-list {
-    @include mdc-list-base_($query);
-  }
-
   @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background, $query);
   @include mdc-list-item-graphic-fill-color(transparent, $query);
   @include mdc-list-item-graphic-ink-color(text-icon-on-background, $query);
@@ -66,7 +62,7 @@
 
   .mdc-list-item {
     text-align: left;
-    
+
     @include mdc-feature-targets($feat-structure) {
       @include mdc-list-item-base_;
     }
@@ -82,7 +78,8 @@
   .mdc-list-item--background-focused.mdc-list-item--selected {
     background-color: rgba(0,0,0,0);
   }
-  .mdc-list-item--background-focused-disabled {
+  .mdc-list-item--background-focused-disabled,
+  .mdc-list-item--disabled.mdc-ripple-upgraded--background-focused {
     background-color: rgba(0,0,0,0.03);
   }
 
@@ -138,7 +135,7 @@
 
       flex-shrink: 0;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       fill: currentColor;
     }
   }
@@ -151,7 +148,7 @@
   // stylelint-disable plugin/selector-bem-pattern
   .mdc-list .mdc-list-item__graphic {
     @include mdc-feature-targets($feat-structure) {
-      display: inline-flex;
+      @include mdc-list-graphic-size_(24px);
     }
   }
   // stylelint-enable plugin/selector-bem-pattern
@@ -409,29 +406,6 @@
 //
 // Private
 //
-
-@mixin mdc-list-base_($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-typography: mdc-feature-create-target($query, typography);
-
-  @include mdc-typography(subtitle1, $query);
-
-  @include mdc-feature-targets($feat-typography) {
-    // According to the mocks and stickersheet, the line-height is
-    // adjusted to 24px for text content, same as for body1.
-    /* @alternate */
-    line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
-    margin: 0;
-    padding: 8px 0;
-    list-style-type: none;
-  }
-
-  @include mdc-list-item-primary-text-ink-color(text-primary-on-background, $query);
-}
 
 @mixin mdc-list-item-base_ {
   display: flex;
