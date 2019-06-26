@@ -50,7 +50,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       addClassForElementIndex: () => undefined,
       focusItemAtIndex: () => undefined,
       toggleItemAtIndex: () => undefined,
-      getAttributeForElementIndex: () => null,
       getFocusedElementIndex: () => 0,
       getListItemCount: () => 0,
       hasCheckboxAtIndex: () => false,

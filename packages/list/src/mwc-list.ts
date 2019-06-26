@@ -134,10 +134,6 @@ export class List extends BaseElement {
           return (ele && ele.focused) ? index : -1;
         }).filter(e => e !== -1)[0];
       },
-      getAttributeForElementIndex: (index, attr) => {
-        const ele = this.listElements[index] as ListItem;
-        if (ele) return ele.getAttribute(attr); //temporary
-      },
       setAttributeForElementIndex: (index, attr, value) => {
         const ele = this.listElements[index] as ListItem;
         if (ele) ele.setAttribute(attr, value); // temporary
@@ -156,9 +152,7 @@ export class List extends BaseElement {
       },
       focusItemAtIndex: (index: number) => {
         const ele = this.listElements[index] as ListItem;
-        if (ele && !ele.disabled) {
-          this.focusItem(ele, true);
-        }
+        if (ele) this.focusItem(ele, true);
       },
       setTabIndexForListItemChildren: (listItemIndex: number, tabIndexValue: string) => {
         const ele = this.listElements[listItemIndex] as ListItem;

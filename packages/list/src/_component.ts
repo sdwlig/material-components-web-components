@@ -148,7 +148,6 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       toggleItemAtIndex: () => {},
       inputType: () => "",
       setSelectedAtIndex: () => {},
-      getAttributeForElementIndex: (index, attr) => this.listElements[index].getAttribute(attr),
       getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,
       hasCheckboxAtIndex: (index) => {

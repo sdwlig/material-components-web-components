@@ -92,7 +92,7 @@ export class ListItem extends LitElement {
   static styles = style;
 
   render() {
-    let inactive = this._nonInteractive || this.disabled;
+    let inactive = this._nonInteractive;
     const classes = {
       "mdc-list-item": true,
       "mdc-list-item__avatar-list": this._avatarList,
@@ -169,7 +169,9 @@ export class ListItem extends LitElement {
   public renderGraphic() {
     const orNot = this._slot_graphic ? '' : '-empty';
     return html`
-      <slot class="mdc-list-item__graphic${orNot}" name='graphic'></slot>
+      <span class="mdc-list-item__graphic${orNot}">
+        <slot name='graphic'></slot>
+      </span>
     `
   }
 
@@ -213,10 +215,6 @@ export class ListItem extends LitElement {
     this.mdcRoot.classList.remove(className)
   }
 
-  public getAttribute(attr) {
-    return this[attr];
-  }
-
   public setAttribute(attr, value) {
     this[attr] = value;
   }
@@ -247,10 +245,11 @@ export class ListItem extends LitElement {
     Array
       .from( this.shadowRoot!.querySelectorAll( "slot" ) )
       .forEach( ( slot ) => {
-        let nodes = slot.assignedNodes();
+        const nodes = slot.assignedNodes();
+        const name = slot.name || slot['Ba']; // da fuq is IE doing here?
         if (nodes.length) {
         } else {
-          this[ `_slot_${slot.name}` ] = false;
+          this[ `_slot_${name}` ] = false;
           this.requestUpdate()
         }
       } );
