@@ -64,6 +64,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       setTabIndexForListItemChildren: () => undefined,
       inputType: () => 'undefined',
       setSelectedAtIndex: () => undefined,
+      clearSelection: () => undefined,
     };
   }
 
@@ -120,6 +121,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   setSelectedIndex(index: MDCListIndex) {
     if (!this.isIndexValid_(index)) {
+      if (index === -1) this.clearSelection_();
       return;
     }
 
@@ -312,6 +314,15 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
     this.adapter_.setSelectedAtIndex(index);
     this.selectedIndex_ = index;
+  }
+
+  private clearSelection_() {
+    if (this.selectedIndex_ === -1) {
+      return;
+    }
+
+    this.adapter_.clearSelection();
+    this.selectedIndex_ = -1;
   }
 
   /**

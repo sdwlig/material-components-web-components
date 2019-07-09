@@ -128,6 +128,9 @@ export class List extends BaseElement {
       setSelectedAtIndex: (index) => {
         this.selectItem(this.listElements[index] as ListItem);
       },
+      clearSelection: () => {
+        this.clearSelection();
+      },
       toggleItemAtIndex: (index) => { this.listElements[index].toggle() },
       getFocusedElementIndex: () => {
         return this.listElements.map((ele, index) => {
@@ -271,11 +274,16 @@ export class List extends BaseElement {
   }
 
   protected selectItem(item: ListItem) {
-    this.deselectAllItems();
+    this.clearSelection();
+    
     if (item) {
       this.focusItem(item, false);
       item.selected = true;
     }
+  }
+
+  protected clearSelection() {
+    this.deselectAllItems();
   }
 
   public selectItemAtIndex(index: number) {
