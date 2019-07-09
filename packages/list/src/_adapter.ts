@@ -57,6 +57,8 @@ export interface MDCListAdapter {
 
   setSelectedAtIndex(index): void;
 
+  clearSelection(): void;
+
   /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
