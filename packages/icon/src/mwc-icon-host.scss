@@ -19,3 +19,8 @@ limitations under the License.
 :host {
   @extend %material-icons;
 }
+
+slot {
+  font-style: normal;
+  text-align: center;
+}
