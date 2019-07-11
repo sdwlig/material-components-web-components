@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-table",
-  "version": "0.5.21",
+  "version": "0.5.22",
   "description": "",
   "main": "mwc-table.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "@authentic/mwc-base": "^0.5.19",
     "@authentic/mwc-circular-progress": "^0.5.19",
-    "@authentic/mwc-icon": "^0.5.21",
+    "@authentic/mwc-icon": "^0.5.22",
     "@authentic/mwc-tooltip": "^0.5.19",
     "@material/elevation": "^1.1.0",
     "@material/shape": "^1.1.1",
