@@ -29,6 +29,7 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import { style } from './mwc-slider-css.js';
 import MDCSliderFoundation from '@material/slider/foundation.js';
 import { MDCSliderAdapter } from '@material/slider/adapter.js';
+import ResizeObserver from 'resize-observer-polyfill';
 
 const { INPUT_EVENT, CHANGE_EVENT } = MDCSliderFoundation.strings;
 
@@ -151,6 +152,20 @@ export class Slider extends FormElement {
           <div class="mdc-slider__focus-ring"></div>
         </div>
       </div>`;
+  }
+
+  firstUpdated() {
+    super.firstUpdated();
+
+    this.updateComplete
+      .then(() => {
+        const ro = new ResizeObserver(() => this._handleResizeObserver());
+        ro.observe(this.mdcRoot);
+      });
+  }
+
+  protected _handleResizeObserver() {
+    this.layout();
   }
 
   protected createAdapter(): MDCSliderAdapter {
