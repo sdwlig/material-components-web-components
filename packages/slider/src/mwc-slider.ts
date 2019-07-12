@@ -29,6 +29,7 @@ import { repeat } from 'lit-html/directives/repeat.js';
 import { style } from './mwc-slider-css.js';
 import MDCSliderFoundation from '@material/slider/foundation.js';
 import { MDCSliderAdapter } from '@material/slider/adapter.js';
+// TODO(walterrojas): Needs reevaluation in order to move the polyfills externally
 import ResizeObserver from 'resize-observer-polyfill';
 
 const { INPUT_EVENT, CHANGE_EVENT } = MDCSliderFoundation.strings;
