@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-textfield",
-  "version": "0.5.22",
+  "version": "0.5.23",
   "description": "",
   "main": "mwc-textfield.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-icon": "^0.5.22",
+    "@authentic/mwc-icon": "^0.5.23",
     "@authentic/mwc-ripple": "^0.5.19",
     "@material/floating-label": "^1.1.0",
     "@material/line-ripple": "^1.1.0",
