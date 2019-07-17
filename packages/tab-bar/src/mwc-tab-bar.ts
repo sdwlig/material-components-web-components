@@ -20,7 +20,8 @@ import {
   property,
   observer,
   query,
-  customElement
+  customElement,
+  emit
 } from '@material/mwc-base/base-element';
 import { Tab } from '@material/mwc-tab';
 import { TabScroller } from '@material/mwc-tab-scroller';
@@ -39,6 +40,10 @@ declare global {
     'mwc-tab-bar': TabBar;
   }
 }
+
+export const EVENTS = {
+  activated: 'activated'
+};
 
 @customElement('mwc-tab-bar' as any)
 export class TabBar extends BaseElement {
@@ -82,7 +87,7 @@ export class TabBar extends BaseElement {
   // TODO(sorvell): can scroller be optional for perf?
   render() {
     return html`
-      <div class="mdc-tab-bar" role="tablist" @MDCTab:interacted="${this._handleTabInteraction}" @keydown="${this._handleKeydown}">
+      <div class="mdc-tab-bar" role="tablist" @interacted="${this._handleTabInteraction}" @keydown="${this._handleKeydown}">
         <mwc-tab-scroller>
           <slot></slot>
         </mwc-tab-scroller>
@@ -161,9 +166,7 @@ export class TabBar extends BaseElement {
         // Synchronize the tabs `activeIndex` to the foundation.
         // This is needed when a tab is changed via a click, for example.
         this.activeIndex = index;
-        this.dispatchEvent(
-          new CustomEvent(MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT,
-            { detail: { index }, bubbles: true, cancelable: true }))
+        emit(this, EVENTS.activated, { index }, true);
       }
     };
   }
