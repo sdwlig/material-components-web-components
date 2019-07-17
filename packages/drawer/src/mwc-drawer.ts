@@ -23,16 +23,21 @@ import {
   customElement,
   PropertyValues,
   classMap,
-  addHasRemoveClass
+  addHasRemoveClass,
+  emit
 } from '@authentic/mwc-base/base-element';
 import MDCModalDrawerFoundation from '@material/drawer/modal/foundation.js';
 import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation.js';
 import { MDCDrawerAdapter } from '@material/drawer/adapter.js';
-import { strings } from '@material/drawer/constants.js';
 import 'wicg-inert/dist/inert.js';
 import 'blocking-elements/blocking-elements.js';
 
 import { style } from './mwc-drawer-css.js';
+
+export const EVENTS = {
+  closed: 'closed',
+  opened: 'opened',
+}
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -82,11 +87,11 @@ export class Drawer extends BaseElement {
       },
       notifyClose: () => {
         this.open = false;
-        this.dispatchEvent(new Event(strings.CLOSE_EVENT, { bubbles: true, cancelable: true }))
+        emit(this, EVENTS.closed, {}, true);
       },
       notifyOpen: () => {
         this.open = true;
-        this.dispatchEvent(new Event(strings.OPEN_EVENT, { bubbles: true, cancelable: true }))
+        emit(this, EVENTS.opened, {}, true);
       },
       // TODO(sorvell): Implement list focusing integration.
       focusActiveNavigationItem: () => {

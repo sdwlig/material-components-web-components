@@ -27,8 +27,7 @@ import {
 import { findAssignedElements } from '@authentic/mwc-base/utils';
 import { MDCChipSetFoundation } from '@material/chips/chip-set/foundation';
 import { MDCChipSetAdapter } from '@material/chips/chip-set/adapter';
-import { MDCChipFoundation } from '@material/chips/chip/foundation';
-import { Chip as MWCChip } from './mwc-chip';
+import { Chip as MWCChip, EVENTS as CHIP_EVENTS } from './mwc-chip';
 
 import { style } from './mwc-chip-set-css';
 
@@ -132,9 +131,9 @@ export class ChipSet extends BaseElement {
   }
 
   protected _initialize() {
-    this.addEventListener(MDCChipFoundation.strings.INTERACTION_EVENT, this._handleChipInteraction);
-    this.addEventListener(MDCChipFoundation.strings.SELECTION_EVENT, this._handleChipSelection);
-    this.addEventListener(MDCChipFoundation.strings.REMOVAL_EVENT, this._handleChipRemoval);
+    this.addEventListener(CHIP_EVENTS.interaction, this._handleChipInteraction);
+    this.addEventListener(CHIP_EVENTS.selection, this._handleChipSelection);
+    this.addEventListener(CHIP_EVENTS.removal, this._handleChipRemoval);
 
     this._updateChips();
   }

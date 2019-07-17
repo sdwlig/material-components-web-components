@@ -22,14 +22,19 @@ import {
   observer,
   customElement,
   classMap,
-  addHasRemoveClass
+  addHasRemoveClass,
+  emit
 } from '@authentic/mwc-base/base-element';
 import { style } from './mwc-snackbar-css.js';
 import MDCSnackbarFoundation from '@material/snackbar/foundation.js';
-import { MDCSnackbarCloseEventDetail } from '@material/snackbar/types';
 import { MDCSnackbarAdapter } from '@material/snackbar/adapter.js';
 
-const { OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT } = MDCSnackbarFoundation.strings;
+export const EVENTS = {
+  closed: 'closed',
+  closing: 'closing',
+  opened: 'opened',
+  opening: 'opening',
+}
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -100,16 +105,18 @@ export class Snackbar extends BaseElement {
       announce: () => { },
       notifyClosed: (reason: String) => {
         this.isOpen = false;
-        this.dispatchEvent(new CustomEvent(CLOSED_EVENT,
-          { bubbles: true, cancelable: true, detail: <MDCSnackbarCloseEventDetail>{ reason: reason } }))
+        emit(this, EVENTS.closed, { reason }, true);
       },
-      notifyClosing: (reason: String) => this.dispatchEvent(new CustomEvent(CLOSING_EVENT,
-        { bubbles: true, cancelable: true, detail: <MDCSnackbarCloseEventDetail>{ reason: reason } })),
+      notifyClosing: (reason: String) => {
+        emit(this, EVENTS.closing, { reason }, true);
+      },
       notifyOpened: () => {
         this.isOpen = true;
-        this.dispatchEvent(new CustomEvent(OPENED_EVENT, { bubbles: true, cancelable: true }))
+        emit(this, EVENTS.opened, {}, true);
       },
-      notifyOpening: () => this.dispatchEvent(new CustomEvent(OPENING_EVENT, { bubbles: true, cancelable: true })),
+      notifyOpening: () => {
+        emit(this, EVENTS.opening, {}, true);
+      },
     };
   }
 

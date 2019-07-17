@@ -26,16 +26,20 @@ import {
   findAssignedElement
 } from '@authentic/mwc-base/base-element';
 import { MDCMenuFoundation, MDCMenuAdapter, Corner } from '@material/menu';
-import { cssClasses, DefaultFocusState, strings } from '@material/menu/constants';
+import { cssClasses, DefaultFocusState } from '@material/menu/constants';
 import { MDCMenuSurface, MDCMenuSurfaceFactory } from '@material/menu-surface/component';
-import MDCListFoundation from '@material/list/foundation';
 import MDCMenuSurfaceFoundation from '@material/menu-surface/foundation';
 import { MDCMenuDistance } from '@material/menu-surface/types';
 import { List as MWCList } from '@authentic/mwc-list/mwc-list';
+import { strings as listStrings } from '@authentic/mwc-list/_constants';
 
 import { style } from './mwc-menu-css.js';
 
 const menuSurfaceFactory: MDCMenuSurfaceFactory = el => new MDCMenuSurface(el);
+
+export const EVENTS = {
+  selected: 'selected'
+};
 
 @customElement('mwc-menu' as any)
 export class Menu extends BaseElement {
@@ -131,7 +135,7 @@ export class Menu extends BaseElement {
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
       notifySelected: (evtData) => {
-        emit(this, strings.SELECTED_EVENT, {
+        emit(this, EVENTS.selected, {
           index: evtData.index,
           item: this.items[evtData.index],
         }, true)
@@ -164,7 +168,7 @@ export class Menu extends BaseElement {
 
     if (this.listEl) {
       this.listEl.addEventListener('keydown', this._handleKeydown);
-      this.listEl.addEventListener(MDCListFoundation.strings.ACTION_EVENT, this._handleItemAction);
+      this.listEl.addEventListener(listStrings.ACTION_EVENT, this._handleItemAction);
     }
   }
 

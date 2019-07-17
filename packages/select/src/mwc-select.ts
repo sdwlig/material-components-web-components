@@ -37,10 +37,9 @@ import { MDCFloatingLabel, MDCFloatingLabelFactory } from '@material/floating-la
 import { MDCLineRipple, MDCLineRippleFactory } from '@material/line-ripple';
 import { findAssignedElement } from '@authentic/mwc-base/utils';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
-import * as menuConstants from '@material/menu/constants';
 import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 import { emit } from '@authentic/mwc-base/utils';
-import { Menu as MWCMenu } from '@authentic/mwc-menu/mwc-menu';
+import { Menu as MWCMenu, EVENTS as MENU_EVENTS } from '@authentic/mwc-menu/mwc-menu';
 import { ListItem as MWCListItem } from '@authentic/mwc-list/mwc-list-item';
 
 import { style } from './mwc-select-css.js';
@@ -491,7 +490,7 @@ export class Select extends FormElement {
       this._selectedText!.addEventListener('keydown', this._handleKeydown);
       this.slottedMenu!.addEventListener(menuSurfaceConstants.strings.CLOSED_EVENT, this._handleMenuClosed);
       this.slottedMenu!.addEventListener(menuSurfaceConstants.strings.OPENED_EVENT, this._handleMenuOpened);
-      this.slottedMenu!.addEventListener(menuConstants.strings.SELECTED_EVENT, this._handleMenuSelected);
+      this.slottedMenu!.addEventListener(MENU_EVENTS.selected, this._handleMenuSelected);
 
       if (this.leadingIconElement) {
         this.slottedMenu.classList.add(cssClasses.WITH_LEADING_ICON);

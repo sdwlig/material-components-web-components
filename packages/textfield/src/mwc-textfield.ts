@@ -77,6 +77,10 @@ const INPUT_PROPS = [
   'wrap'
 ];
 
+export const EVENTS = {
+  trailingIconInteraction: 'trailingiconintectaction'
+}
+
 declare global {
   interface HTMLElementTagNameMap {
     'mwc-textfield': TextField;
@@ -605,7 +609,7 @@ export class TextField extends FormElement {
       if (isSpace) evt.preventDefault();
     }
 
-    emit(this, 'MDCTextfield:trailingIconInteraction');
+    emit(this, EVENTS.trailingIconInteraction, {}, true);
   }
 
   /**

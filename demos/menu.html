@@ -76,7 +76,7 @@ limitations under the License.
       menu.open = !menu.open;
     })
 
-    menu.addEventListener('MDCMenu:selected', function(evt) {
+    menu.addEventListener('selected', function(evt) {
       var detail = evt.detail;
       log.textContent = `selected: ${detail.index}, ${detail.item.innerHTML}`;
     });

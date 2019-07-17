@@ -145,7 +145,7 @@ limitations under the License.
           dialog.open();
         });
 
-        dialog.addEventListener('MDCDialog:closed', e => {
+        dialog.addEventListener('closed', e => {
           console.log(e.type, e.detail);
         });
       </script>
@@ -236,7 +236,7 @@ limitations under the License.
         scrollingDialog.open();
       });
 
-      scrollingDialog.addEventListener('MDCDialog:closed', e => {
+      scrollingDialog.addEventListener('closed', e => {
         console.log(e.type, e.detail);
       });
     </script>

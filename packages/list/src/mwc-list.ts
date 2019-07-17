@@ -27,7 +27,6 @@ import {
 } from '@authentic/mwc-base/base-element';
 import { emit } from '@authentic/mwc-base/utils';
 import { closest, matches } from '@material/dom/ponyfill';
-// import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 import MDCListFoundation from './_foundation';
 import { MDCListAdapter } from './_adapter';
 import { strings } from './_constants';
@@ -177,7 +176,9 @@ export class List extends BaseElement {
         const ele = this.listElements[index] as ListItem;
         if (ele) ele.selected = true;
       },
-      notifyAction: (index: number) => { emit(this, strings.ACTION_EVENT, { listIndex: index }, true) },
+      notifyAction: (index: number) => {
+        emit(this, strings.ACTION_EVENT, { listIndex: index }, true)
+      },
       isFocusInsideList: (): boolean => (this.mdcRoot.querySelectorAll(":focus").length > 0),
     }
   }

@@ -73,8 +73,8 @@ limitations under the License.
       element.textContent = `Value from ${e.type}: ${e.detail.value}`;
     }
     Array.from(document.querySelectorAll('mwc-slider')).forEach((e) => {
-      e.addEventListener('MDCSlider:input', (e) => show(window.logInput, e));
-      e.addEventListener('MDCSlider:change', (e) => show(window.logChange, e));
+      e.addEventListener('input', (e) => show(window.logInput, e));
+      e.addEventListener('change', (e) => show(window.logChange, e));
     });
 
     addEventListener('load', () => document.body.classList.remove('unresolved'));

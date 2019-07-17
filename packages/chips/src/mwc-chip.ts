@@ -29,7 +29,6 @@ import { MDCChipFoundation } from '@material/chips/chip/foundation';
 import { MDCChipAdapter } from '@material/chips/chip/adapter';
 import { ChipSet as MWCChipSet } from './mwc-chip-set';
 import { styleMap } from 'lit-html/directives/style-map';
-import { strings } from '@material/chips/chip/constants';
 import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 import { style } from './mwc-chip-css';
 
@@ -38,6 +37,13 @@ import "@authentic/mwc-icon/mwc-icon-font";
 const INTERACTION_EVENTS = [ 'click', 'keydown' ];
 const IMAGE_FORMATS_REGEX = new RegExp(/(http(s?):\/\/)|(.(gif|jp(e?)g|png|svg))$/);
 const COLOR_REGEX = new RegExp(/^#([0-9a-zA-Z]{3}|[0-9a-zA-Z]{6})$/);
+
+export const EVENTS = {
+  removal: 'removal',
+  selection: 'selection',
+  interaction: 'interaction',
+  trailingIconInteraction: 'trailingiconinteraction'
+}
 
 @customElement('mwc-chip' as any)
 export class Chip extends BaseElement {
@@ -154,7 +160,7 @@ export class Chip extends BaseElement {
         this._onNotifyRemoval();
       },
       notifySelection: selected => this._onNotifySelection(selected),
-      notifyTrailingIconInteraction: () => emit(this, strings.TRAILING_ICON_INTERACTION_EVENT, { chipId: this.id }, true),
+      notifyTrailingIconInteraction: () => emit(this, EVENTS.trailingIconInteraction, { chipId: this.id }, true),
       removeClassFromLeadingIcon: className => {
         if (this.leadingIconEl) {
           this.leadingIconEl.classList.remove(className);
@@ -330,15 +336,15 @@ export class Chip extends BaseElement {
   }
 
   protected _onNotifyRemoval() {
-    emit(this, strings.REMOVAL_EVENT, { chipId: this.id, root: this.mdcRoot }, true);
+    emit(this, EVENTS.removal, { chipId: this.id, root: this.mdcRoot }, true);
   }
 
   protected _onNotifyInteraction() {
-    emit(this, strings.INTERACTION_EVENT, { chipId: this.id }, true);
+    emit(this, EVENTS.interaction, { chipId: this.id }, true);
   }
 
   protected _onNotifySelection(selected) {
-    emit(this, strings.SELECTION_EVENT, { chipId: this.id, selected: selected }, true)
+    emit(this, EVENTS.selection, { chipId: this.id, selected: selected }, true);
   }
 
   /**

@@ -30,7 +30,7 @@ const cssClasses = {
 };
 
 const strings = {
-  ACTION_EVENT: 'MDCList:action',
+  ACTION_EVENT: 'action',
   ARIA_CHECKED: 'aria-checked',
   ARIA_CHECKED_CHECKBOX_SELECTOR: '[role="checkbox"][aria-checked="true"]',
   ARIA_CHECKED_RADIO_SELECTOR: '[role="radio"][aria-checked="true"]',

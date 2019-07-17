@@ -25,6 +25,13 @@ import { style } from './mwc-dialog-css'
 
 const LAYOUT_EVENTS = ['resize', 'orientationchange']
 
+export const EVENTS = {
+  closed: 'closed',
+  closing: 'closing',
+  opened: 'opened',
+  opening: 'opening'
+}
+
 declare global {
   interface HTMLElementTagNameMap {
     'mwc-dialog': Dialog;
@@ -216,10 +223,10 @@ export class Dialog extends BaseElement {
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE)
       },
       isContentScrollable: () => isScrollable(this.contentEl) && this.scrollable,
-      notifyClosed: action => emit(this, strings.CLOSED_EVENT, action ? { action } : {}),
-      notifyClosing: action => emit(this, strings.CLOSING_EVENT, action ? { action } : {}),
-      notifyOpened: () => emit(this, strings.OPENED_EVENT, {}),
-      notifyOpening: () => emit(this, strings.OPENING_EVENT, {}),
+      notifyClosed: action => emit(this, EVENTS.closed, action ? { action } : {}),
+      notifyClosing: action => emit(this, EVENTS.closing, action ? { action } : {}),
+      notifyOpened: () => emit(this, EVENTS.opened, {}),
+      notifyOpening: () => emit(this, EVENTS.opening, {}),
       releaseFocus: () => {
         // document.$blockingElements.remove(this)
       },
@@ -318,8 +325,8 @@ export class Dialog extends BaseElement {
 
     this.mdcRoot.addEventListener('click', this._handleInteraction)
     this.addEventListener('keydown', this._handleInteraction)
-    this.addEventListener(strings.OPENING_EVENT, this._handleOpening)
-    this.addEventListener(strings.CLOSING_EVENT, this._handleClosing)
+    this.addEventListener(EVENTS.opening, this._handleOpening)
+    this.addEventListener(EVENTS.closing, this._handleClosing)
   }
 
   protected open(): void {
