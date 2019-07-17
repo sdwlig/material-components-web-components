@@ -21,7 +21,8 @@ import {
   query,
   customElement,
   classMap,
-  addHasRemoveClass
+  addHasRemoveClass,
+  emit
 } from '@material/mwc-base/base-element';
 import { TabIndicator } from '@material/mwc-tab-indicator';
 import { ripple } from '@material/mwc-ripple/ripple-directive';
@@ -41,6 +42,10 @@ declare global {
 
 // used for generating unique id for each tab
 let tabIdCounter = 0;
+
+export const EVENTS = {
+  interacted: 'interacted'
+};
 
 @customElement('mwc-tab' as any)
 export class Tab extends BaseElement {
@@ -142,13 +147,9 @@ export class Tab extends BaseElement {
         (this._tabIndicator as TabIndicator).activate(previousIndicatorClientRect),
       deactivateIndicator: () =>
         (this._tabIndicator as TabIndicator).deactivate(),
-      notifyInteracted: () => this.dispatchEvent(
-        new CustomEvent(MDCTabFoundation.strings.INTERACTED_EVENT, {
-          detail: { tabId: this.id },
-          bubbles: true,
-          composed: true,
-          cancelable: true
-        })),
+      notifyInteracted: () => {
+        emit(this, EVENTS.interacted, { tabId: this.id }, true);
+      },
       getOffsetLeft: () => this.offsetLeft,
       getOffsetWidth: () => this.mdcRoot.offsetWidth,
       getContentOffsetLeft: () => this._contentElement.offsetLeft,

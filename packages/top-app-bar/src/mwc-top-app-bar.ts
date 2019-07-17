@@ -23,13 +23,13 @@ import {
   PropertyValues,
   classMap,
   SpecificEventListener,
-  addHasRemoveClass
+  addHasRemoveClass,
+  emit
 } from '@material/mwc-base/base-element';
 import MDCTopAppBarBaseFoundation from '@material/top-app-bar/foundation';
 import MDCTopAppBarFoundation from '@material/top-app-bar/standard/foundation.js';
 import MDCShortTopAppBarFoundation from '@material/top-app-bar/short/foundation.js';
 import MDCFixedTopAppBarFoundation from '@material/top-app-bar/fixed/foundation.js';
-import { strings } from '@material/top-app-bar/constants.js';
 import { style } from './mwc-top-app-bar-css.js';
 import { MDCTopAppBarAdapter } from '@material/top-app-bar/adapter';
 
@@ -38,6 +38,10 @@ declare global {
     'mwc-top-app-bar': TopAppBar;
   }
 }
+
+export const EVENTS = {
+  nav: 'nav'
+};
 
 @customElement('mwc-top-app-bar' as any)
 export class TopAppBar extends BaseElement {
@@ -137,7 +141,7 @@ export class TopAppBar extends BaseElement {
         }
       },
       notifyNavigationIconClicked: () => {
-        this.dispatchEvent(new Event(strings.NAVIGATION_EVENT, { bubbles: true, cancelable: true }));
+        emit(this, EVENTS.nav, {}, true);
       },
       registerScrollHandler: (handler: SpecificEventListener<'scroll'>) =>
         this.scrollTarget.addEventListener('scroll', handler as EventListenerOrEventListenerObject),

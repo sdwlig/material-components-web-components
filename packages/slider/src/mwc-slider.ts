@@ -23,7 +23,8 @@ import {
   customElement,
   classMap,
   SpecificEventListener,
-  addHasRemoveClass
+  addHasRemoveClass,
+  emit
 } from '@material/mwc-base/form-element.js';
 import { repeat } from 'lit-html/directives/repeat.js';
 import { style } from './mwc-slider-css.js';
@@ -32,7 +33,10 @@ import { MDCSliderAdapter } from '@material/slider/adapter.js';
 // TODO(walterrojas): Needs reevaluation in order to move the polyfills externally
 import ResizeObserver from 'resize-observer-polyfill';
 
-const { INPUT_EVENT, CHANGE_EVENT } = MDCSliderFoundation.strings;
+export const EVENTS = {
+  change: 'change',
+  input: 'input',
+};
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -197,11 +201,11 @@ export class Slider extends FormElement {
         const value = this.mdcFoundation.getValue();
         if (value !== this.value) {
           this.value = value;
-          this.dispatchEvent(new CustomEvent(INPUT_EVENT, { detail: this, bubbles: true, cancelable: true }));
+          emit(this, EVENTS.input, this, true);
         }
       },
       notifyChange: () => {
-        this.dispatchEvent(new CustomEvent(CHANGE_EVENT, { detail: this, bubbles: true, cancelable: true }));
+        emit(this, EVENTS.change, this, true);
       },
       setThumbContainerStyleProperty: (propertyName: string, value: string) =>
         this.thumbContainer.style.setProperty(propertyName, value),
