@@ -13,8 +13,8 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/linear-progress": "~2.3.0",
-    "@authentic/mwc-base": "~0.6.0"
+    "@authentic/mwc-base": "^0.6.0",
+    "@material/linear-progress": "~2.3.0"
   },
   "publishConfig": {
     "access": "public"

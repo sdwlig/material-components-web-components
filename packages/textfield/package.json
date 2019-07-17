@@ -14,11 +14,11 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
+    "@authentic/mwc-base": "^0.6.0",
+    "@authentic/mwc-icon": "^0.6.0",
+    "@authentic/mwc-ripple": "^0.6.0",
     "@material/floating-label": "~2.3.0",
     "@material/line-ripple": "~2.3.0",
-    "@authentic/mwc-base": "~0.6.0",
-    "@authentic/mwc-icon": "~0.6.0",
-    "@authentic/mwc-ripple": "~0.6.0",
     "@material/notched-outline": "~2.3.0",
     "@material/textfield": "~2.3.1"
   },
