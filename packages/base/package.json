@@ -1,16 +1,20 @@
 {
   "name": "@authentic/mwc-base",
-  "version": "0.5.19",
+  "version": "0.6.0",
   "description": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/AuthX/material-components-web-components.git"
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/base": "^1.0.0",
-    "lit-element": "^2.1.0",
-    "lit-html": "^1.0.0"
+    "@material/base": "~1.0.0",
+    "lit-element": "~2.2.0",
+    "lit-html": "~1.1.1"
   },
   "publishConfig": {
     "access": "public"

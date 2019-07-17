@@ -24,9 +24,10 @@ import {
     PropertyValues
 } from '@authentic/mwc-base/base-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import { MDCTooltipFoundation } from './foundation.js';
-import { MDCTooltipAdapter } from './adapter.js';
-import { style } from './mwc-tooltip-css.js';
+import { MDCTooltipFoundation } from './foundation';
+import { MDCTooltipAdapter } from './adapter';
+
+import { style } from './mwc-tooltip-css';
 
 declare global {
     interface HTMLElementTagNameMap {

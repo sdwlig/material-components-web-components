@@ -27,11 +27,13 @@ import {
   emit
 } from '@authentic/mwc-base/base-element';
 import MDCTopAppBarBaseFoundation from '@material/top-app-bar/foundation';
-import MDCTopAppBarFoundation from '@material/top-app-bar/standard/foundation.js';
-import MDCShortTopAppBarFoundation from '@material/top-app-bar/short/foundation.js';
-import MDCFixedTopAppBarFoundation from '@material/top-app-bar/fixed/foundation.js';
-import { style } from './mwc-top-app-bar-css.js';
+import MDCTopAppBarFoundation from '@material/top-app-bar/standard/foundation';
+import MDCShortTopAppBarFoundation from '@material/top-app-bar/short/foundation';
+import MDCFixedTopAppBarFoundation from '@material/top-app-bar/fixed/foundation';
 import { MDCTopAppBarAdapter } from '@material/top-app-bar/adapter';
+
+
+import { style } from './mwc-top-app-bar-css';
 
 declare global {
   interface HTMLElementTagNameMap {

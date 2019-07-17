@@ -1,26 +1,28 @@
 {
   "name": "@authentic/mwc-textfield",
-  "version": "0.5.23",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-textfield.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-icon": "^0.5.23",
-    "@authentic/mwc-ripple": "^0.5.19",
-    "@material/floating-label": "^1.1.0",
-    "@material/line-ripple": "^1.1.0",
-    "@material/notched-outline": "^1.1.1",
-    "@material/textfield": "^2.0.0",
-    "lit-element": "^2.0.1"
+    "@material/floating-label": "~2.3.0",
+    "@material/line-ripple": "~2.3.0",
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-icon": "~0.6.0",
+    "@authentic/mwc-ripple": "~0.6.0",
+    "@material/notched-outline": "~2.3.0",
+    "@material/textfield": "~2.3.1"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "private": false,
-  "gitHead": "ea174f23ba786cdce17fdd44e38ec76ae75d1790"
+  }
 }

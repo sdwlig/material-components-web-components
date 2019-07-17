@@ -1,26 +1,24 @@
 {
   "name": "@authentic/mwc-card",
-  "version": "0.5.23",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-card.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-icon": "^0.5.23",
-    "@authentic/mwc-ripple": "^0.5.19",
-    "@authentic/mwc-typography": "^0.5.19",
-    "@material/card": "^2.0.0",
-    "@material/ripple": "^2.0.0",
-    "@material/typography": "^1.0.0",
-    "lit-element": "^2.1.0"
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-icon": "~0.6.0",
+    "@authentic/mwc-ripple": "~0.6.0",
+    "@material/card": "~2.3.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "private": false,
-  "gitHead": "ea174f23ba786cdce17fdd44e38ec76ae75d1790"
+  }
 }

@@ -25,11 +25,11 @@ import {
   addHasRemoveClass
 } from '@authentic/mwc-base/base-element';
 import MDCTabIndicatorFoundation from '@material/tab-indicator/foundation';
-import MDCSlidingTabIndicatorFoundation from '@material/tab-indicator/sliding-foundation.js';
-import MDCFadingTabIndicatorFoundation from '@material/tab-indicator/fading-foundation.js';
+import MDCSlidingTabIndicatorFoundation from '@material/tab-indicator/sliding-foundation';
+import MDCFadingTabIndicatorFoundation from '@material/tab-indicator/fading-foundation';
 import { MDCTabIndicatorAdapter } from '@material/tab-indicator/adapter';
 
-import { style } from './mwc-tab-indicator-css.js';
+import { style } from './mwc-tab-indicator-css';
 
 declare global {
   interface HTMLElementTagNameMap {

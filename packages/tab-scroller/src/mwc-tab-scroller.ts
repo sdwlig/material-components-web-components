@@ -22,10 +22,11 @@ import {
   eventOptions,
   addHasRemoveClass
 } from '@authentic/mwc-base/base-element';
-import MDCTabScrollerFoundation from '@material/tab-scroller/foundation.js';
 import { matches } from '@material/dom/ponyfill';
-import { style } from './mwc-tab-scroller-css.js';
+import MDCTabScrollerFoundation from '@material/tab-scroller/foundation';
 import { MDCTabScrollerAdapter } from '@material/tab-scroller/adapter';
+
+import { style } from './mwc-tab-scroller-css';
 
 declare global {
   interface HTMLElementTagNameMap {

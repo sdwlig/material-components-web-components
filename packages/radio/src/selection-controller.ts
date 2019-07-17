@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {Radio} from './mwc-radio.js';
+import {Radio} from './mwc-radio';
 
 /**
  * Unique symbol for marking roots

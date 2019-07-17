@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-tab-bar",
-  "version": "0.5.23",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-tab-bar.js",
   "repository": {
@@ -14,14 +14,13 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-tab": "^0.5.23",
-    "@authentic/mwc-tab-scroller": "^0.5.19",
-    "@material/tab-bar": "^2.0.0"
+    "@material/tab": "~2.3.0",
+    "@material/tab-bar": "~2.3.0",
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-tab": "~0.6.0",
+    "@authentic/mwc-tab-scroller": "~0.6.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "private": false,
-  "gitHead": "ea174f23ba786cdce17fdd44e38ec76ae75d1790"
+  }
 }

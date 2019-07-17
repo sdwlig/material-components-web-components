@@ -25,13 +25,14 @@ import {
   SpecificEventListener,
   addHasRemoveClass,
   emit
-} from '@authentic/mwc-base/form-element.js';
-import { repeat } from 'lit-html/directives/repeat.js';
-import { style } from './mwc-slider-css.js';
-import MDCSliderFoundation from '@material/slider/foundation.js';
-import { MDCSliderAdapter } from '@material/slider/adapter.js';
+} from '@authentic/mwc-base/form-element';
+import { repeat } from 'lit-html/directives/repeat';
+import MDCSliderFoundation from '@material/slider/foundation';
+import { MDCSliderAdapter } from '@material/slider/adapter';
 // TODO(walterrojas): Needs reevaluation in order to move the polyfills externally
 import ResizeObserver from 'resize-observer-polyfill';
+
+import { style } from './mwc-slider-css';
 
 export const EVENTS = {
   change: 'change',

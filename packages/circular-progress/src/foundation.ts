@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-// import { transformStyleProperties } from '@material/animation/index';
-
 import { cssClasses } from './constants';
 
 export default class MDCCircularProgressFoundation {

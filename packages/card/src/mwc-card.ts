@@ -26,7 +26,7 @@ import {
 } from "@authentic/mwc-base/base-element";
 import { ripple } from  "@authentic/mwc-ripple/ripple-directive";
 
-import { style } from "./mwc-card-css.js";
+import { style } from "./mwc-card-css";
 
 import "@authentic/mwc-icon/mwc-icon-font";
 

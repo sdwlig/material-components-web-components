@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-tooltip",
-  "version": "0.5.19",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-tooltip.js",
   "repository": {
@@ -13,12 +13,12 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@material/animation": "^1.0.0",
-    "@material/base": "^1.0.0",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^1.0.0",
-    "lit-html": "^1.0.0"
+    "@authentic/mwc-base": "~0.6.0",
+    "@material/animation": "~1.0.0",
+    "@material/base": "~1.0.0",
+    "@material/theme": "~1.1.0",
+    "@material/typography": "~2.3.0",
+    "lit-html": "~1.1.1"
   },
   "publishConfig": {
     "access": "public"

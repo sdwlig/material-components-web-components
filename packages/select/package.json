@@ -1,34 +1,30 @@
 {
   "name": "@authentic/mwc-select",
-  "version": "0.5.23",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-select.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-list": "^0.5.23",
-    "@authentic/mwc-menu": "^0.5.19",
-    "@authentic/mwc-ripple": "^0.5.19",
-    "@material/animation": "^1.0.0",
-    "@material/floating-label": "^1.1.0",
-    "@material/line-ripple": "^1.1.0",
-    "@material/menu": "^2.0.0",
-    "@material/menu-surface": "^1.1.1",
-    "@material/notched-outline": "^1.1.0",
-    "@material/ripple": "^1.1.0",
-    "@material/rtl": "^0.42.0",
-    "@material/select": "^1.1.0",
-    "@material/shape": "^1.0.0",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^1.0.0"
+    "@material/floating-label": "~2.3.0",
+    "@material/line-ripple": "~2.3.0",
+    "@material/menu-surface": "~2.3.0",
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-icon": "~0.6.0",
+    "@authentic/mwc-list": "~0.6.0",
+    "@authentic/mwc-menu": "~0.6.0",
+    "@authentic/mwc-ripple": "~0.6.0",
+    "@material/notched-outline": "~2.3.0",
+    "@material/select": "~2.3.1"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "private": false,
-  "gitHead": "ea174f23ba786cdce17fdd44e38ec76ae75d1790"
+  }
 }

@@ -1,18 +1,21 @@
 {
   "name": "@authentic/mwc-switch",
-  "version": "0.5.19",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-switch.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/AuthX/material-components-web-components.git"
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-ripple": "^0.5.19",
-    "@material/switch": "^2.0.0"
+    "@material/switch": "~2.3.0",
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-ripple": "~0.6.0"
   },
   "publishConfig": {
     "access": "public"

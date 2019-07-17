@@ -15,11 +15,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import { LitElement, html, property, customElement, classMap } from '@authentic/mwc-base/base-element';
-import { ripple } from '@authentic/mwc-ripple/ripple-directive.js';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive';
 
-import { style } from './mwc-button-css.js';
+import { style } from './mwc-button-css';
 
-import '@authentic/mwc-icon/mwc-icon-font.js';
+import '@authentic/mwc-icon/mwc-icon-font';
 
 declare global {
   interface HTMLElementTagNameMap {

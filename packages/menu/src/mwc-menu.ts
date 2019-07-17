@@ -33,7 +33,7 @@ import { MDCMenuDistance } from '@material/menu-surface/types';
 import { List as MWCList } from '@authentic/mwc-list/mwc-list';
 import { strings as listStrings } from '@authentic/mwc-list/_constants';
 
-import { style } from './mwc-menu-css.js';
+import { style } from './mwc-menu-css';
 
 const menuSurfaceFactory: MDCMenuSurfaceFactory = el => new MDCMenuSurface(el);
 

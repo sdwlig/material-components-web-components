@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import '@material/tab/mdc-tab.scss';
-@import "@authentic/mwc-icon/src/_mwc-icon.scss";
+@import '@material/tab/mdc-tab';
+@import "@authentic/mwc-icon/src/mwc-icon";
 
 .material-icons {
   @extend %material-icons;

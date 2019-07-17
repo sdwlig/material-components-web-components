@@ -1,22 +1,24 @@
 {
   "name": "@authentic/mwc-icon-button",
-  "version": "0.5.23",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-icon-button.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-icon": "^0.5.23",
-    "@authentic/mwc-ripple": "^0.5.19",
-    "@material/icon-button": "^2.0.0"
+    "@material/icon-button": "~2.3.0",
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-icon": "~0.6.0",
+    "@authentic/mwc-ripple": "~0.6.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "private": false,
-  "gitHead": "ea174f23ba786cdce17fdd44e38ec76ae75d1790"
+  }
 }

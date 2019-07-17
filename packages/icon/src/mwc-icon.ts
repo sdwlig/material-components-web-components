@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import { LitElement, html, customElement, classMap, query } from '@authentic/mwc-base/base-element';
-import { style} from './mwc-icon-host-css.js';
-import './mwc-icon-font.js';
+import { style} from './mwc-icon-host-css';
+import './mwc-icon-font';
 
 @customElement('mwc-icon' as any)
 export class Icon extends LitElement {

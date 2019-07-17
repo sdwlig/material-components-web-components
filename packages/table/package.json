@@ -1,27 +1,31 @@
 {
   "name": "@authentic/mwc-table",
-  "version": "0.5.23",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-table.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.5.19",
-    "@authentic/mwc-circular-progress": "^0.5.19",
-    "@authentic/mwc-icon": "^0.5.23",
-    "@authentic/mwc-tooltip": "^0.5.19",
-    "@material/elevation": "^1.1.0",
-    "@material/shape": "^1.1.1",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^1.0.0",
-    "lit-element": "^2.1.0",
-    "lit-html": "^1.0.0"
+    "@material/theme": "~1.1.0",
+    "@material/elevation": "~1.1.0",
+    "@material/shape": "~1.1.1",
+    "@material/typography": "~2.3.0",
+    "@authentic/mwc-base": "~0.6.0",
+    "@authentic/mwc-icon": "~0.6.0",
+    "@authentic/mwc-circular-progress": "~0.6.0",
+    "@authentic/mwc-tooltip": "~0.6.0",
+    "lit-element": "~2.2.0",
+    "lit-html": "~1.1.1"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "ea174f23ba786cdce17fdd44e38ec76ae75d1790"
+  }
 }
