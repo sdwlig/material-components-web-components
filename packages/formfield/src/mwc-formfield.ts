@@ -14,12 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { html, BaseElement, property, query, observer, classMap } from '@material/mwc-base/base-element';
-import { FormElement } from '@material/mwc-base/form-element.js';
-import { findAssignedElement } from '@material/mwc-base/utils.js';
-import { style } from './mwc-formfield-css.js';
-import MDCFormFieldFoundation from '@material/form-field/foundation.js';
-import { MDCFormFieldAdapter } from '@material/form-field/adapter.js';
+import { FormElement, html, BaseElement, property, query, observer, classMap, findAssignedElement } from '@material/mwc-base/form-element';
+import MDCFormFieldFoundation from '@material/form-field/foundation';
+import { MDCFormFieldAdapter } from '@material/form-field/adapter';
+
+import { style } from './mwc-formfield-css';
 
 declare global {
   interface HTMLElementTagNameMap {

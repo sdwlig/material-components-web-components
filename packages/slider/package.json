@@ -1,18 +1,22 @@
 {
   "name": "@material/mwc-slider",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-slider.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/slider": "^1.1.0",
-    "@material/mwc-base": "^0.5.0",
-    "lit-html": "^1.0.0",
-    "resize-observer-polyfill": "^1.5.1"
+    "@material/mwc-base": "~0.6.0",
+    "@material/slider": "~2.3.0",
+    "lit-html": "~1.1.1",
+    "resize-observer-polyfill": "~1.5.1"
   },
   "publishConfig": {
     "access": "public"

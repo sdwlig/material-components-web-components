@@ -24,14 +24,15 @@ import {
   classMap,
   addHasRemoveClass,
   findAssignedElements,
+  emit
 } from '@material/mwc-base/base-element';
-import { emit } from '@material/mwc-base/utils';
 import { closest, matches } from '@material/dom/ponyfill';
 import MDCListFoundation from './_foundation';
 import { MDCListAdapter } from './_adapter';
 import { strings } from './_constants';
-import { style } from './mwc-list-css';
 import { ListItem } from './mwc-list-item';
+
+import { style } from './mwc-list-css';
 
 declare global {
   interface HTMLElementTagNameMap {

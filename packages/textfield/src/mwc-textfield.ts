@@ -56,7 +56,7 @@ import { MDCTextFieldFoundationMap } from '@material/textfield/types';
 import { ripple } from '@material/mwc-ripple/ripple-directive';
 import { emit } from '@material/mwc-base/utils';
 
-import { style } from './mwc-textfield-css.js';
+import { style } from './mwc-textfield-css';
 
 const lineRippleFactory: MDCLineRippleFactory = el => new MDCLineRipple(el);
 const helperTextFactory: MDCTextFieldHelperTextFactory = el => new MDCTextFieldHelperText(el);

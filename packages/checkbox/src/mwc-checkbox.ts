@@ -14,12 +14,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { html, FormElement, customElement, property, query, observer, HTMLElementWithRipple, addHasRemoveClass, RippleSurface } from '@material/mwc-base/form-element.js';
-import { ripple } from '@material/mwc-ripple/ripple-directive.js';
-import MDCCheckboxFoundation from '@material/checkbox/foundation.js';
-import { MDCCheckboxAdapter } from '@material/checkbox/adapter.js';
+import { html, FormElement, customElement, property, query, observer, HTMLElementWithRipple, addHasRemoveClass, RippleSurface } from '@material/mwc-base/form-element';
+import { ripple } from '@material/mwc-ripple/ripple-directive';
+import MDCCheckboxFoundation from '@material/checkbox/foundation';
+import { MDCCheckboxAdapter } from '@material/checkbox/adapter';
 
-import { style } from './mwc-checkbox-css.js';
+import { style } from './mwc-checkbox-css';
 
 declare global {
   interface HTMLElementTagNameMap {

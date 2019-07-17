@@ -21,9 +21,11 @@ import {
   customElement,
   classMap
 } from '@material/mwc-base/base-element';
-import { style } from './mwc-fab-css.js';
-import { ripple } from '@material/mwc-ripple/ripple-directive.js';
-import '@material/mwc-icon/mwc-icon-font.js';
+import { ripple } from '@material/mwc-ripple/ripple-directive';
+
+import { style } from './mwc-fab-css';
+
+import '@material/mwc-icon/mwc-icon-font';
 
 declare global {
   interface HTMLElementTagNameMap {

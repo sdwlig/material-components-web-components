@@ -26,13 +26,13 @@ import {
   addHasRemoveClass,
   emit
 } from '@material/mwc-base/base-element';
-import MDCModalDrawerFoundation from '@material/drawer/modal/foundation.js';
-import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation.js';
-import { MDCDrawerAdapter } from '@material/drawer/adapter.js';
-import 'wicg-inert/dist/inert.js';
-import 'blocking-elements/blocking-elements.js';
+import MDCModalDrawerFoundation from '@material/drawer/modal/foundation';
+import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation';
+import { MDCDrawerAdapter } from '@material/drawer/adapter';
+import 'wicg-inert/dist/inert';
+import 'blocking-elements/blocking-elements';
 
-import { style } from './mwc-drawer-css.js';
+import { style } from './mwc-drawer-css';
 
 export const EVENTS = {
   closed: 'closed',

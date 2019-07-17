@@ -16,7 +16,7 @@ limitations under the License.
 */
 import { LitElement, html, customElement } from 'lit-element';
 
-import { style } from './mwc-list-item-separator-css.js';
+import { style } from './mwc-list-item-separator-css';
 
 declare global {
   interface HTMLElementTagNameMap {

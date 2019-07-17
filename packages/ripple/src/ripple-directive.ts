@@ -14,14 +14,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {directive, PropertyPart, noChange, NodePart, templateFactory} from 'lit-html';
-import MDCRippleFoundation from '@material/ripple/foundation.js';
-import {MDCRippleAdapter} from '@material/ripple/adapter.js';
-import {style} from './mwc-ripple-global-css.js';
-import * as util from '@material/ripple/util.js';
+import { directive, PropertyPart, noChange, NodePart, templateFactory } from 'lit-html';
+import { SpecificEventListener } from '@material/mwc-base/base-element';
+import MDCRippleFoundation from '@material/ripple/foundation';
+import { MDCRippleAdapter } from '@material/ripple/adapter';
+import * as util from '@material/ripple/util';
 import { matches } from '@material/dom/ponyfill';
 
-import { SpecificEventListener } from '@material/mwc-base/base-element';
+import { style } from './mwc-ripple-global-css';
 
 const supportsCssVariables = util.supportsCssVariables(window);
 
@@ -46,7 +46,7 @@ const isSafari = navigator.userAgent.match(/Safari/);
 let didApplyRippleStyle = false;
 const applyRippleStyle = () => {
   didApplyRippleStyle = true;
-  const part = new NodePart({templateFactory});
+  const part = new NodePart({ templateFactory });
   part.appendInto(document.head!);
   part.setValue(style);
   part.commit();
@@ -87,10 +87,10 @@ export const rippleNode = (options: RippleNodeOptions) => {
       interactionNode.removeEventListener(type, handler, util.applyPassive()),
     registerDocumentInteractionHandler: (evtType: string, handler: Handler) =>
       document.documentElement!.addEventListener(
-          evtType, handler, util.applyPassive()),
+        evtType, handler, util.applyPassive()),
     deregisterDocumentInteractionHandler: (evtType: string, handler: Handler) =>
       document.documentElement!.removeEventListener(
-          evtType, handler, util.applyPassive()),
+        evtType, handler, util.applyPassive()),
     registerResizeHandler: (handler: SpecificEventListener<'resize'>) =>
       window.addEventListener('resize', handler),
     deregisterResizeHandler: (handler: SpecificEventListener<'resize'>) =>
@@ -98,7 +98,7 @@ export const rippleNode = (options: RippleNodeOptions) => {
     updateCssVariable: (varName: string, value: string) =>
       surfaceNode.style.setProperty(varName, value),
     computeBoundingRect: () => surfaceNode.getBoundingClientRect(),
-    getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
+    getWindowPageOffset: () => ({ x: window.pageXOffset, y: window.pageYOffset }),
     ...options.adapter
   };
   const rippleFoundation = new MDCRippleFoundation(adapter);
@@ -125,10 +125,10 @@ export const ripple = directive((options: RippleOptions = {}) => (part: Property
   }
   // make the ripple, if needed
   if (rippleFoundation === noChange) {
-    rippleFoundation = rippleNode(Object.assign({}, options, {surfaceNode}));
+    rippleFoundation = rippleNode(Object.assign({}, options, { surfaceNode }));
     rippleInteractionNodes.set(rippleFoundation, interactionNode);
     part.setValue(rippleFoundation);
-  // otherwise update settings as needed.
+    // otherwise update settings as needed.
   } else {
     if (options.unbounded !== undefined) {
       rippleFoundation.setUnbounded(options.unbounded);

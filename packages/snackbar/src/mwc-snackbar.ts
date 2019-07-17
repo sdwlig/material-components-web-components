@@ -25,9 +25,10 @@ import {
   addHasRemoveClass,
   emit
 } from '@material/mwc-base/base-element';
-import { style } from './mwc-snackbar-css.js';
-import MDCSnackbarFoundation from '@material/snackbar/foundation.js';
-import { MDCSnackbarAdapter } from '@material/snackbar/adapter.js';
+import MDCSnackbarFoundation from '@material/snackbar/foundation';
+import { MDCSnackbarAdapter } from '@material/snackbar/adapter';
+
+import { style } from './mwc-snackbar-css';
 
 export const EVENTS = {
   closed: 'closed',

@@ -23,11 +23,12 @@ import {
   customElement,
   HTMLElementWithRipple,
   addHasRemoveClass
-} from '@material/mwc-base/form-element.js';
-import { style } from './mwc-switch-css.js';
-import MDCSwitchFoundation from '@material/switch/foundation.js';
-import { ripple } from '@material/mwc-ripple/ripple-directive.js';
+} from '@material/mwc-base/form-element';
+import MDCSwitchFoundation from '@material/switch/foundation';
 import { MDCSwitchAdapter } from '@material/switch/adapter';
+import { ripple } from '@material/mwc-ripple/ripple-directive';
+
+import { style } from './mwc-switch-css';
 
 declare global {
   interface HTMLElementTagNameMap {
