@@ -83,9 +83,6 @@ export class Radio extends FormElement {
 
   connectedCallback() {
     super.connectedCallback();
-    if (this._selectionController) {
-      this._selectionController.register(this);
-    }
   }
 
   disconnectedCallback() {
@@ -146,6 +143,7 @@ export class Radio extends FormElement {
   firstUpdated() {
     super.firstUpdated();
     if (this._selectionController) {
+      this._selectionController.register(this);
       this._selectionController.update(this);
     }
   }
