@@ -78,7 +78,7 @@ const INPUT_PROPS = [
 ];
 
 export const EVENTS = {
-  trailingIconInteraction: 'trailingiconintectaction'
+  trailingIconInteraction: 'trailingiconinteraction'
 }
 
 declare global {
