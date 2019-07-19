@@ -196,36 +196,37 @@ limitations under the License.
 
       <h1> Older stuff below </h1>
 
-        <section>
-          <h4>Accordion - Expand and collapse</h4>
-          <mwc-list>
-            <mwc-list-item expandable>
-              Parent Category
-              <div slot="content">
-                <mwc-list-item>Child Category</mwc-list-item>
-                <mwc-list-item>Child Category</mwc-list-item>
-                <mwc-list-item>Child Category</mwc-list-item>
-                <mwc-list-item>Child Category</mwc-list-item>
-              </div>
-            </mwc-list-item>
-            <mwc-list-item expandable>
-              <mwc-icon slot="graphic">alarm_on</mwc-icon>
-              Alarms
+      <section>
+        <h4>Accordion - Expand and collapse</h4>
+        <mwc-list>
+          <mwc-list-item expandable>
+            Parent Category
+            <div slot="content">
+              <mwc-list-item>Child Category</mwc-list-item>
+              <mwc-list-item>Child Category</mwc-list-item>
+              <mwc-list-item>Child Category</mwc-list-item>
+              <mwc-list-item>Child Category</mwc-list-item>
+            </div>
+          </mwc-list-item>
+          <mwc-list-item expandable>
+            <mwc-icon slot="graphic">alarm_on</mwc-icon>
+            Alarms
 
-              <div slot="content">
-                <mwc-list-item indent>Daily</mwc-list-item>
-                <mwc-list-item indent>Weekly</mwc-list-item>
-                <mwc-list-item indent>Reminders</mwc-list-item>
-              </div>
-            </mwc-list-item>
-          </mwc-list>
-        </section>
-      </div>
+            <div slot="content">
+              <mwc-list-item indent>Daily</mwc-list-item>
+              <mwc-list-item indent>Weekly</mwc-list-item>
+              <mwc-list-item indent>Reminders</mwc-list-item>
+            </div>
+          </mwc-list-item>
+        </mwc-list>
+      </section>
     </div>
-    <script>
-      addEventListener("load", () =>
-        document.body.classList.remove("unresolved")
-      );
-    </script>
-  </body>
+  </div>
+  <script>
+    addEventListener("load", () =>
+      document.body.classList.remove("unresolved")
+    );
+  </script>
+</body>
+
 </html>
