@@ -54,8 +54,11 @@ export class Button extends LitElement {
   @property()
   label = '';
 
-  @property()
+  @property({ type: String, reflect: true })
   href = '';
+
+  @property({ type: String, reflect: true })
+  target = '_self';
 
   createRenderRoot() {
     return this.attachShadow({ mode: 'open', delegatesFocus: true });
@@ -85,6 +88,7 @@ export class Button extends LitElement {
             ?disabled="${this.disabled}"
             aria-label="${this.label || this.icon}"
             href="${this.href}"
+            target="${this.target}"
           >
             ${this.icon && !this.trailingIcon ? mdcButtonIcon : ''}
             <span class="mdc-button__label">${this.label}</span>
