@@ -43,6 +43,11 @@ limitations under the License.
     .wide {
       width: 250px;
     }
+
+    custom-button,
+    mwc-button {
+      display: inline-block;
+    }
   </style>
 </head>
 <body class="unresolved">
@@ -83,7 +88,7 @@ limitations under the License.
 
     <h4>link</h4>
 
-    <mwc-button label="Normal" icon="explore" href="button.html"></mwc-button>
+    <mwc-button label="Normal" icon="explore" target="_blank" href="button.html"></mwc-button>
 
     <script type="module">
       import {html, css} from 'lit-element/lit-element.js';
@@ -92,7 +97,11 @@ limitations under the License.
         static get styles() {
           return [
             Button.styles,
-            css`.mdc-button{border-radius: 8px}`,
+            css`
+              .mdc-button{
+                border-radius: 8px
+              }
+            `,
           ];
         }
       }
