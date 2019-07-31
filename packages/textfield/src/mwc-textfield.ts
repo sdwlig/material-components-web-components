@@ -246,6 +246,9 @@ export class TextField extends FormElement {
   })
   public wrap;
 
+  @property({ type: Boolean })
+  public floatLabel = false;
+
   public get valid(): boolean {
     return this.mdcFoundation && this.mdcFoundation.isValid();
   }
@@ -340,7 +343,7 @@ export class TextField extends FormElement {
     return {
       floatLabel: (shouldFloat) => this._label && this._label.float(shouldFloat),
       getLabelWidth: () => this._label ? this._label.getWidth() : 0,
-      hasLabel: () => Boolean(this._label),
+      hasLabel: () => Boolean(this._label) && this.floatLabel,
       shakeLabel: (shouldShake) => (
         this._label &&
         this.labelElement.classList.contains(floatingLabelCssClasses.LABEL_FLOAT_ABOVE) &&
@@ -417,14 +420,12 @@ export class TextField extends FormElement {
     `;
   }
 
-  _renderNotchedOutline() {
-    const hasLabel = this.label;
-
+  _renderNotchedOutline(showAdjacentLabel: boolean | string) {
     return html`
       <div class="mdc-notched-outline">
         <div class="mdc-notched-outline__leading"></div>
         <div class="mdc-notched-outline__notch">
-          ${hasLabel ? this._renderFloatingLabel() : ''}
+          ${!showAdjacentLabel ? this._renderFloatingLabel() : ''}
         </div>
         <div class="mdc-notched-outline__trailing"></div>
       </div>
@@ -478,16 +479,30 @@ export class TextField extends FormElement {
     `;
   }
 
+  _renderAdjacentLabel(isTextarea: boolean, hasCharacterCounter: boolean) {
+    const classes = {
+      'mdc-floating-label--adjacent': true,
+      'mdc-floating-label--adjacent-textarea': isTextarea && !hasCharacterCounter,
+      'mdc-floating-label--adjacent-textarea-character-counter': isTextarea && hasCharacterCounter,
+    };
+
+    return html`
+        <div class="${classMap(classes)}" for="${this._formElementId}">${this.label}</div>
+    `;
+  }
+
   render() {
     const isTextarea = this.type === 'textarea';
     const hasOutline = this.outlined || isTextarea;
     const hasLabel = this.label && (!this.fullWidth || isTextarea);
+    const hasLabelAndIsNotOutlined = hasLabel && !hasOutline;
     const hasLeadingIcon = this.leadingIconContent;
     const hasTrailingIcon = this.trailingIconContent;
     const hasCharacterCounter = this.maxLength && this.maxLength > 0;
+    const showAdjacentLabel = hasLabel && !this.floatLabel;
     const classes = {
       'mdc-text-field': true,
-      'mdc-text-field--no-label': !hasLabel,
+      'mdc-text-field--no-label': !hasLabel || showAdjacentLabel,
       'mdc-text-field--outlined': this.outlined,
       'mdc-text-field--textarea': this.type === 'textarea',
       'mdc-text-field--fullwidth': this.fullWidth,
@@ -502,11 +517,12 @@ export class TextField extends FormElement {
         ${hasCharacterCounter && isTextarea ? this._renderCharacterCounter() : ''}
         ${hasLeadingIcon ? this._renderIcon('leading') : ''}
         ${this._renderInput()}
-        ${hasLabel && !hasOutline ? this._renderFloatingLabel() : ''}
+        ${!showAdjacentLabel && hasLabelAndIsNotOutlined ? this._renderFloatingLabel() : ''}
         ${hasTrailingIcon ? this._renderIcon('trailing') : ''}
-        ${hasOutline ? this._renderNotchedOutline() : this._renderLineRipple()}
+        ${hasOutline ? this._renderNotchedOutline(showAdjacentLabel) : this._renderLineRipple()}
       </div>
       ${this._renderHelperLine()}
+      ${showAdjacentLabel ? this._renderAdjacentLabel(isTextarea, hasCharacterCounter) : ''}
     `;
   }
 

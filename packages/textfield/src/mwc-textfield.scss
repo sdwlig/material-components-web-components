@@ -73,3 +73,70 @@ limitations under the License.
     }
   }
 }
+
+.mdc-floating-label--adjacent {
+  position: relative;
+  pointer-events: none;
+	color: rgba(0, 0, 0, 0.6);
+  padding-left: 16px;
+  padding-right: 16px;
+  font-family: Roboto, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.0333333em;
+  top: -94px;
+
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+    /* IE10+ specific styles go here */
+    top: -97px;
+  }
+}
+
+.mdc-floating-label--adjacent.mdc-floating-label--adjacent-textarea-character-counter {
+  top: -129px;
+
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+    /* IE10+ specific styles go here */
+    top: -115px;
+  }
+}
+
+.mdc-floating-label--adjacent.mdc-floating-label--adjacent-textarea {
+  top: -118px;
+
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+    /* IE10+ specific styles go here */
+    top: -99px;
+  }
+}
+
+.mdc-text-field--focused:not(.mdc-text-field--disabled) ~ .mdc-floating-label--adjacent {
+    opacity: 0.87;
+    color: var(--mdc-theme-primary, #6200EE);
+}
+
+.mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--invalid):not(.mdc-text-field--focused) ~ .mdc-floating-label--adjacent {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.mdc-text-field--focused .mdc-text-field__input:required ~ .mdc-floating-label--adjacent::after,
+.mdc-text-field--focused .mdc-text-field__input:required ~ .mdc-notched-outline .mdc-floating-label--adjacent::after {
+  opacity: 0.87;
+  color: var(--mdc-theme-primary, #6200EE);
+}
+
+.mdc-text-field--invalid:not(.mdc-text-field--disabled) ~ .mdc-floating-label--adjacent {
+  color: #b00020;
+  /* @alternate */
+  color: var(--mdc-theme-error, #b00020);
+}
+
+.mdc-text-field--invalid .mdc-text-field__input:required ~ .mdc-floating-label--adjacent::after,
+.mdc-text-field--invalid .mdc-text-field__input:required ~ .mdc-notched-outline .mdc-floating-label--adjacent::after {
+  color: #b00020;
+  /* @alternate */
+  color: var(--mdc-theme-error, #b00020);
+}
+
+.mdc-text-field--disabled ~ .mdc-floating-label--adjacent {
+  color: rgba(0, 0, 0, 0.37);
+}
