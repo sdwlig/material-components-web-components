@@ -25,6 +25,11 @@ import { style } from './mwc-dialog-css'
 
 const LAYOUT_EVENTS = ['resize', 'orientationchange']
 
+class AnchorElement {
+  el!: HTMLElement;
+}
+
+
 export const EVENTS = {
   closed: 'closed',
   closing: 'closing',
@@ -78,6 +83,9 @@ export class Dialog extends BaseElement {
   public defaultAction = 'accept';
 
   @property({ type: Boolean })
+  public noFormatContent = false;
+
+  @property({ type: Boolean })
   public scrollable = false;
 
   @property({ type: Boolean })
@@ -121,6 +129,8 @@ export class Dialog extends BaseElement {
 
   protected controller_: HTMLElement | null = this.mdcRoot;
 
+  protected anchorElement: {el: HTMLElement} = new AnchorElement();
+
   public get isOpen(): boolean {
     return this.mdcFoundation.isOpen()
   }
@@ -159,9 +169,18 @@ export class Dialog extends BaseElement {
 
   protected readonly mdcFoundationClass = MDCDialogFoundation;
 
+  public setAnchorElement(element: HTMLElement) {
+    this.anchorElement.el = element;
+  }
+
   protected calcPopoverPosition(): object {
     const gap = 30;
-    this.controller_ = this.for === '' ? this.parentElement : this.parentElement!.querySelector(`#${this.for}`)
+   
+    this.controller_ = this.anchorElement.el 
+    ? this.anchorElement.el
+    : this.for === '' 
+        ? this.parentElement 
+        : this.parentElement!.querySelector(`#${this.for}`);
 
     this.mdcRoot.classList.add('mdc-dialog--popover-show')
     const rootSettings = this.mdcRoot.getBoundingClientRect()
@@ -285,8 +304,18 @@ export class Dialog extends BaseElement {
   }
 
   protected render(): TemplateResult {
-    const { headerLabel, acceptLabel, declineLabel } = this
+    const { headerLabel, acceptLabel, declineLabel, noFormatContent } = this;
 
+    const headerClasses = {
+        'mdc-dialog__header': true,
+        'mdc-dialog__header--hide': headerLabel === ''
+    };
+
+    const contentClasses = {
+        'mdc-dialog__content': true,
+        'mdc-dialog__content--no-format': noFormatContent
+    };
+    
     return html`
       <aside
         class="mdc-dialog
@@ -301,11 +330,11 @@ export class Dialog extends BaseElement {
       >
         <div class="mdc-dialog_container">
           <div class="mdc-dialog__surface">
-            <header class="mdc-dialog__header">
+            <header class="${classMap(headerClasses)}">
               <h2 id="dialog-title" class="mdc-dialog__title">${headerLabel}</h2>
               <slot name="header"></slot>
             </header>
-            <section id="dialog-content" class="mdc-dialog__content">
+            <section id="dialog-content" class="${classMap(contentClasses)}">
               <slot></slot>
             </section>
             <footer class="mdc-dialog__actions">

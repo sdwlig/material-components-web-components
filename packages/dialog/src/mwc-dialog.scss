@@ -73,6 +73,16 @@ limitations under the License.
       max-width: 100%;
     }
   }
+  &__content {
+    &--no-format {
+      padding: 0;
+    }
+  }
+  &__header {
+    &--hide {
+      display: none;
+    }
+  }
 }
 
 .mdc-dialog:not(.mdc-dialog--popover) .mdc-dialog__surface {

@@ -31,10 +31,6 @@ limitations under the License.
     body {
       min-height: calc(100vh - 4em);
     }
-    mwc-button {
-      display: inline !important;
-    }
-
     /* body {
       --mwc-dialog-maxHeight: calc(100vh - 200px);
     } */
@@ -67,7 +63,7 @@ limitations under the License.
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
       dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
       dolore magna aliqua. 
-      Lorem ipsum dolor sit amet, <mwc-button id="popoverBtn1" raised label="OPEN POPOVER 1"></mwc-button>      adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      Lorem ipsum dolor sit amet, <mwc-button id="popoverBtn1" raised label="OPEN POPOVER 1 (NO FORMAT)"></mwc-button>      adipiscing elit, sed do eiusmod tempor incididunt ut labore et
     dolore magna aliqua. 
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
     dolore magna aliqua. 
@@ -103,7 +99,7 @@ limitations under the License.
       dolore magna aliqua. 
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
       dolore magna aliqua.
-      <mwc-dialog for="popoverBtn1" id="popoverDialog1" popover headerLabel="Popover Dialog 1">
+      <mwc-dialog id="popoverDialog1" popover noFormatContent>
           <p>Posuere ac ut consequat semper viverra nam libero. Arcu ac tortor dignissim
             convallis aenean et tortor at risus.</p>
         </mwc-dialog>
@@ -115,6 +111,7 @@ limitations under the License.
         </mwc-dialog>
       </div>
       <script type="module">
+        popoverDialog1.setAnchorElement(popoverBtn1);
         popoverBtn1.addEventListener('mouseover', (e) => {
           popoverDialog1.open();
         });
