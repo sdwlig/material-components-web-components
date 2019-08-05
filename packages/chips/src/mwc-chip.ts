@@ -48,66 +48,124 @@ export const EVENTS = {
 @customElement('mwc-chip' as any)
 export class Chip extends BaseElement {
 
+  /**
+  * Root element for chip component.
+  */
   @query(".mdc-chip")
   protected mdcRoot!: HTMLElement;
 
+  /**
+  * Optional. Indicates a leading icon in the chip.
+  */
   @query(".mdc-chip__icon--leading")
   protected leadingIconEl!: HTMLElement;
 
+  /**
+  * Optional. Indicates a trailing icon which removes the chip from the DOM. 
+  * Only use with input chips.
+  */
   @query(".mdc-chip__icon--trailing")
   protected trailingIconEl!: HTMLElement;
 
+  /**
+  * Optional. Indicates the checkmark in a filter chip.
+  */
   @query(".mdc-chip__checkmark")
   protected checkmarkEl!: HTMLElement;
 
+  /**
+  * Mandatory. Indicates the text content of the chip.
+  */
   @property({ type: String })
   public label = '';
 
+  /**
+  * Optional. It will act as a leading element in the chip, 
+  * it could be a color, icon, text or image.
+  */
   @property({ type: String })
   public avatar = '';
 
+  /**
+  * Optional. Sets an icon before the text. 
+  * It needs the checkmark property to be added too. 
+  */
   @property({ type: String })
   public leadingIcon = '';
 
+  /**
+  * Optional. Sets an icon after the text. 
+  * The 'trailingIcon' will always remove the chip when clicked. 
+  */
   @property({ type: String })
   public trailingIcon = '';
 
+  /**
+  * Optional. Default value is false. Adds a 'checkmark' when the chip is selected.
+  */
   @property({ type: Boolean })
   public checkmark = false;
 
+  /**
+  * Optional. Default value is false. Adds a border to the chip.
+  */
   @property({ type: Boolean })
   public outlined = false;
 
+  /**
+  * Optional. Default value is -1. This property help us to make it accessible by keyboard and screen reader
+  */
   @property({ type: Number })
   public tabIndex = -1;
 
+  /**
+  * Optional. Default value is false. 
+  */
   @property({ type: Boolean })
   public preventRipple = false;
 
+  /**
+  * Optional. Default value is false. Makes the chip pre-selected.
+  */
   @property({ type: Boolean })
   @observer(function (this: Chip, value: boolean ) {
     this.mdcFoundation.setSelected(value);
   })
   public selected = false;
 
+  /**
+  * Optional. Default value is false. 
+  */
   @property({ type: Boolean })
   @observer(function (this: Chip, value: boolean ) {
     this.mdcFoundation.setShouldRemoveOnTrailingIconClick(!value);
   })
   public preventRemoveOnTrailingIconClick = false;
 
+  /**
+  * This function returns true when chip has leadingIcon and not avatar
+  */
   protected get _shouldDisplayLeadingIcon() {
     return this.leadingIcon && !this.avatar;
   }
 
+  /**
+  * This function returns true when chip has checkmark
+  */
   protected get _shouldDisplayCheckmark() {
     return this.checkmark;
   }
 
+  /**
+  * This function returns true when chip has avatar and not leadingIcon
+  */
   protected get _shouldDisplayAvatar() {
     return this.avatar && !this.leadingIcon;
   }
 
+  /**
+  * Ripple getter for Ripple integration
+  */
   public get ripple() {
     if (this.preventRipple) return undefined;
 
@@ -141,6 +199,10 @@ export class Chip extends BaseElement {
 
   protected readonly mdcFoundationClass = MDCChipFoundation;
 
+  /**
+  * Create the adapter for the `mdcFoundation`.
+  * Override and return an object with the Adapter's functions implemented
+  */
   protected createAdapter(): MDCChipAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -172,6 +234,9 @@ export class Chip extends BaseElement {
 
   static styles = style;
 
+  /**
+  * Used to render the lit-html TemplateResult with a leading icon
+  */
   protected _renderLeadingIcon() {
     const classes = {
       'material-icons': true,
@@ -185,6 +250,9 @@ export class Chip extends BaseElement {
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with avatar
+  */
   protected _renderAvatar() {
     const isImage = IMAGE_FORMATS_REGEX.test(this.avatar);
     const isColor = !isImage && COLOR_REGEX.test(this.avatar);
@@ -207,6 +275,9 @@ export class Chip extends BaseElement {
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with avatar text color
+  */
   protected _getAvatarTextColor(color: string) {
     const CODE = color.substring(1);
     const RGB = parseInt(CODE, 16);
@@ -219,24 +290,36 @@ export class Chip extends BaseElement {
     return luma > 40 ? 'dark' : 'light';
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with an avatar image
+  */
   protected _renderAvatarImage() {
     return html`
       <img class="mdc-chip__avatar-graphic" src="${this.avatar}" alt="${this.label}">
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with an avatar text
+  */
   protected _renderAvatarText() {
     return html`
       <span class="mdc-chip__avatar-text">${this.avatar}</span>
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with an avatar icon
+  */
   protected _renderAvatarIcon() {
     return html`
       <i class="material-icons mdc-chip__avatar-icon">${this.avatar}</i>
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with a checkmark
+  */
   protected _renderCheckmark() {
     return html`
       <div class="mdc-chip__checkmark">
@@ -251,6 +334,9 @@ export class Chip extends BaseElement {
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult with a trailing icon
+  */
   protected _renderTrailingIcon() {
     const classes = {
       'material-icons': true,
@@ -263,6 +349,9 @@ export class Chip extends BaseElement {
     `;
   }
 
+  /**
+  * Used to render the lit-html TemplateResult to the element's DOM
+  */
   render() {
     const classes = {
       'mdc-chip': true,
@@ -286,6 +375,13 @@ export class Chip extends BaseElement {
     `;
   }
 
+  /**
+  * Invoked when the element is first updated. Implement to perform one time
+  * work on the element after update.
+  *
+  * Setting properties inside this method will trigger the element to update
+  * again after this update cycle completes.
+  */
   firstUpdated() {
     super.firstUpdated();
 
@@ -296,6 +392,9 @@ export class Chip extends BaseElement {
       });
   }
 
+  /**
+  * Performs element initialization
+  */
   protected _initialize() {
     INTERACTION_EVENTS.forEach(evtType => {
       this.addEventListener(evtType, this._handleInteraction);
@@ -310,6 +409,9 @@ export class Chip extends BaseElement {
     }
   }
 
+  /**
+  * Performs the destruction of the element
+  */
   public destroy() {
     INTERACTION_EVENTS.forEach(evtType => {
       this.removeEventListener(evtType, this._handleInteraction);
@@ -324,6 +426,10 @@ export class Chip extends BaseElement {
     }
   }
 
+  /**
+  * This method allow us to set up some properties when its parent is an MWCChipSet 
+  * @param parentElement Map of its parentElement
+  */
   public setParentType(parentElement = this.parentElement) {
     if (parentElement instanceof MWCChipSet) {
       this._isChoice = parentElement.choice;
@@ -377,6 +483,9 @@ export class Chip extends BaseElement {
     this.mdcFoundation.beginExit();
   }
 
+  /**
+  * Performs the remove of the element
+  */
   remove() {
     this.destroy();
     super.remove();
