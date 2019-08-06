@@ -119,7 +119,7 @@ export class Chip extends BaseElement {
   public tabIndex = -1;
 
   /**
-   * Optional. Default value is false. 
+   * Optional. Default value is false. Remove ripple effect when a chip is clicked
    */
   @property({ type: Boolean })
   public preventRipple = false;
@@ -134,7 +134,7 @@ export class Chip extends BaseElement {
   public selected = false;
 
   /**
-   * Optional. Default value is false. 
+   * Optional. Default value is false. Prevent chip from being removed on trailing icon action
    */
   @property({ type: Boolean })
   @observer(function (this: Chip, value: boolean ) {
@@ -410,7 +410,7 @@ export class Chip extends BaseElement {
   }
 
   /**
-   * Performs the destruction of the element
+   * Remove existing listeners for chip element
    */
   public destroy() {
     INTERACTION_EVENTS.forEach(evtType => {
