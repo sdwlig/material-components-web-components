@@ -29,14 +29,14 @@ declare global {
 export class Formfield extends BaseElement {
   
   /**
-  * Optional. Default value is false. Use this property to put the input after the label
-  */
+   * Optional. Default value is false. Use this property to put the input after the label
+   */
   @property({ type: Boolean })
   alignEnd = false;
 
   /**
-  * Recommended. Indicates the element containing the formfield's text label
-  */
+   * Recommended. Indicates the element containing the formfield's text label
+   */
   @property({ type: String })
   @observer(async function (this: Formfield, label: string) {
     const input = this.input;
@@ -52,8 +52,8 @@ export class Formfield extends BaseElement {
   label = '';
 
   /**
-  * Root element for formfield component.
-  */
+   * Root element for formfield component.
+   */
   @query('.mdc-form-field')
   protected mdcRoot!: HTMLElement;
 
@@ -62,9 +62,9 @@ export class Formfield extends BaseElement {
   protected readonly mdcFoundationClass = MDCFormFieldFoundation;
 
   /**
-  * Create the adapter for the `mdcFoundation`.
-  * Override and return an object with the Adapter's functions implemented
-  */
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
   protected createAdapter(): MDCFormFieldAdapter {
     return {
       registerInteractionHandler: (type: string, handler: any) => {
@@ -101,8 +101,8 @@ export class Formfield extends BaseElement {
   static styles = style;
 
   /**
-  * Used to render the lit-html TemplateResult to the element's DOM
-  */
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     return html`
       <div class="mdc-form-field ${classMap({ 'mdc-form-field--align-end': this.alignEnd })}">
@@ -112,8 +112,8 @@ export class Formfield extends BaseElement {
   }
 
   /**
-  * Handles the click event on label
-  */
+   * Handles the click event on label
+   */
   private _labelClick() {
     const input = this.input;
     if (input) {

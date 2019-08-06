@@ -51,8 +51,8 @@ export class CircularProgress extends LitElement {
   protected SIZE = 44;
 
   /**
-  * Root element for circular-progress component.
-  */
+   * Root element for circular-progress component.
+   */
   @query('.mwc-circular-progress')
   protected mdcRoot!: HTMLElement;
 
@@ -63,8 +63,8 @@ export class CircularProgress extends LitElement {
   protected bar!: HTMLElement;
 
   /**
-  * Optional. This property customizes that instance of the component, overriding the theme color
-  */
+   * Optional. This property customizes that instance of the component, overriding the theme color
+   */
   @property({ type: String })
   @observer(function (this: CircularProgress, value: String) {
     this.mdcFoundation.setColor(value);
@@ -72,38 +72,38 @@ export class CircularProgress extends LitElement {
   color;
 
   /**
-  * Optional. Default value sets to false. This property is use to applies the "Theme Secondary" color to the indicator
-  */
+   * Optional. Default value sets to false. This property is use to applies the "Theme Secondary" color to the indicator
+   */
   @property({ type: Boolean })
   secondary = false;
 
   /**
-  * Optional. Default value is 40. A number representing the size of the circle
-  */
+   * Optional. Default value is 40. A number representing the size of the circle
+   */
   @property({ type: Number })
   size = 40;
 
   /**
-  * Optional. Default value is 3.6. A number representing thickness of the circle
-  */
+   * Optional. Default value is 3.6. A number representing thickness of the circle
+   */
   @property({ type: Number })
   thickness = 3.6;
 
   /**
-  * Optional. Default value sets to false. Allows the indicator to be set to a defined state of progress, from 0 to 100%
-  */
+   * Optional. Default value sets to false. Allows the indicator to be set to a defined state of progress, from 0 to 100%
+   */
   @property({ type: Boolean })
   fixed = false;
 
   /**
-  * Optional. Default value sets to false. It disables the shrink animation of the indicator. This only works if the variant is indeterminate.
-  */
+   * Optional. Default value sets to false. It disables the shrink animation of the indicator. This only works if the variant is indeterminate.
+   */
   @property({ type: Boolean })
   disableShrink = false;
 
   /**
-  * Optional. Default value sets to false. Use along with progress property to define how long a process will take
-  */
+   * Optional. Default value sets to false. Use along with progress property to define how long a process will take
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: CircularProgress, value: boolean) {
     this.mdcFoundation.setDeterminate(value || this.fixed);
@@ -111,8 +111,8 @@ export class CircularProgress extends LitElement {
   determinate = false;
 
   /**
-  * Optional. Default value is 0. Sets the progress indicator with values between 0 and 100
-  */
+   * Optional. Default value is 0. Sets the progress indicator with values between 0 and 100
+   */
   @property({ type: Number })
   @observer(function (this: CircularProgress, value: number) {
     this.mdcFoundation.setProgress(value);
@@ -124,8 +124,8 @@ export class CircularProgress extends LitElement {
   progress = 0;
 
   /**
-  * Optional. Default value sets to false. Use to hides the circular progress indicator.
-  */
+   * Optional. Default value sets to false. Use to hides the circular progress indicator.
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: CircularProgress, value: boolean) {
     if (value) {
@@ -139,8 +139,8 @@ export class CircularProgress extends LitElement {
   static styles = style;
 
   /**
-  * Used to render the lit-html TemplateResult to the element's DOM
-  */
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const { fixed, determinate, closed, SIZE, thickness, disableShrink } = this;
 
@@ -197,8 +197,8 @@ export class CircularProgress extends LitElement {
   }
 
   /**
-  * Create and attach the MDC Foundation to the instance
-  */
+   * Create and attach the MDC Foundation to the instance
+   */
   protected createFoundation() {
     if (this.mdcFoundation) {
       this.mdcFoundation.destroy();
@@ -208,17 +208,17 @@ export class CircularProgress extends LitElement {
   }
 
   /**
-  * Invoked when the element is first updated. 
-  * Implement to perform one time work on the element after update.
-  */
+   * Invoked when the element is first updated. 
+   * Implement to perform one time work on the element after update.
+   */
   firstUpdated() {
     this.createFoundation();
   }
 
   /**
-  * This method is invoked whenever the circular-progress is updated
-  * @param _changedProperties Map of changed properties with old values
-  */
+   * This method is invoked whenever the circular-progress is updated
+   * @param _changedProperties Map of changed properties with old values
+   */
   updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
 
@@ -244,15 +244,15 @@ export class CircularProgress extends LitElement {
   }
 
   /**
-  * Puts the component in the open state.
-  */
+   * Puts the component in the open state.
+   */
   open() {
     this.closed = false;
   }
 
   /**
-  * Puts the component in the closed state.
-  */
+   * Puts the component in the closed state.
+   */
   close() {
     this.closed = true;
   }

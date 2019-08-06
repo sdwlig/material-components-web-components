@@ -31,33 +31,33 @@ declare global {
 export class Checkbox extends FormElement {
 
   /**
-  * Root element for checkbox component. This root element is use for MDC Foundation usage
-  */
+   * Root element for checkbox component. This root element is use for MDC Foundation usage
+   */
   @query('.mdc-checkbox')
   protected mdcRoot!: HTMLElementWithRipple;
   
   /**
-  * Provides special properties and methods for manipulating the options, layout, and presentation of <input> elements.
-  */
+   * Provides special properties and methods for manipulating the options, layout, and presentation of <input> elements.
+   */
   @query('input')
   protected formElement!: HTMLInputElement;
 
   /**
-  * Optional. Default value is false. Setter/getter for the checkbox's checked state
-  */
+   * Optional. Default value is false. Setter/getter for the checkbox's checked state
+   */
   @property({ type: Boolean })
   checked = false;
 
   /**
-  * Optional. Default value is false. Setter/getter for the checkbox's indeterminate state
-  * The indeterminate property will display as a marked checkbox, usually with a hyphen
-  */
+   * Optional. Default value is false. Setter/getter for the checkbox's indeterminate state
+   * The indeterminate property will display as a marked checkbox, usually with a hyphen
+   */
   @property({ type: Boolean })
   indeterminate = false;
 
   /**
-  * Optional. Default value is false. Setter/getter for the checkbox's disabled state
-  */
+   * Optional. Default value is false. Setter/getter for the checkbox's disabled state
+   */
   @property({ type: Boolean })
   @observer(function (this: Checkbox, value: boolean) {
     this.mdcFoundation.setDisabled(value);
@@ -65,14 +65,14 @@ export class Checkbox extends FormElement {
   disabled = false;
 
   /**
-  * Optional. Setter/getter for the checkbox's
-  */
+   * Optional. Setter/getter for the checkbox's
+   */
   @property({ type: String })
   value = ''
 
   /**
-  * Optional. Setter/getter for the checkbox's name
-  */
+   * Optional. Setter/getter for the checkbox's name
+   */
   @property({ type: String })
   name = ''
 
@@ -89,16 +89,16 @@ export class Checkbox extends FormElement {
   static styles = style;
 
   /**
-  * Ripple getter for Ripple integration
-  */
+   * Ripple getter for Ripple integration
+   */
   get ripple(): RippleSurface | undefined {
     return this.mdcRoot.ripple;
   }
 
   /**
-  * Create the adapter for the `mdcFoundation`.
-  * Override and return an object with the Adapter's functions implemented
-  */
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
   protected createAdapter(): MDCCheckboxAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -120,8 +120,8 @@ export class Checkbox extends FormElement {
   }
 
   /**
-  * Used to render the lit-html TemplateResult to the element's DOM
-  */
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     return html`
       <div class="mdc-checkbox" @animationend="${this._animationEndHandler}" .ripple="${ripple()}">
@@ -137,8 +137,8 @@ export class Checkbox extends FormElement {
   }
 
   /**
-  * Handles the change event for the checkbox
-  */
+   * Handles the change event for the checkbox
+   */
   private _changeHandler() {
     this.checked = this.formElement.checked;
     this.indeterminate = this.formElement.indeterminate;
@@ -146,8 +146,8 @@ export class Checkbox extends FormElement {
   }
 
   /**
-  * Handles the animation end event for the checkbox
-  */
+   * Handles the animation end event for the checkbox
+   */
   private _animationEndHandler() {
     this.mdcFoundation.handleAnimationEnd();
   }

@@ -22,17 +22,17 @@ import './mwc-icon-font';
 export class Icon extends LitElement {
 
   /**
-  * Root element for icon component.
-  */
+   * Root element for icon component.
+   */
   @query(".mdc-icon")
   protected mdcRoot!: any;
 
   static styles = style;
   
   /**
-  * Invoked when the element is first updated. 
-  * Implement to perform one time work on the element after update.
-  */
+   * Invoked when the element is first updated. 
+   * Implement to perform one time work on the element after update.
+   */
   firstUpdated() {
     this.updateComplete
         .then(() => {
@@ -41,8 +41,8 @@ export class Icon extends LitElement {
   }
 
   /**
-  * Used to render the lit-html TemplateResult to the element's DOM
-  */
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     let hasDifferentFont = false;
 
