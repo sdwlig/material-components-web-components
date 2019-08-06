@@ -30,42 +30,78 @@ declare global {
 @customElement('mwc-button' as any)
 export class Button extends LitElement {
 
+  /**
+   * Optional. Default value sets to false. Styles a contained button that is elevated above the surface.
+   */
   @property({ type: Boolean })
   raised = false;
 
+  /**
+   * Optional. Default value sets to false. Styles a contained button that is flush with the surface.
+   */
   @property({ type: Boolean })
   unelevated = false;
 
+  /**
+   * Optional. Default value sets to false. Styles an outlined button that is flush with the surface.
+   */
   @property({ type: Boolean })
   outlined = false;
 
+  /**
+   * Optional. Default value sets to false. Makes the button text and container slightly smaller.
+   */
   @property({ type: Boolean })
   dense = false;
 
+  /**
+   * Optional. Default value sets to false. Removes ability to interacted with and have no visual interaction effect
+   */
   @property({type: Boolean, reflect: true})
   disabled = false;
 
+  /**
+   * Optional. Default value sets to false. Use to display an icon after the button's text label
+   */
   @property({ type: Boolean })
   trailingIcon = false;
 
+  /**
+   * Optional. Indicates the element containing the button's icon.
+   */
   @property()
   icon = '';
 
+  /**
+   * Recommended. Indicates the element containing the button's text label
+   */
   @property()
   label = '';
 
+  /**
+   * Optional. The href is use to specifies the link's destination
+   */
   @property({ type: String, reflect: true })
   href = '';
 
+  /**
+   * Optional. Default value sets to _self. Use to specifies where to open the linked document. You can use one of the following values: _blank|_self|_parent|_top|framename
+   */
   @property({ type: String, reflect: true })
   target = '_self';
 
+  /**
+   * Returns the node into which the element should render and by default creates and returns an open shadowRoot
+   */
   createRenderRoot() {
     return this.attachShadow({ mode: 'open', delegatesFocus: true });
   }
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const classes = {
       'mdc-button': true,
