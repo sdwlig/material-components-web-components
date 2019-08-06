@@ -68,6 +68,15 @@ export abstract class BaseElement extends LitElement {
     this.mdcFoundation.init();
   }
 
+  /**
+   * Invoked when the element is first updated. Implement to perform one time
+   * work on the element after update.
+   *
+   * Setting properties inside this method will trigger the element to update
+   * again after this update cycle completes.
+   *
+   * @param _changedProperties Map of changed properties with old values
+   */
   firstUpdated() {
     this.createFoundation();
   }

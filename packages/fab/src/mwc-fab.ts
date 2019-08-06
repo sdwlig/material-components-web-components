@@ -36,34 +36,60 @@ declare global {
 @customElement('mwc-fab' as any)
 export class Fab extends LitElement {
 
+  /**
+   * Optional. Default value to false. Modifies the FAB to a smaller size
+   */
   @property({ type: Boolean })
   mini = false;
 
+  /**
+   * Optional. Default value to false. Animates the FAB out of view
+   */
   @property({ type: Boolean })
   exited = false;
 
+  /**
+   * Optional. Default value to false. Removes ability to interacted with and have no visual interaction effect
+   */
   @property({ type: Boolean })
   disabled = false;
 
+  /**
+   * Optional. Default value to false. Modifies the FAB to wider size and the extended FAB must contain label 
+   */
   @property({ type: Boolean })
   extended = false;
 
+  /**
+   * Optional. Default value to false. Display an icon at the end of the FAB
+   */
   @property({ type: Boolean })
   showIconAtEnd = false;
 
+  /**
+   * Mandatory. Indicates the element containing the fab's icon.
+   */
   @property()
   icon = '';
 
+  /**
+   * Optional. Indicates the element containing the fab's text label
+   */
   @property()
   label = '';
 
-
+  /**
+   * Returns the node into which the element should render and by default creates and returns an open shadowRoot
+   */
   createRenderRoot() {
     return this.attachShadow({ mode: 'open', delegatesFocus: true });
   }
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const classes = {
       'mdc-fab--mini': this.mini,

@@ -35,27 +35,49 @@ export abstract class IconButtonBase extends BaseElement {
 
   protected mdcFoundation!: MDCIconButtonToggleFoundation;
 
+  /**
+   * Root element for icon-button component.
+   */
   @query('.mdc-icon-button')
   protected mdcRoot!: HTMLElement;
 
+  /**
+   * Optional. Indicates the element containing the icon-button's text label
+   */
   @property({ type: String })
   label = '';
 
+  /**
+   * Optional. Default value sets to false. Removes ability to interacted with and have no visual interaction effect
+   */
   @property({ type: Boolean, reflect: true })
   disabled = false;
 
+  /**
+   * Recommended. Indicates the name of the icon to be displayed when the icon button toggle is in the "on" state.
+   */
   @property({ type: String })
   icon = '';
 
+  /**
+   * Optional. Indicates the name of the icon to be displayed when the icon button toggle is in the "off" state.
+   */
   @property({ type: String })
   offIcon = '';
 
+  /**
+   * Optional. Used to indicate if the icon button toggle is in the "on" state.
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: IconButtonBase, state: boolean) {
     this.mdcFoundation.toggle(state);
   })
   on = false;
 
+  /**
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
   protected createAdapter(): MDCIconButtonToggleAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -71,6 +93,9 @@ export abstract class IconButtonBase extends BaseElement {
     }
   }
 
+  /**
+   * Event handler triggered on the click event. It will toggle the icon from on/off and update aria attributes.
+   */
   protected handleClick() {
     if (this.offIcon !== '') {
       this.on = !this.on;
@@ -78,10 +103,17 @@ export abstract class IconButtonBase extends BaseElement {
     }
   }
 
+  /**
+   * Handles the focus event for the icon-button
+   */
   focus() {
     this.mdcRoot.focus();
   }
 
+  /**
+   * This method is invoked whenever the icon-button is updated
+   * @param _changedProperties Map of changed properties with old values
+   */
   updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
 
@@ -90,6 +122,9 @@ export abstract class IconButtonBase extends BaseElement {
     }
   }
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     return html`
       <button .ripple="${ripple()}" class="mdc-icon-button" @click="${this.handleClick}" aria-hidden="true" aria-label="${this.label}"

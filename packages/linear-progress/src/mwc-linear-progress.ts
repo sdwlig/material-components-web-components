@@ -40,6 +40,9 @@ export class LinearProgress extends BaseElement {
 
   protected readonly mdcFoundationClass = MDCLinearProgressFoundation;
 
+  /**
+   * Root element for linear-progress component.
+   */
   @query('.mdc-linear-progress')
   protected mdcRoot!: HTMLElement
 
@@ -49,30 +52,45 @@ export class LinearProgress extends BaseElement {
   @query('.mdc-linear-progress__buffer')
   protected bufferElement!: HTMLElement
 
+  /**
+   * Optional. Default value sets to false. Use along with progress property puts the linear progress indicator in a determinate state.
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: LinearProgress, value: boolean) {
     this.mdcFoundation.setDeterminate(value);
   })
   determinate = false;
 
+  /**
+   * Optional. Default value is 0. Sets the progress bar to this value. Value should be between [0, 1].
+   */
   @property({ type: Number })
   @observer(function (this: LinearProgress, value: number) {
     this.mdcFoundation.setProgress(value);
   })
   progress = 0;
 
+  /**
+   * Optional. Default value is 0. Sets the buffer bar to this value. Value should be between [0, 1].
+   */
   @property({ type: Number })
   @observer(function (this: LinearProgress, value: number) {
     this.mdcFoundation.setBuffer(value);
   })
   buffer = 0;
 
+  /**
+   * Optional. Default value sets to false. Reverses the direction of the linear progress indicator.
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: LinearProgress, value: boolean) {
     this.mdcFoundation.setReverse(value);
   })
   reverse = false;
 
+  /**
+   * Optional. Default value sets to false. Setting this to true puts the component in the closed state.
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: LinearProgress, value: boolean) {
     if (value) {
@@ -85,6 +103,9 @@ export class LinearProgress extends BaseElement {
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     return html`
       <div role="progressbar" class="mdc-linear-progress">
@@ -99,6 +120,10 @@ export class LinearProgress extends BaseElement {
       </div>`;
   }
 
+  /**
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
   protected createAdapter(): MDCLinearProgressAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -108,10 +133,16 @@ export class LinearProgress extends BaseElement {
     };
   }
 
+  /**
+   * Puts the component in the open state.
+   */
   open() {
     this.closed = false;
   }
 
+  /**
+   * Puts the component in the closed state.
+   */
   close() {
     this.closed = true;
   }

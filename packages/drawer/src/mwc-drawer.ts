@@ -59,9 +59,15 @@ declare global {
 @customElement('mwc-drawer' as any)
 export class Drawer extends BaseElement {
 
+  /**
+   * Root element for drawer component.
+   */
   @query('.mdc-drawer')
   protected mdcRoot!: HTMLElement;
 
+  /**
+   * Mandatory for dismissible variant only. Sibling element that is resized when the drawer opens/closes.
+   */
   @query('.mdc-drawer-app-content')
   protected appContent!: HTMLElement;
 
@@ -71,6 +77,10 @@ export class Drawer extends BaseElement {
     return this.type === 'modal' ? MDCModalDrawerFoundation : MDCDismissibleDrawerFoundation;
   }
 
+  /**
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
   protected createAdapter(): MDCDrawerAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -115,6 +125,9 @@ export class Drawer extends BaseElement {
     }
   };
 
+  /**
+   * Optional. Default value is false. If present, indicates that the drawer is in the open position.
+   */
   @observer(function (this: Drawer, value: boolean) {
     if (this.type === '') {
       return;
@@ -128,14 +141,23 @@ export class Drawer extends BaseElement {
   @property({ type: Boolean, reflect: true })
   open = false;
 
+  /**
+   * Optional. Default value is false. If present, indicates that a non-scrollable element exists at the top of the drawer.
+   */
   @property({ type: Boolean })
   hasHeader = false;
 
+  /**
+   * Optional. Use this property to set any of the following variants: dismissible or modal
+   */
   @property({ reflect: true })
   type = '';
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const dismissible = this.type === 'dismissible' || this.type === 'modal';
     const modal = this.type === 'modal';
@@ -165,12 +187,20 @@ export class Drawer extends BaseElement {
       `;
   }
 
-  // note, we avoid calling `super.firstUpdated()` to control when `createFoundation()` is called.
+  /**
+   * Invoked when the element is first updated. 
+   * Implement to perform one time work on the element after update.
+   * Note, we avoid calling `super.firstUpdated()` to control when `createFoundation()` is called.
+   */
   firstUpdated() {
     this.mdcRoot.addEventListener('keydown', (e) => this.mdcFoundation.handleKeydown(e));
     this.mdcRoot.addEventListener('transitionend', (e) => this.mdcFoundation.handleTransitionEnd(e));
   }
 
+  /**
+   * This method is invoked whenever the drawer is updated
+   * @param _changedProperties Map of changed properties with old values
+   */
   updated(_changedProperties: PropertyValues) {
     if (_changedProperties.has('type')) {
       this.createFoundation();

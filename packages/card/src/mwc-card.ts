@@ -39,15 +39,29 @@ declare global {
 @customElement("mwc-card" as any)
 export class Card extends LitElement {
 
+  /**
+   * Optional. The main tappable area of the card. 
+   * Typically contains most (or all) card content except card actions. 
+   * Only applicable to cards that have a primary action that the main surface should trigger
+   */
   @query('.mdc-card__primary-action')
   protected primaryActionEl!: HTMLElement;
 
+  /**
+   * Optional. Row containing action buttons and/or icons.
+   */
   @query('.mdc-card__actions')
   protected actionsEl!: HTMLElement;
 
+  /**
+   * Optional. A group of action buttons, displayed on the left side of the card (in LTR), adjacent to action-icons
+   */
   @query('.mdc-card__action-buttons')
   protected actionButtonsEl!: HTMLElement;
 
+  /**
+   * Optional. A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to action-buttons
+   */
   @query('.mdc-card__action-icons')
   protected actionIconsEl!: HTMLElement;
 
@@ -66,9 +80,15 @@ export class Card extends LitElement {
   @query('slot[name="action-icons"]')
   protected slotActionIconsEl!: HTMLSlotElement;
 
+  /**
+   * Optional. Default value is false. Removes the shadow and displays a hairline outline instead.
+   */
   @property({ type: Boolean })
   outlined = false;
   
+  /**
+   * Optional. Define the aspect ratio for the main image, it can be 'square' or '16-9'
+   */
   @property({ type: String })
   aspectRatio =  '';
 
@@ -94,6 +114,9 @@ export class Card extends LitElement {
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const styles = {
       'mdc-card': true,
@@ -134,6 +157,10 @@ export class Card extends LitElement {
     `;
   }
 
+  /**
+   * This method is invoked whenever the card is updated
+   * @param _changedProperties Map of changed properties with old values
+   */
   updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
     
