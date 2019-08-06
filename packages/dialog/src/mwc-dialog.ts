@@ -130,6 +130,7 @@ export class Dialog extends BaseElement {
   protected controller_: HTMLElement | null = this.mdcRoot;
 
   protected anchorElement: {el: HTMLElement} = new AnchorElement();
+  protected closeTimeout!: any;
 
   public get isOpen(): boolean {
     return this.mdcFoundation.isOpen()
@@ -359,6 +360,9 @@ export class Dialog extends BaseElement {
   }
 
   protected open(): void {
+    clearTimeout(this.closeTimeout)
+
+    
     if (this.popover) {
       this.popoverStyles = this.calcPopoverPosition()
     }
@@ -373,7 +377,7 @@ export class Dialog extends BaseElement {
   protected close(action: string = ''): void {
     this.mdcFoundation.close(action)
     
-    setTimeout(() => {
+    this.closeTimeout = setTimeout(() => {
       this.openingPopover = false;
     }, 300)
 

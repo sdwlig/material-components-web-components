@@ -34,6 +34,9 @@ import { style } from './mwc-chip-set-css';
 @customElement('mwc-chip-set' as any)
 export class ChipSet extends BaseElement {
 
+  /**
+   * Root element for chip-set component.
+   */
   @query(".mdc-chip-set")
   protected mdcRoot!: HTMLElement;
 
@@ -43,21 +46,36 @@ export class ChipSet extends BaseElement {
   @query("slot")
   protected slotEl!: HTMLSlotElement;
 
+  /**
+   * Optional. Default value is false. Sets the entire chip-set to work as a choice set, you can select only one chip.
+   */
   @property({ type: Boolean })
   choice = false;
 
+  /**
+   * Optional. Default value is false. Allows the entire chip-set to work as a filter set, you can select many chips to apply the behavior of each one.
+   */
   @property({ type: Boolean })
   filter = false;
 
+  /**
+   * Optional. Default value is false. This property will tell the entire chip-set to work like the filter but with extra animation for each chip you add.
+   */
   @property({ type: Boolean })
   input = false;
 
+  
+  /**
+   * Return an array of Chips
+   */
   protected _chips: MWCChip[] = [];
-
   public get chips() {
     return [...this._chips];
   }
 
+  /**
+   * Return the ID's list of selected chips
+   */
   public get selectedChipIds() {
     return this.mdcFoundation.getSelectedChipIds();
   }
@@ -82,6 +100,10 @@ export class ChipSet extends BaseElement {
 
   protected readonly mdcFoundationClass = MDCChipSetFoundation;
 
+  /**
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
   protected createAdapter(): MDCChipSetAdapter {
     return {
       ...addHasRemoveClass(this.mdcRoot),
@@ -106,6 +128,9 @@ export class ChipSet extends BaseElement {
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const classes = {
       'mdc-chip-set': true,
@@ -121,6 +146,13 @@ export class ChipSet extends BaseElement {
     `;
   }
 
+  /**
+   * Invoked when the element is first updated. Implement to perform one time
+   * work on the element after update.
+   *
+   * Setting properties inside this method will trigger the element to update
+   * again after this update cycle completes.
+   */
   firstUpdated() {
     super.firstUpdated();
 
@@ -130,6 +162,9 @@ export class ChipSet extends BaseElement {
       });
   }
 
+  /**
+   * Performs element initialization
+   */
   protected _initialize() {
     this.addEventListener(CHIP_EVENTS.interaction, this._handleChipInteraction);
     this.addEventListener(CHIP_EVENTS.selection, this._handleChipSelection);
