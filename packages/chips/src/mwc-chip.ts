@@ -134,7 +134,7 @@ export class Chip extends BaseElement {
   public selected = false;
 
   /**
-   * Optional. Default value is false. Prevent chip will be removed on trailing icon click
+   * Optional. Default value is false. Prevent chip from being removed on trailing icon action
    */
   @property({ type: Boolean })
   @observer(function (this: Chip, value: boolean ) {
