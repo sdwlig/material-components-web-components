@@ -65,16 +65,16 @@ export class ChipSet extends BaseElement {
   input = false;
 
   
+  protected _chips: MWCChip[] = [];
   /**
    * Return an array of Chips
    */
-  protected _chips: MWCChip[] = [];
   public get chips() {
     return [...this._chips];
   }
 
   /**
-   * Return the ID's list of selected chips
+   * Return an array of the IDs of all selected chips
    */
   public get selectedChipIds() {
     return this.mdcFoundation.getSelectedChipIds();
