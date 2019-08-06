@@ -75,7 +75,7 @@ export abstract class BaseElement extends LitElement {
    * Setting properties inside this method will trigger the element to update
    * again after this update cycle completes.
    *
-   * * @param _changedProperties Map of changed properties with old values
+   * @param _changedProperties Map of changed properties with old values
    */
   firstUpdated() {
     this.createFoundation();
