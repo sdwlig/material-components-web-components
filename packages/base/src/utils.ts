@@ -14,6 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import { matches } from '@material/dom/ponyfill';
 
 /**
  * Return an element assigned to a given slot that matches the given selector
@@ -22,7 +23,7 @@ export function findAssignedElement(slot: HTMLSlotElement, selector: string) {
   for (const node of slot.assignedNodes({ flatten: true })) {
     if (node.nodeType === Node.ELEMENT_NODE) {
       const el = (node as HTMLElement);
-      if (el.matches(selector)) {
+      if (matches(el, selector)) {
         return el;
       }
     }
@@ -40,7 +41,7 @@ export function findAssignedElements(slot: HTMLSlotElement, selector: string) {
   for (const node of slot.assignedNodes({ flatten: true })) {
     if (node.nodeType === Node.ELEMENT_NODE) {
       const el = (node as HTMLElement);
-      if (el.matches(selector)) {
+      if (matches(el, selector)) {
         els.push(el);
       }
     }
