@@ -196,7 +196,7 @@ export class TextField extends FormElement {
   @observer(function(this: TextField, value: number) {
     if (!this.formElement) return;
 
-    if (value < 0) {
+    if (!value || value < 0) {
       this.formElement.removeAttribute('maxLength');
     } else {
       this.formElement.maxLength = value;

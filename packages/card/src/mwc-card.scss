@@ -21,11 +21,12 @@ $feat-color: mdc-feature-create-target($query, color);
 $feat-structure: mdc-feature-create-target($query, structure);
 
 :host {
-  display: inline-flex;
+  display: inline-block;
+  width: 344px;
 }
 
 .mdc-card {
-  max-width: 350px;
+  height: 100%;
 }
 
 .mdc-card__primary-action {
