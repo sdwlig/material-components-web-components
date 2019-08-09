@@ -15,18 +15,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import "@material/button/mdc-button.scss";
-@import "@authentic/mwc-icon/src/_mwc-icon.scss";
+@import "@material/button/mdc-button";
+@import "@authentic/mwc-icon/src/mwc-icon";
 
 .material-icons {
   @extend %material-icons;
 }
 
 :host {
-  display: inline-flex;
+  display: inline-block;
   outline: none;
 }
 
+:host([disabled]) {
+  pointer-events: none;
+}
+
 .mdc-button {
-  flex: 1;
+  width: 100%;
 }

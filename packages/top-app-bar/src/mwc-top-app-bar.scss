@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import '@material/top-app-bar/mdc-top-app-bar.scss';
+@import '@material/top-app-bar/mdc-top-app-bar';
 
 :host {
   display: inline-flex;
@@ -53,4 +53,10 @@ limitations under the License.
   slot[name="actionItems"]::slotted(*) {
     transition: padding 150ms $mdc-animation-standard-curve-timing-function;
   }
+}
+
+// hack for icon-button ripple opacity
+slot[name="navigationIcon"]::slotted(*),
+slot[name="actionItems"]::slotted(*) {
+  --mdc-icon-button-ripple-opacity: 0.24;
 }

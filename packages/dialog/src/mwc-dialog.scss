@@ -18,13 +18,76 @@ limitations under the License.
 @import '@material/dialog/mdc-dialog';
 @import '@material/button/mdc-button';
 
-.mdc-dialog__body--scrollable {
-    max-height: var(--mwc-dialog-maxHeight, 195px);
+
+.mdc-dialog {
+  &--popover {
+    align-items: unset;
+    justify-content: unset;
+    width: 100%;
+    height: auto;
+    left: auto;
+    top: auto;
+    position: fixed;
+    max-width: 100%;
+    margin: 0 auto;
+
+    &.mdc-dialog--pre-open {
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      transform: scale(0.7);
+    }
+    &.mdc-dialog--closing {
+      display: block;
+    }
+    &.mdc-dialog--open {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &-small {
+      max-width: 280px;
+    }
+
+    &-medium {
+      max-width: 410px;
+    }
+
+    &-large {
+      max-width: 560px;
+    }
+
+    &-show {
+      display: block;
+    }
+
+    &-hide {
+      display: none;
+    }
+
+    .mdc-dialog__scrim, .mdc-dialog__actions {
+      display: none;
+    }
+    .mdc-dialog__surface {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+  &__content {
+    &--no-format {
+      padding: 0;
+    }
+  }
+  &__header {
+    &--hide {
+      display: none;
+    }
+  }
 }
 
-.mdc-dialog__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding-right: 24px;
+.mdc-dialog:not(.mdc-dialog--popover) .mdc-dialog__surface {
+    @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+      /* IE10+ specific styles go here */  
+      overflow: scroll;
+    }
 }

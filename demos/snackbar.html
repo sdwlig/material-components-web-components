@@ -19,52 +19,62 @@ limitations under the License.
 <head>
   <title>snackbar demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.entries%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.reduce%2CArray.prototype.map%2CCustomEvent%2CArray.prototype.every%2CArray.isArray%2CArray.of%2CElement%2CElement.prototype.matches%2CEvent%2CMutationObserver%2CPromise%2CPromise.prototype.finally%2CString.prototype.includes%2CString.prototype.startsWith%2CString.prototype.trim%2Cconsole.error%2Cconsole.log%2Cconsole.info%2Cconsole.warn%2Cconsole.trace%2Cfetch%2CElement.prototype.classList%2CElement.prototype.append%2CElement.prototype.prepend%2CElement.prototype.remove%2CElement.prototype.toggleAttribute%2CElement.prototype.replaceWith%2CElement.prototype.closest%2CElement.prototype.cloneNode%2CElement.prototype.before%2CElement.prototype.after%2CElement.prototype.placeholder%2CElement.prototype.dataset%2CJSON%2CNode.prototype.contains%2CNodeList.prototype.forEach%2CNumber.isInteger%2CNumber.isNaN%2CObject.assign%2CObject.entries%2CObject.freeze%2CObject.values%2CObject.keys"></script>
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-snackbar/mwc-snackbar.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-button/mwc-button.js"></script>
+  <script type="module" src="../node_modules/@authentic/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@authentic/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
+  <style>
+    #actionButton {
+      --mdc-theme-on-primary: black;
+      --mdc-theme-primary: #bb86fc;
+    }
+    #iconButton {
+      color: white;
+    }
+  </style>
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Snackbar</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Snackbar</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-group">
-      <mwc-button id="snack1" raised ripple label="Snack 1"></mwc-button>
-      <mwc-button id="snack2" raised ripple label="Snack 2 (no dismiss)"></mwc-button>
-      <mwc-button id="snack3" raised ripple label="Snack 3 (multiline)"></mwc-button>
+      <mwc-button id="snack1" raised ripple label="DEFAULT"></mwc-button>
+      <mwc-button id="snack2" raised ripple label="LEADING"></mwc-button>
+      <mwc-button id="snack3" raised ripple label="STACKED"></mwc-button>
     </div>
 
-    <mwc-snackbar id="snack" message="Hi there snack 1!" actionText="Go"></mwc-snackbar>
+    <mwc-snackbar id="snack" labelText="Can't send photo. Retry in 5 seconds.">
+      <mwc-button id="actionButton" slot="action">RETRY</mwc-button>
+      <mwc-icon-button id="iconButton" icon="close" slot="dismiss"></mwc-icon-button>
+    </mwc-snackbar>
 
-  </main>
-  <script type="module">
+  </div>
+  <script>
     snack1.onclick = () => {
-      snack.dismissesOnAction = true;
-      snack.show();
+      snack.stacked = false;
+      snack.leading = false;
+      snack.timeoutMs = 5000;
+      snack.open();
     }
 
     snack2.onclick = () => {
-      snack.dismissesOnAction = false;
-      snack.show({
-        message: 'Hi there snack 2!',
-        actionText: 'Happy',
-        timeout: 5000
-      });
+      snack.stacked = false;
+      snack.leading = true;
+      snack.timeoutMs = 8000;
+      snack.open();
     }
 
     snack3.onclick = () => {
-      snack.dismissesOnAction = true;
-      snack.show({
-        message: 'Hi there snack 3! This is a really long message that will probably wrap.',
-        actionText: 'Wow',
-        multiline: true,
-        actionOnBottom: true,
-        timeout: 5000
-      });
+      snack.stacked = true;
+      snack.leading = false;
+      snack.timeoutMs = 5000;
+      snack.open();
     }
 
     addEventListener('load', () => document.body.classList.remove('unresolved'));

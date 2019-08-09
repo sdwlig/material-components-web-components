@@ -16,42 +16,18 @@ limitations under the License.
 */
 import {
     BaseElement,
-    Foundation,
-    Adapter,
     customElement,
     query,
     html,
-    property
-} from '@authentic/mwc-base/base-element.js';
+    property,
+    addHasRemoveClass,
+    PropertyValues
+} from '@authentic/mwc-base/base-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import { MDCTooltipFoundation } from './mdc-tooltip/foundation.js';
-import { style } from './mwc-tooltip-css.js';
+import { MDCTooltipFoundation } from './foundation';
+import { MDCTooltipAdapter } from './adapter';
 
-export interface TooltipFoundation extends Foundation {
-    handleTouchEnd(evt: Event): void;
-    handleBlur(evt: Event): void;
-    handleMouseLeave(evt: MouseEvent): void;
-    handleTouchStart(evt: Event): void;
-    handleFocus(evt: Event): void;
-    handleMouseEnter(evt: MouseEvent): void;
-    handleClick(evt: MouseEvent): void;
-    showDelayed(evt: Event): void;
-    show(): void;
-    hide(): void;
-    destroy(): void;
-    displayed_:Boolean;
-    placement:String;
-    showTimeout_:Number;
-    checkHideFlag_:Boolean;
-    hideDelay:Number;
-    showDelay:Number;
-    gap:Number;
-}
-
-export declare var TooltipFoundation: {
-    prototype: TooltipFoundation;
-    new(adapter: Adapter): TooltipFoundation;
-}
+import { style } from './mwc-tooltip-css';
 
 declare global {
     interface HTMLElementTagNameMap {
@@ -89,15 +65,17 @@ export class Tooltip extends BaseElement {
     @property({ type: Number })
     offset = 0;
 
-    protected readonly mdcFoundationClass: typeof TooltipFoundation = MDCTooltipFoundation;
-    protected mdcFoundation!: TooltipFoundation;
+    protected mdcFoundation!: MDCTooltipFoundation;
+
+    protected readonly mdcFoundationClass = MDCTooltipFoundation;
+
     protected _preventClose = false;
     protected controller_:HTMLElement|null = this.mdcRoot;
     protected _handleKeydown;
     protected _handleClick;
-    protected createAdapter() {
+    protected createAdapter(): MDCTooltipAdapter {
         return {
-            ...super.createAdapter(),
+            ...addHasRemoveClass(this.mdcRoot),
             addClass: (className) => this.mdcRoot.classList.add(className),
             removeClass: (className) => this.mdcRoot.classList.remove(className),
             getRootWidth: () => this.mdcRoot.offsetWidth,
@@ -118,7 +96,9 @@ export class Tooltip extends BaseElement {
         this.initListeners();
     }
 
-    updated() {
+    updated(_changedProperties: PropertyValues) {
+        super.updated(_changedProperties);
+        
         this.mdcFoundation.showDelay = this.showDelay;
         this.mdcFoundation.hideDelay = this.hideDelay;
         this.mdcFoundation.gap = this.gap;

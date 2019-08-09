@@ -19,6 +19,7 @@ limitations under the License.
   <head>
     <title>card demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.entries%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.reduce%2CArray.prototype.map%2CCustomEvent%2CArray.prototype.every%2CArray.isArray%2CArray.of%2CElement%2CElement.prototype.matches%2CEvent%2CMutationObserver%2CPromise%2CPromise.prototype.finally%2CString.prototype.includes%2CString.prototype.startsWith%2CString.prototype.trim%2Cconsole.error%2Cconsole.log%2Cconsole.info%2Cconsole.warn%2Cconsole.trace%2Cfetch%2CElement.prototype.classList%2CElement.prototype.append%2CElement.prototype.prepend%2CElement.prototype.remove%2CElement.prototype.toggleAttribute%2CElement.prototype.replaceWith%2CElement.prototype.closest%2CElement.prototype.cloneNode%2CElement.prototype.before%2CElement.prototype.after%2CElement.prototype.placeholder%2CElement.prototype.dataset%2CJSON%2CNode.prototype.contains%2CNodeList.prototype.forEach%2CNumber.isInteger%2CNumber.isNaN%2CObject.assign%2CObject.entries%2CObject.freeze%2CObject.values%2CObject.keys"></script>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
     <script
       type="module"
@@ -37,66 +38,241 @@ limitations under the License.
       src="../node_modules/@authentic/mwc-card/mwc-card.js"
     ></script>
     <link rel="stylesheet" href="demo-component.css" />
+    <link rel="stylesheet" href="../node_modules/@material/typography/dist/mdc.typography.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700">
     <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: rgba(0, 0, 0, 0.05);
-      }
-
-      .presentCard {
+      .demo-card {
+        font-family: Roboto, sans-serif;
         padding: 40px;
         display: flex;
         justify-content: center;
       }
-      .rounded {
-        border-radius: 8px;
-        overflow: hidden;
+
+      .demo-card > * {
+        padding: 0 10px;
       }
 
-      .my-media {
+      .demo-card__media {
         background-image: url("https://material-components-web.appspot.com/images/16-9.jpg");
         height: 100%;
         background-size: cover;
         background-position: center center;
       }
-      .subtext {
-        color: rgba(0, 0, 0, 0.54);
-      }
 
-      .content {
-        display: block;
+      .demo-card__primary {
         padding: 1rem;
       }
+
+      .demo-card__secondary {
+        color: rgba(0, 0, 0, 0.54);
+        padding: 8px 1rem;
+      }
+
+      .demo-card__title {
+        margin: 0;
+      }
+
+      .demo-card__subtitle {
+        color: rgba(0, 0, 0, 0.54);
+        margin: 0;
+      }
+
+      /* With Media */
+
+      .demo-card--with-media .demo-card__secondary,
+      .demo-card--with-text-over-media .demo-card__secondary {
+        padding: 0 1rem 8px 1rem;
+      }
+
+      /* With Text Over Media */
+
+      .demo-card--with-text-over-media .demo-card__media {
+        display: flex;
+        align-items: flex-end;
+        color: white;
+      }
+
+      .demo-card--with-text-over-media .demo-card__secondary {
+        padding-top: 1rem;
+      }
+
+      .demo-card--with-text-over-media .demo-card__title {
+        color: white;
+      }
+
+      .demo-card--with-text-over-media .demo-card__subtitle {
+        color: white;
+      }
+
     </style>
   </head>
   <body class="unresolved">
-    <div class="presentCard">
-      <mwc-card aspectRatio="16-9">
-        <div slot="media" class="my-media"></div>
+    <header>
+      <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+      <span>Card</span>
+    </header>
 
-        <div slot="content" class="content">
-          <h2 class="">Our Changing Planet</h2>
-          <h3 class="subtext">by Kurt Wagner</h3>
-          <div class="subtext">
+    <div class='main'>
+      <div class="demo-card">
+        <mwc-card>
+          <div class="demo-card__secondary mdc-typography mdc-typography--body2">
             Visit ten places on our planet that are undergoing the biggest
             changes today.
           </div>
-        </div>
+        </mwc-card>
 
-        <div slot="action-buttons">
-          <mwc-button dense class="mdc-card__action--button">Read</mwc-button>
-          <mwc-button dense class="mdc-card__action--button">Save</mwc-button>
-        </div>
-        <div slot="action-icons">
-          <mwc-icon-button title="Favorite" icon="favorite"></mwc-icon-button>
-          <mwc-icon-button title="Share" icon="share"></mwc-icon-button>
+        <mwc-card>
+          <div class="demo-card__secondary mdc-typography mdc-typography--body2">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur quae ad assumenda vel harum quas velit error impedit. Sint odit a architecto excepturi saepe nihil praesentium harum consequatur, ut quod.
+          </div>
+        </mwc-card>
+
+        <mwc-card>
+          <div class="demo-card__secondary mdc-typography mdc-typography--body2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta quas expedita ex adipisci dolores, reprehenderit tempore. Perferendis reiciendis ad enim?
+          </div>
+        </mwc-card>
+      </div>
+
+      <div class="demo-card demo-card--width-media">
+        <mwc-card aspectRatio="16-9">
+          <div slot="media" class="demo-card__media"></div>
+
+          <div slot="content" class="demo-card__primary">
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Our Changing Planet</h2>
+            <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">by Kurt Wagner</h3>
+          </div>
+          <div slot="content" class="demo-card__secondary mdc-typography mdc-typography--body2">
+            Visit ten places on our planet that are undergoing the biggest
+            changes today.
+          </div>
+
+          <mwc-button slot="action-buttons">Read</mwc-button>
+          <mwc-button slot="action-buttons">Save</mwc-button>
+          
           <mwc-icon-button
+            slot="action-icons"
+            title="Favorite"
+            icon="favorite"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="Share"
+            icon="share"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
             title="More options"
             icon="more_vert"
           ></mwc-icon-button>
-        </div>
-      </mwc-card>
+        </mwc-card>
+
+        <mwc-card aspectRatio="16-9">
+          <div slot="media" class="demo-card__media"></div>
+
+          <div slot="header" class="demo-card__primary">
+            <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Our Changing Planet</h2>
+            <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">by Kurt Wagner</h3>
+          </div>
+          
+          <div slot="content" class="demo-card__secondary mdc-typography mdc-typography--body2">
+            Visit ten places on our planet that are undergoing the biggest
+            changes today.
+          </div>
+
+          <mwc-button slot="action-buttons">Read</mwc-button>
+          <mwc-button slot="action-buttons">Save</mwc-button>
+          
+          <mwc-icon-button
+            slot="action-icons"
+            title="Favorite"
+            icon="favorite"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="Share"
+            icon="share"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="More options"
+            icon="more_vert"
+          ></mwc-icon-button>
+        </mwc-card>
+      </div>
+
+      <div class="demo-card demo-card--with-text-over-media">
+        <mwc-card outline aspectRatio="16-9">
+          <div slot="media" class="demo-card__media">
+            <div class="demo-card__primary">
+              <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Our Changing Planet</h2>
+              <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">by Kurt Wagner</h3>
+            </div>
+          </div>
+
+          <div slot="content" class="demo-card__secondary mdc-typography mdc-typography--body2">
+            Visit ten places on our planet that are undergoing the biggest
+            changes today.
+          </div>
+
+          <mwc-button slot="action-buttons">Read</mwc-button>
+          <mwc-button slot="action-buttons">Save</mwc-button>
+          
+          <mwc-icon-button
+            slot="action-icons"
+            title="Favorite"
+            icon="favorite"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="Share"
+            icon="share"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="More options"
+            icon="more_vert"
+          ></mwc-icon-button>
+        </mwc-card>
+
+        <mwc-card aspectRatio="16-9">
+          <div slot="media" class="demo-card__media">
+          </div>
+
+          <div slot="content" class="demo-card__secondary mdc-typography mdc-typography--body2">
+            Visit ten places on our planet that are undergoing.
+          </div>
+
+          <mwc-button slot="action-buttons">Read</mwc-button>
+          <mwc-button slot="action-buttons">Save</mwc-button>
+          
+          <mwc-icon-button
+            slot="action-icons"
+            title="Favorite"
+            icon="favorite"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="Share"
+            icon="share"
+          >
+          </mwc-icon-button>
+          <mwc-icon-button
+            slot="action-icons"
+            title="More options"
+            icon="more_vert"
+          ></mwc-icon-button>
+        </mwc-card>
+      </div>
     </div>
+
     <script>
       addEventListener("load", () =>
         document.body.classList.remove("unresolved")

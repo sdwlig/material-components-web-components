@@ -1,19 +1,25 @@
 {
   "name": "@authentic/mwc-slider",
-  "version": "0.4.5",
+  "version": "0.6.11",
   "description": "",
   "main": "mwc-slider.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
-    "@material/slider": "^0.44.0",
-    "lit-html": "^1.0.0"
+    "@authentic/mwc-base": "^0.6.11",
+    "@material/slider": "~2.3.0",
+    "lit-html": "~1.1.1",
+    "resize-observer-polyfill": "~1.5.1"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "ade52f402f805e8c0b9a5ca7213eef1cffe0dab4"
 }

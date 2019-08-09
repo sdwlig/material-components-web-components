@@ -1,19 +1,23 @@
 {
   "name": "@authentic/mwc-linear-progress",
-  "version": "0.4.5",
+  "version": "0.6.11",
   "description": "",
   "main": "mwc-linear-progress.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
-    "@material/linear-progress": "^0.43.0"
+    "@authentic/mwc-base": "^0.6.11",
+    "@material/linear-progress": "~2.3.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "private": false
+  "gitHead": "ade52f402f805e8c0b9a5ca7213eef1cffe0dab4"
 }

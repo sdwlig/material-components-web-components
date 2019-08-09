@@ -14,77 +14,131 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {LitElement, html, property, customElement, classMap} from '@authentic/mwc-base/base-element';
-import {style} from './mwc-button-css.js';
-import {ripple} from '@authentic/mwc-ripple/ripple-directive.js';
-import '@authentic/mwc-icon/mwc-icon-font.js';
+import { LitElement, html, property, customElement, classMap } from '@authentic/mwc-base/base-element';
+import { ripple } from '@authentic/mwc-ripple/ripple-directive';
+
+import { style } from './mwc-button-css';
+
+import '@authentic/mwc-icon/mwc-icon-font';
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'mwc-button': Button;
+  }
+}
 
 @customElement('mwc-button' as any)
 export class Button extends LitElement {
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value sets to false. Styles a contained button that is elevated above the surface.
+   */
+  @property({ type: Boolean })
   raised = false;
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value sets to false. Styles a contained button that is flush with the surface.
+   */
+  @property({ type: Boolean })
   unelevated = false;
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value sets to false. Styles an outlined button that is flush with the surface.
+   */
+  @property({ type: Boolean })
   outlined = false;
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value sets to false. Makes the button text and container slightly smaller.
+   */
+  @property({ type: Boolean })
   dense = false;
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value sets to false. Removes ability to interacted with and have no visual interaction effect
+   */
+  @property({type: Boolean, reflect: true})
   disabled = false;
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value sets to false. Use to display an icon after the button's text label
+   */
+  @property({ type: Boolean })
   trailingIcon = false;
 
+  /**
+   * Optional. Indicates the element containing the button's icon.
+   */
   @property()
   icon = '';
 
+  /**
+   * Recommended. Indicates the element containing the button's text label
+   */
   @property()
   label = '';
 
-  @property()
+  /**
+   * Optional. The href is use to specifies the link's destination
+   */
+  @property({ type: String, reflect: true })
   href = '';
 
+  /**
+   * Optional. Default value sets to _self. Use to specifies where to open the linked document. You can use one of the following values: _blank|_self|_parent|_top|framename
+   */
+  @property({ type: String, reflect: true })
+  target = '_self';
 
+  /**
+   * Returns the node into which the element should render and by default creates and returns an open shadowRoot
+   */
   createRenderRoot() {
-    return this.attachShadow({mode: 'open', delegatesFocus: true});
+    return this.attachShadow({ mode: 'open', delegatesFocus: true });
   }
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const classes = {
+      'mdc-button': true,
       'mdc-button--raised': this.raised,
       'mdc-button--unelevated': this.unelevated,
       'mdc-button--outlined': this.outlined,
       'mdc-button--dense': this.dense,
     };
-    const mdcButtonIcon = html`<span class="material-icons mdc-button__icon">${this.icon}</span>`
+    
+    const mdcButtonIcon = html`
+      <i class="material-icons mdc-button__icon" aria-hidden="true">${this.icon}</i>
+    `;
+
     return html`
-      ${this.href ?
-        html`
+      ${this.href
+        ? html`
           <a
-              .ripple="${ripple({unbounded: false})}"
-              class="mdc-button ${classMap(classes)}"
-              ?disabled="${this.disabled}"
-              aria-label="${this.label || this.icon}"
-              href="${this.href}">
+            .ripple="${ripple({ unbounded: false })}"
+            class="${classMap(classes)}"
+            ?disabled="${this.disabled}"
+            aria-label="${this.label || this.icon}"
+            href="${this.href}"
+            target="${this.target}"
+          >
             ${this.icon && !this.trailingIcon ? mdcButtonIcon : ''}
             <span class="mdc-button__label">${this.label}</span>
             ${this.icon && this.trailingIcon ? mdcButtonIcon : ''}
             <slot></slot>
           </a>
-        ` :
-        html`
+        `
+        : html`
           <button
-              .ripple="${ripple({unbounded: false})}"
-              class="mdc-button ${classMap(classes)}"
-              ?disabled="${this.disabled}"
-              aria-label="${this.label || this.icon}">
+            .ripple="${ripple({ unbounded: false })}"
+            class="${classMap(classes)}"
+            ?disabled="${this.disabled}"
+            aria-label="${this.label || this.icon}"
+          >
             ${this.icon && !this.trailingIcon ? mdcButtonIcon : ''}
             <span class="mdc-button__label">${this.label}</span>
             ${this.icon && this.trailingIcon ? mdcButtonIcon : ''}
@@ -93,11 +147,5 @@ export class Button extends LitElement {
         `
       }
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'mwc-button': Button;
   }
 }

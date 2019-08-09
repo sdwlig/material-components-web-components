@@ -1,25 +1,28 @@
 {
   "name": "@authentic/mwc-dialog",
-  "version": "0.4.5",
+  "version": "0.6.11",
   "description": "",
   "main": "mwc-dialog.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AuthX/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
-    "@authentic/mwc-button": "^0.4.5",
-    "@material/button": "^0.44.1",
-    "@material/dialog": "^0.43.0",
-    "blocking-elements": "^0.0.2",
-    "focus-trap": "^4.0.2",
-    "lit-element": "^2.0.1",
-    "wicg-inert": "^1.1.6"
+    "@authentic/mwc-base": "^0.6.11",
+    "@authentic/mwc-button": "^0.6.11",
+    "@authentic/mwc-ripple": "^0.6.11",
+    "@material/button": "~2.3.0",
+    "@material/dialog": "~2.3.0",
+    "@material/dom": "~1.1.0",
+    "lit-html": "~1.1.1"
   },
   "publishConfig": {
     "access": "public"
   },
-  "private": false
+  "gitHead": "ade52f402f805e8c0b9a5ca7213eef1cffe0dab4"
 }

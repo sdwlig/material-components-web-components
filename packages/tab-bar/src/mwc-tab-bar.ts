@@ -14,16 +14,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {BaseElement, html, property, observer, query, customElement, Adapter, Foundation} from '@authentic/mwc-base/base-element.js';
-import {Tab} from '@authentic/mwc-tab';
-import {TabScroller} from '@authentic/mwc-tab-scroller';
+import {
+  BaseElement,
+  html,
+  property,
+  observer,
+  query,
+  customElement,
+  emit
+} from '@authentic/mwc-base/base-element';
+import { Tab } from '@authentic/mwc-tab';
+import { TabScroller } from '@authentic/mwc-tab-scroller';
+import MDCTabBarFoundation from '@material/tab-bar/foundation';
+import { MDCTabBarAdapter } from '@material/tab-bar/adapter';
+import { MDCTabInteractionEvent } from '@material/tab/types';
+
+import { style } from './mwc-tab-bar-css';
 
 // Make TypeScript not remove the imports.
 import '@authentic/mwc-tab';
 import '@authentic/mwc-tab-scroller';
-
-import MDCTabBarFoundation from '@material/tab-bar/foundation';
-import {style} from './mwc-tab-bar-css';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -31,24 +41,16 @@ declare global {
   }
 }
 
-export interface TabBarFoundation extends Foundation {
-  scrollIntoView(index: number): void;
-  activateTab(index: number): void;
-  handleTabInteraction(e: Event): void;
-  handleKeyDown(e: Event): void;
-}
-
-export declare var TabBarFoundation: {
-  prototype: TabBarFoundation;
-  new(adapter: Adapter): TabBarFoundation;
-}
+export const EVENTS = {
+  activated: 'activated'
+};
 
 @customElement('mwc-tab-bar' as any)
 export class TabBar extends BaseElement {
 
-  protected mdcFoundation!: TabBarFoundation;
+  protected mdcFoundation!: MDCTabBarFoundation;
 
-  protected readonly mdcFoundationClass: typeof TabBarFoundation = MDCTabBarFoundation;
+  protected readonly mdcFoundationClass = MDCTabBarFoundation;
 
   @query('.mdc-tab-bar')
   protected mdcRoot!: HTMLElement
@@ -59,7 +61,7 @@ export class TabBar extends BaseElement {
   @query('slot')
   protected tabsSlot!: HTMLSlotElement
 
-  @observer(async function(this: TabBar, value: number) {
+  @observer(async function (this: TabBar, value: number) {
     await this.updateComplete;
     // only provoke the foundation if we are out of sync with it, i.e.
     // ignore an foundation generated set.
@@ -67,16 +69,16 @@ export class TabBar extends BaseElement {
       this.mdcFoundation.activateTab(value);
     }
   })
-  @property({type: Number})
+  @property({ type: Number })
   activeIndex = 0;
 
   private _previousActiveIndex = -1;
 
-  private _handleTabInteraction(e: Event) {
+  private _handleTabInteraction(e: MDCTabInteractionEvent) {
     this.mdcFoundation.handleTabInteraction(e);
   }
 
-  private _handleKeydown(e: Event) {
+  private _handleKeydown(e: KeyboardEvent) {
     this.mdcFoundation.handleKeyDown(e);
   }
 
@@ -85,26 +87,25 @@ export class TabBar extends BaseElement {
   // TODO(sorvell): can scroller be optional for perf?
   render() {
     return html`
-      <div class="mdc-tab-bar" role="tablist"
-          @MDCTab:interacted="${this._handleTabInteraction}"
-          @keydown="${this._handleKeydown}">
-        <mwc-tab-scroller><slot></slot></mwc-tab-scroller>
+      <div class="mdc-tab-bar" role="tablist" @interacted="${this._handleTabInteraction}" @keydown="${this._handleKeydown}">
+        <mwc-tab-scroller>
+          <slot></slot>
+        </mwc-tab-scroller>
       </div>
       `;
   }
 
   // TODO(sorvell): probably want to memoize this and use a `slotChange` event
   private _getTabs() {
-    return this.tabsSlot.assignedNodes({flatten: true}).filter((e: unknown) => e instanceof Tab) as Tab[];
+    return this.tabsSlot.assignedNodes({ flatten: true }).filter((e: unknown) => e instanceof Tab) as Tab[];
   }
 
   private _getTab(index) {
     return this._getTabs()[index];
   }
 
-  createAdapter() {
+  createAdapter(): MDCTabBarAdapter {
     return {
-      ...super.createAdapter(),
       scrollTo: (scrollX: number) => this.scrollerElement.scrollToPosition(scrollX),
       incrementScroll: (scrollXIncrement: number) => this.scrollerElement.incrementScrollPosition(scrollXIncrement),
       getScrollPosition: () => this.scrollerElement.getScrollPosition(),
@@ -141,7 +142,7 @@ export class TabBar extends BaseElement {
       getTabDimensionsAtIndex: (index: number) => {
         const tab = this._getTab(index);
         return tab !== undefined ? tab.computeDimensions() :
-            {rootLeft: 0, rootRight: 0, contentLeft: 0, contentRight: 0};
+          { rootLeft: 0, rootRight: 0, contentLeft: 0, contentRight: 0 };
       },
       getPreviousActiveTabIndex: () => {
         return this._previousActiveIndex;
@@ -165,9 +166,7 @@ export class TabBar extends BaseElement {
         // Synchronize the tabs `activeIndex` to the foundation.
         // This is needed when a tab is changed via a click, for example.
         this.activeIndex = index;
-        this.dispatchEvent(
-          new CustomEvent(MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT,
-            {detail: {index}, bubbles: true, cancelable: true}))
+        emit(this, EVENTS.activated, { index }, true);
       }
     };
   }
@@ -175,7 +174,7 @@ export class TabBar extends BaseElement {
   // NOTE: Delay creating foundation until scroller is fully updated.
   // This is necessary because the foundation/adapter synchronously addresses
   // the scroller element.
-  firstUpdated() {}
+  firstUpdated() { }
   get updateComplete() {
     return super.updateComplete
       .then(() => this.scrollerElement.updateComplete)

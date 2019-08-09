@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { query, property, LitElement, customElement, html, svg } from 'lit-element';
+import { query, property, LitElement, customElement, html, svg, PropertyValues } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { observer } from '@authentic/mwc-base/observer';
 import { cssClasses } from './constants';
@@ -50,39 +50,69 @@ export class CircularProgress extends LitElement {
   protected mdcFoundation!: MDCCircularProgressFoundation;
   protected SIZE = 44;
 
+  /**
+   * Root element for circular-progress component.
+   */
   @query('.mwc-circular-progress')
-  protected mdcRoot!: HTMLElement
+  protected mdcRoot!: HTMLElement;
+
+  @query('circle')
+  protected circleEl!: HTMLElement;
 
   @query('.mdc-circular-progress__bar')
-  protected bar!: HTMLElement
+  protected bar!: HTMLElement;
 
+  /**
+   * Optional. This property customizes that instance of the component, overriding the theme color
+   */
   @property({ type: String })
   @observer(function (this: CircularProgress, value: String) {
     this.mdcFoundation.setColor(value);
   })
   color;
 
+  /**
+   * Optional. Default value sets to false. This property is use to applies the "Theme Secondary" color to the indicator
+   */
   @property({ type: Boolean })
   secondary = false;
 
+  /**
+   * Optional. Default value is 40. A number representing the size of the circle
+   */
   @property({ type: Number })
   size = 40;
 
+  /**
+   * Optional. Default value is 3.6. A number representing thickness of the circle
+   */
   @property({ type: Number })
   thickness = 3.6;
 
+  /**
+   * Optional. Default value sets to false. Allows the indicator to be set to a defined state of progress, from 0 to 100%
+   */
   @property({ type: Boolean })
   fixed = false;
 
+  /**
+   * Optional. Default value sets to false. It disables the shrink animation of the indicator. This only works if the variant is indeterminate.
+   */
   @property({ type: Boolean })
   disableShrink = false;
 
+  /**
+   * Optional. Default value sets to false. Use along with progress property to define how long a process will take
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: CircularProgress, value: boolean) {
     this.mdcFoundation.setDeterminate(value || this.fixed);
   })
   determinate = false;
 
+  /**
+   * Optional. Default value is 0. Sets the progress indicator with values between 0 and 100
+   */
   @property({ type: Number })
   @observer(function (this: CircularProgress, value: number) {
     this.mdcFoundation.setProgress(value);
@@ -93,6 +123,9 @@ export class CircularProgress extends LitElement {
   })
   progress = 0;
 
+  /**
+   * Optional. Default value sets to false. Use to hides the circular progress indicator.
+   */
   @property({ type: Boolean, reflect: true })
   @observer(function (this: CircularProgress, value: boolean) {
     if (value) {
@@ -105,6 +138,9 @@ export class CircularProgress extends LitElement {
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const { fixed, determinate, closed, SIZE, thickness, disableShrink } = this;
 
@@ -120,7 +156,6 @@ export class CircularProgress extends LitElement {
     };
 
     return html`
-      ${this.getCircleStyle()}
       <div role="progressbar" class="${classMap(classes)}">
         ${svg`
           <svg viewBox="${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}">
@@ -172,53 +207,52 @@ export class CircularProgress extends LitElement {
     this.mdcFoundation.init();
   }
 
-  getCircleStyle() {
-    const { fixed, determinate, SIZE, size, thickness, progress } = this;
-
-    if (determinate || fixed) {
-      const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
-      const strokeDasharray = circumference.toFixed(3);
-      const strokeDashoffset = fixed
-        ? `${(((100 - progress) / 100) * circumference).toFixed(3)}px`
-        : `${(easeIn((100 - progress) / 100) * circumference).toFixed(3)}px`
-      const transform = fixed
-        ? 'rotate(-90deg)'
-        : `rotate(${(easeOut(progress / 70) * 270).toFixed(3)}deg)`;
-
-      return html`
-        <style>
-          .mwc-circular-progress {
-            transform: ${transform};
-            width: ${size}px;
-            height: ${size}px;
-          }
-
-          .mwc-circular-progress circle {
-            stroke-dasharray: ${strokeDasharray};
-            stroke-dashoffset: ${strokeDashoffset};
-          }
-        </style>
-      `;
-    }
-
-    return html`
-      <style>
-        .mwc-circular-progress {
-          width: ${size}px;
-          height: ${size}px;
-        }
-      </style>
-    `;
-  }
-
+  /**
+   * Invoked when the element is first updated. 
+   * Implement to perform one time work on the element after update.
+   */
   firstUpdated() {
     this.createFoundation();
   }
 
+  /**
+   * This method is invoked whenever the circular-progress is updated
+   * @param _changedProperties Map of changed properties with old values
+   */
+  updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+
+    const { fixed, determinate, SIZE, size, thickness, progress } = this;
+
+    if (determinate || fixed) {
+        const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
+        const strokeDasharray = circumference.toFixed(3);
+        const strokeDashoffset = fixed
+          ? `${(((100 - progress) / 100) * circumference).toFixed(3)}px`
+          : `${(easeIn((100 - progress) / 100) * circumference).toFixed(3)}px`;
+        const transform = fixed
+          ? 'rotate(-90deg)'
+          : `rotate(${(easeOut(progress / 70) * 270).toFixed(3)}deg)`;
+
+        this.mdcRoot.style.transform = transform;
+        this.circleEl.style.strokeDasharray = strokeDasharray;
+        this.circleEl.style.strokeDashoffset = strokeDashoffset;
+    }
+
+    this.mdcRoot.style.width = `${size}px`;
+    this.mdcRoot.style.height = `${size}px`;
+  }
+
+  /**
+   * Puts the component in the open state.
+   */
   open() {
     this.closed = false;
   }
 
+  /**
+   * Puts the component in the closed state.
+   */
   close() {
     this.closed = true;
   }

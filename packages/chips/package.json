@@ -1,6 +1,6 @@
 {
   "name": "@authentic/mwc-chips",
-  "version": "0.4.5",
+  "version": "0.6.11",
   "description": "",
   "main": "mwc-chip.js",
   "repository": {
@@ -13,14 +13,18 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@authentic/mwc-base": "^0.4.5",
-    "@authentic/mwc-icon": "^0.4.5",
-    "@authentic/mwc-ripple": "^0.4.5",
-    "@material/chips": "^0.35.0",
-    "lit-element": "^2.0.1",
-    "lit-html": "^1.0.0"
+    "@authentic/mwc-base": "^0.6.11",
+    "@authentic/mwc-icon": "^0.6.11",
+    "@authentic/mwc-ripple": "^0.6.11",
+    "@material/chips": "~2.3.0",
+    "@material/feature-targeting": "~0.44.1",
+    "@material/rtl": "~0.42.0",
+    "@material/shape": "~1.1.1",
+    "@material/theme": "~1.1.0",
+    "lit-html": "~1.1.1"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "ade52f402f805e8c0b9a5ca7213eef1cffe0dab4"
 }
