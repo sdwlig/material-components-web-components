@@ -14,13 +14,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {BaseElement, html, property, observer, query, customElement, Adapter, Foundation, PropertyValues, classMap} from '@material/mwc-base/base-element.js';
-import MDCModalDrawerFoundation from '@material/drawer/modal/foundation.js';
-import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation.js';
-import {strings} from '@material/drawer/constants.js';
-import {style} from './mwc-drawer-css.js';
-import 'wicg-inert/dist/inert.js';
-import 'blocking-elements/blocking-elements.js';
+import {
+  BaseElement,
+  html,
+  property,
+  observer,
+  query,
+  customElement,
+  PropertyValues,
+  classMap,
+  addHasRemoveClass,
+  emit
+} from '@material/mwc-base/base-element';
+import MDCModalDrawerFoundation from '@material/drawer/modal/foundation';
+import MDCDismissibleDrawerFoundation from '@material/drawer/dismissible/foundation';
+import { MDCDrawerAdapter } from '@material/drawer/adapter';
+import 'wicg-inert/dist/inert';
+import 'blocking-elements/blocking-elements';
+
+import { style } from './mwc-drawer-css';
+
+export const EVENTS = {
+  closed: 'closed',
+  opened: 'opened',
+}
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -39,39 +56,38 @@ declare global {
   }
 }
 
-export interface DrawerFoundation extends Foundation {
-  open(): void;
-  close(): void;
-}
-
-export declare var DrawerFoundation: {
-  prototype: DrawerFoundation;
-  new(adapter: Adapter): DrawerFoundation;
-}
-
 @customElement('mwc-drawer' as any)
 export class Drawer extends BaseElement {
 
+  /**
+   * Root element for drawer component.
+   */
   @query('.mdc-drawer')
   protected mdcRoot!: HTMLElement;
 
+  /**
+   * Mandatory for dismissible variant only. Sibling element that is resized when the drawer opens/closes.
+   */
   @query('.mdc-drawer-app-content')
   protected appContent!: HTMLElement;
 
-  protected mdcFoundation!: MDCDismissibleDrawerFoundation|MDCModalDrawerFoundation;
+  protected mdcFoundation!: MDCDismissibleDrawerFoundation;
 
-  protected get mdcFoundationClass(): typeof DrawerFoundation {
+  protected get mdcFoundationClass(): any {
     return this.type === 'modal' ? MDCModalDrawerFoundation : MDCDismissibleDrawerFoundation;
   }
 
-  protected createAdapter() {
+  /**
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
+  protected createAdapter(): MDCDrawerAdapter {
     return {
-      ...super.createAdapter(),
+      ...addHasRemoveClass(this.mdcRoot),
       elementHasClass: (element: HTMLElement, className: string) => element.classList.contains(className),
-      computeBoundingRect: () => this.mdcRoot.getBoundingClientRect(),
       saveFocus: () => {
         // Note, casting to avoid cumbersome runtime check.
-        this._previousFocus = (this.getRootNode() as any as DocumentOrShadowRoot).activeElement as HTMLElement|null;
+        this._previousFocus = (this.getRootNode() as any as DocumentOrShadowRoot).activeElement as HTMLElement | null;
       },
       restoreFocus: () => {
         const previousFocus = this._previousFocus && this._previousFocus.focus;
@@ -81,11 +97,11 @@ export class Drawer extends BaseElement {
       },
       notifyClose: () => {
         this.open = false;
-        this.dispatchEvent(new Event(strings.CLOSE_EVENT, {bubbles: true, cancelable: true}))
+        emit(this, EVENTS.closed, {}, true);
       },
       notifyOpen: () => {
         this.open = true;
-        this.dispatchEvent(new Event(strings.OPEN_EVENT, {bubbles: true, cancelable: true}))
+        emit(this, EVENTS.opened, {}, true);
       },
       // TODO(sorvell): Implement list focusing integration.
       focusActiveNavigationItem: () => {
@@ -101,13 +117,18 @@ export class Drawer extends BaseElement {
     }
   }
 
-  private _previousFocus: HTMLElement|null = null;
+  private _previousFocus: HTMLElement | null = null;
 
   private _handleScrimClick() {
-    this.mdcFoundation.handleScrimClick()
+    if (this.mdcFoundation instanceof MDCModalDrawerFoundation) {
+      this.mdcFoundation.handleScrimClick();
+    }
   };
 
-  @observer(function(this: Drawer, value: boolean) {
+  /**
+   * Optional. Default value is false. If present, indicates that the drawer is in the open position.
+   */
+  @observer(function (this: Drawer, value: boolean) {
     if (this.type === '') {
       return;
     }
@@ -117,32 +138,47 @@ export class Drawer extends BaseElement {
       this.mdcFoundation.close();
     }
   })
-  @property({type: Boolean, reflect: true})
+  @property({ type: Boolean, reflect: true })
   open = false;
 
-  @property({type: Boolean})
+  /**
+   * Optional. Default value is false. If present, indicates that a non-scrollable element exists at the top of the drawer.
+   */
+  @property({ type: Boolean })
   hasHeader = false;
 
-  @property({reflect: true})
+  /**
+   * Optional. Use this property to set any of the following variants: dismissible or modal
+   */
+  @property({ reflect: true })
   type = '';
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     const dismissible = this.type === 'dismissible' || this.type === 'modal';
     const modal = this.type === 'modal';
     const header = this.hasHeader ? html`
       <div class="mdc-drawer__header">
-        <h3 class="mdc-drawer__title"><slot name="title"></slot></h3>
-        <h6 class="mdc-drawer__subtitle"><slot name="subtitle"></slot></h6>
+        <h3 class="mdc-drawer__title">
+          <slot name="title"></slot>
+        </h3>
+        <h6 class="mdc-drawer__subtitle">
+          <slot name="subtitle"></slot>
+        </h6>
         <slot name="header"></slot>
       </div>
       ` : '';
     return html`
       <aside class="mdc-drawer
-          ${classMap({'mdc-drawer--dismissible': dismissible, 'mdc-drawer--modal': modal})}">
+                ${classMap({ 'mdc-drawer--dismissible': dismissible, 'mdc-drawer--modal': modal })}">
         ${header}
-        <div class="mdc-drawer__content"><slot></slot></div>
+        <div class="mdc-drawer__content">
+          <slot></slot>
+        </div>
       </aside>
       ${modal ? html`<div class="mdc-drawer-scrim" @click="${this._handleScrimClick}"></div>` : ''}
       <div class="mdc-drawer-app-content">
@@ -151,14 +187,22 @@ export class Drawer extends BaseElement {
       `;
   }
 
-  // note, we avoid calling `super.firstUpdated()` to control when `createFoundation()` is called.
+  /**
+   * Invoked when the element is first updated. 
+   * Implement to perform one time work on the element after update.
+   * Note, we avoid calling `super.firstUpdated()` to control when `createFoundation()` is called.
+   */
   firstUpdated() {
     this.mdcRoot.addEventListener('keydown', (e) => this.mdcFoundation.handleKeydown(e));
     this.mdcRoot.addEventListener('transitionend', (e) => this.mdcFoundation.handleTransitionEnd(e));
   }
 
-  updated(changedProperties: PropertyValues) {
-    if (changedProperties.has('type')) {
+  /**
+   * This method is invoked whenever the drawer is updated
+   * @param _changedProperties Map of changed properties with old values
+   */
+  updated(_changedProperties: PropertyValues) {
+    if (_changedProperties.has('type')) {
       this.createFoundation();
     }
   }

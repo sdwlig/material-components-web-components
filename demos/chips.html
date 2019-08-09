@@ -19,7 +19,11 @@ limitations under the License.
 <head>
   <title>chips demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.entries%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.reduce%2CArray.prototype.map%2CCustomEvent%2CArray.prototype.every%2CArray.isArray%2CArray.of%2CElement%2CElement.prototype.matches%2CEvent%2CMutationObserver%2CPromise%2CPromise.prototype.finally%2CString.prototype.includes%2CString.prototype.startsWith%2CString.prototype.trim%2Cconsole.error%2Cconsole.log%2Cconsole.info%2Cconsole.warn%2Cconsole.trace%2Cfetch%2CElement.prototype.classList%2CElement.prototype.append%2CElement.prototype.prepend%2CElement.prototype.remove%2CElement.prototype.toggleAttribute%2CElement.prototype.replaceWith%2CElement.prototype.closest%2CElement.prototype.cloneNode%2CElement.prototype.before%2CElement.prototype.after%2CElement.prototype.placeholder%2CElement.prototype.dataset%2CJSON%2CNode.prototype.contains%2CNodeList.prototype.forEach%2CNumber.isInteger%2CNumber.isNaN%2CObject.assign%2CObject.entries%2CObject.freeze%2CObject.values%2CObject.keys"></script>
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-textfield/mwc-textfield.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-button/mwc-button.js"></script>
   <script type="module" src="../node_modules/@material/mwc-chips/mwc-chip.js"></script>
   <script type="module" src="../node_modules/@material/mwc-chips/mwc-chip-set.js"></script>
   <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
@@ -29,41 +33,58 @@ limitations under the License.
       --mwc-theme-primary: lightblue;
       --mwc-theme-text-primary-on-primary: tomato;
     }
+
+    .display-inline {
+      display: flex;
+    }
+
+    .display-inline> * {
+      margin: 5px;
+    }
   </style>
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Chips</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Chips</span>
   </header>
 
-  <main>
+  <div class='main'>
 
-  <h3>choice</h3>
+  <h3>Choice</h3>
 
-  <mwc-chip-set type="choice" wrapFocus>
+  <mwc-chip-set choice wrapFocus>
     <mwc-chip label="Option 1"></mwc-chip>
     <mwc-chip label="Option 2"></mwc-chip>
     <mwc-chip label="Option 3"></mwc-chip>
   </mwc-chip-set>
 
 
-  <h3>filter</h3>
+  <h3>Filter</h3>
 
-  <p>No leading icon</p>
-  <mwc-chip-set type="filter">
-    <mwc-chip label="Filter 1" checkmark active></mwc-chip>
-    <mwc-chip label="Filter 2" checkmark></mwc-chip>
-    <mwc-chip label="Filter 3" checkmark></mwc-chip>
-    <mwc-chip label="Filter 3" checkmark trailingIcon="clear"></mwc-chip>
+  <p>No leading icon - outlined</p>
+  <mwc-chip-set filter>
+    <mwc-chip label="Filter 1" outlined checkmark selected></mwc-chip>
+    <mwc-chip label="Filter 2" outlined checkmark></mwc-chip>
+    <mwc-chip label="Filter 3" outlined checkmark></mwc-chip>
+    <mwc-chip label="Filter 4" outlined checkmark></mwc-chip>
+  </mwc-chip-set>
+
+  <p>With avatar</p>
+  <mwc-chip-set filter>
+    <mwc-chip label="Filter 1" avatar="#FF0000" checkmark selected></mwc-chip>
+    <mwc-chip label="Filter 2" avatar="face" checkmark ></mwc-chip>
+    <mwc-chip label="Filter 3" avatar="3" checkmark ></mwc-chip>
+    <mwc-chip label="Filter 4" avatar="#FFF" checkmark ></mwc-chip>
+    <mwc-chip label="Filter 4" avatar="http://lorempixel.com/20/20/people/" checkmark ></mwc-chip>
   </mwc-chip-set>
 
   <p>With leading icon</p>
-  <mwc-chip-set type="filter">
-    <mwc-chip label="Alice" leadingIcon="face" checkmark active></mwc-chip>
+  <mwc-chip-set filter>
+    <mwc-chip label="Alice" leadingIcon="face" checkmark selected></mwc-chip>
     <mwc-chip label="Bob" leadingIcon="face" checkmark></mwc-chip>
     <mwc-chip label="Charlie" leadingIcon="face" checkmark></mwc-chip>
-    <mwc-chip label="Charlie" leadingIcon="face" checkmark trailingIcon="clear"></mwc-chip>
+    <mwc-chip label="Charlie" leadingIcon="face" checkmark></mwc-chip>
   </mwc-chip-set>
 
 
@@ -72,13 +93,54 @@ limitations under the License.
   <mwc-chip-set>
     <mwc-chip label="Add to calendar" leadingIcon="calendar_today"></mwc-chip>
     <mwc-chip label="Bookmark" leadingIcon="bookmarmk"></mwc-chip>
-    <mwc-chip label="Set alarm" leadingIcon=alarm_on"></mwc-chip>
+    <mwc-chip label="Set alarm" leadingIcon="alarm_on"></mwc-chip>
+  </mwc-chip-set>
+
+
+  <h3>Input</h3>
+
+  <div class="display-inline">
+    <input type="text" placeholder="Chip text" id="newChipInput">
+    <mwc-button label="Add input chip" id="addChipBtn"></mwc-button>
+    <mwc-button label="Delete last chip" id="removeLastChipBtn"></mwc-button>
+  </div>
+
+  <mwc-chip-set input autoRemove id="chips">
+    <mwc-chip label="Peyton Smith" avatar="http://lorempixel.com/20/20/people/1" trailingIcon="cancel"></mwc-chip>
+    <mwc-chip label="Jonas Eckhart" avatar="J" trailingIcon="cancel"></mwc-chip>
+    <mwc-chip label="Jhon Pella" avatar="http://lorempixel.com/20/20/people/2" trailingIcon="cancel"></mwc-chip>
   </mwc-chip-set>
  
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
+
+    addChipBtn.addEventListener('click', () => {
+      const label = newChipInput.value;
+
+      if (!label.trim()) return;
+
+      const chip = document.createElement('mwc-chip');
+      chip.label = label;
+      chip.trailingIcon = 'close';
+      chips.addChip(chip);
+
+      newChipInput.value = '';
+      addChipBtn.blur();
+    });
+
+    removeLastChipBtn.addEventListener('click', () => {
+      const chip = chips.chips[chips.chips.length - 1];
+
+      if (chip) {
+        chip.beginExit();
+      }
+    });
+
+    chips.addEventListener('removal', evt => {
+      console.log(evt);
+    })
   </script>
 </body>
 </html>

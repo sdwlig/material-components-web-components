@@ -15,236 +15,255 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import {
-  customElement,
-  query,
+  LitElement,
   html,
   property,
-  observer
-} from "@material/mwc-base/base-element.js";
-import { LitElement } from "lit-element";
-import { ripple } from "@material/mwc-ripple/ripple-directive";
+  query,
+  customElement,
+  classMap,
+  PropertyValues
+} from '@material/mwc-base/base-element';
+import { List as MWCList } from './mwc-list';
 
-import { style } from "./mwc-list-item-css.js";
-import { TemplateResult } from "lit-html";
+import { style } from './mwc-list-item-css';
 
 declare global {
   interface HTMLElementTagNameMap {
-    "mwc-list-item": ListItem;
+    'mwc-list-item': ListItem;
   }
 }
 
-@customElement("mwc-list-item" as any)
+@customElement('mwc-list-item' as any)
 export class ListItem extends LitElement {
-  mdcRootPosition: any;
 
-  @property({ type: Boolean })
-  protected listIsExpanded = false
-
-  @query(".mdc-list-item__modal-content")
-  modalContent!: HTMLElement;
-
-  @query(".mdc-list-item__wrapper")
-  wrapper!: HTMLElement;
-
-  @query(".mdc-list-item")
-  mdcRoot!: HTMLElement;
-
-  @property({ type: Boolean })
-  expandable = false;
-
-  @property({ type: Boolean })
-  modal = false;
+  @query('.mdc-list-item')
+  protected mdcRoot!: HTMLElement;
 
   @property({ type: String })
-  value = "";
+  public variant = 'single-line';
+
+  @property({ type: Boolean })
+  public disabled = false;
 
   @property({ type: String })
-  label = "";
+  public value = "";
 
-  @property({ type: String })
-  icon = "";
+  @property({ type: Boolean })
+  public focused = false;
+
+  @property({ type: Boolean })
+  public selected = false;
+
+  @property({ type: Boolean })
+  public activated = false;
+
+  @property({ type: Boolean })
+  public checkbox = false;
+
+  @property({ type: Boolean })
+  public radio = false;
+
+  @property({ type: Boolean })
+  public trailingInput = false;
 
   @property({ type: Number })
-  tabindex = 0;
+  public tabindex = -1;
 
   @property({ type: Boolean })
-  leading = 0;
+  public expandable = false;
 
   @property({ type: Boolean })
-  @observer(function(this: ListItem, value: Boolean) {
-    this.setAttribute("aria-disabled", String(value));
-  })
-  disabled = false;
+  public expanded = false;
 
-  get classList() {
-    return this.mdcRoot.classList;
-  }
+  @property({ type: Boolean })
+  public indent = false;
 
-  get setAttribute() {
-    return this.mdcRoot ? this.mdcRoot.setAttribute : () => {};
-  }
+  protected _lines = 1;
+  protected _ripple = false;
+  protected _avatarList = false;
+  protected _nonInteractive = false;
+  protected _inputType = 'none';
+  protected _inputAction = '';
+  protected _slot_graphic = true;
+  protected _slot_content = true;
+  protected _slot_meta = true;
+  protected _slot_secondary = true;
 
   static styles = style;
 
-  protected changeWrapperStyles(
-    wrapperWidth: string,
-    wrapperLeft: string
-  ): void {
-    this.wrapper.style.width = wrapperWidth;
-    this.wrapper.style.left = wrapperLeft;
-  }
-
-  protected closeListItem(e): void {
-    if (this.modal) {
-      this.wrapper.classList.remove("mdc-list-item__wrapper--modal");
-      this.modalContent.style.transform = "translateY(0)";
-
-      setTimeout(() => {
-        this.wrapper.style.top = "0";
-        this.modalContent.style.top = "0";
-
-        this.mdcRoot.classList.remove("mdc-list-item--modal");
-        this.changeWrapperStyles("100%", "0");
-        this.lockScrollFor("html", false);
-        this.lockScrollFor("body", false);
-      }, 1200);
-    }
-
-    e.stopPropagation();
-  }
-
-  firstUpdated() {
-    this.mdcRootPosition = this.mdcRoot.getBoundingClientRect();
-  }
-
-  focus() {
-    this.mdcRoot.focus();
-  }
-
-  protected lockScrollFor(element: string, status: boolean): void {
-    const el: HTMLElement | null = document.querySelector(element);
-
-    if (el) {
-      el.style.height = status ? "100%" : "auto";
-      el.style.overflow = status ? "hidden" : "auto";
-    }
-  }
-
-  protected openModal(): void {
-    if (this.modal) {
-      this.lockScrollFor("html", true);
-      this.lockScrollFor("body", true);
-
-      setTimeout(() => {
-        this.mdcRoot.classList.add("mdc-list-item--modal");
-        this.changeWrapperStyles(
-          `calc(100% + ${this.mdcRootPosition.left * 2}px)`,
-          `-${this.mdcRootPosition.left}px`
-        );
-        this.wrapper.classList.add("mdc-list-item__wrapper--modal");
-        this.modalContent.style.top = `${this.mdcRootPosition.top}px`;
-        this.modalContent.style.transform = `translateY(-${
-          this.mdcRootPosition.top
-        }px)`;
-        this.wrapper.style.top = `-${this.mdcRootPosition.top}px`;
-      }, 170);
-    }
-  }
-
   render() {
-    const { disabled, tabindex } = this;
+    let inactive = this._nonInteractive || this.disabled;
+    const classes = {
+      "mdc-list-item": true,
+      "mdc-list-item__avatar-list": this._avatarList,
+      "mdc-list-item--two-line": this._lines === 2,
+      "mdc-list-item--disabled": this.disabled,
+      "mdc-list-item--non-interactive": this._nonInteractive,
+      "mdc-list-item--selected": this.selected && !inactive,
+      "mdc-list-item--activated": this.activated && !inactive,
+      "mdc-list-item--expanded": this.expanded,
+      "mdc-list-item--expandable": this.expandable,
+      "mdc-list-item--indented": this.indent,
+      "mdc-ripple-upgraded": this._ripple,
+      "mdc-ripple-upgraded--background-focused": this._ripple && this.focused && !inactive,
+      "mdc-list-item--background-focused": !this._ripple && this.focused && !inactive,
+      "mdc-list-item--background-focused-disabled": !this._ripple && this.focused && this.disabled,
+    };
 
     return html`
-      <div
-        class="mdc-list-item "
-        role="menuitem"
-        @click="${this.openModal}"
-        tabindex="${tabindex}"
-        aria-disabled="${this.modal ? true : disabled}"
-        .ripple="${!this.expandable ? ripple({ unbounded: false }) : false}"
+      <li
+        class="${classMap(classes)}"
+        tabindex="${this.tabindex}"
+        aria-current="${this.focused}"
+        aria-selected="${this.selected}"
+        @focusout=${this.handleFocusOut}
       >
-        ${this.expandable
-          ? html`
-              <mwc-icon
-                class="mdc-list-item__btn-expand"
-                @click="${this.toggleList}"
-              >
-                ${this.listIsExpanded ? 'expand_less' : 'expand_more'}
-              </mwc-icon>
-            `
-          : null}
-        ${this._renderLeading()} ${this.label || ""}
-        <slot name="text"></slot>
-        <span class="mdc-list-item__text" @click="${this.toggleList}">
-          <span class="mdc-list-item__primary-text">
-            <slot name="primary-text"></slot>
-          </span>
-          <span class="mdc-list-item__secondary-text">
-            <slot name="secondary-text"></slot>
-          </span>
+        ${this.renderGraphic()}
+        <span class="mdc-list-item__text">
+          ${this._lines === 1 ? this.renderSingleLine() : this.renderDoubleLine()}
         </span>
-        <span class="mdc-list-item__meta">
-          <slot name="meta"></slot>
-        </span>
+        ${this.renderMeta()}
+      </li>
+      ${this.renderContent()}
+    `;
+  }
 
-        ${this.modal
-          ? html`
-              <div class="mdc-list-item__wrapper">
-                <div class="mdc-list-item__modal-content">
-                  <div>
-                    <span
-                      class="mdc-list-item__close"
-                      @click="${this.closeListItem}"
-                    ></span>
-                    <slot name="expanded"></slot>
-                  </div>
-                </div>
-              </div>
-            `
-          : null}
-        ${this.expandable
-          ? html`
-              <div class="mdc-list-item__expanded-content">
-                <div
-                  class="mdc-list-item__expanded-content-wrapper ${this.leading
-                    ? "mdc-list-item__expanded-content-wrapper--aligned"
-                    : ""}"
-                >
-                  <slot name="expanded"></slot>
-                </div>
-              </div>
-            `
-          : null}
+  public firstUpdated(changed) {
+    super.firstUpdated(changed);
 
+    this.updateComplete
+      .then(() => {
+        this.setParentType();
+        this.removeEmptySlots();
+      });
+  }
+
+  public toggle(): void {
+    this.expanded = this.expandable
+      ? !this.expanded
+      : false;
+    this.requestUpdate();
+  }
+
+  public updated(_changedProperties: PropertyValues) {
+    super.updated(_changedProperties);
+  }
+
+  public renderSingleLine() {
+    return html`
+      <slot></slot>
+    `;
+  }
+
+  public renderDoubleLine() {
+    return html`
+      <span class="mdc-list-item__primary-text">
         <slot></slot>
+      </span>
+      <span class="mdc-list-item__secondary-text">
+        <slot name='secondary'></slot>
+      </span>
+    `;
+  }
+
+  public renderGraphic() {
+    const orNot = this._slot_graphic ? '' : '-empty';
+    return html`
+      <slot class="mdc-list-item__graphic${orNot}" name='graphic'></slot>
+    `
+  }
+
+  public renderMeta() {
+    const moreorless = this.expanded ? "expand_less" : "expand_more";
+    const orNot = this._slot_meta ? '' : '-empty';
+    const tab = this.focused ? 0 : -1;
+    return this.expandable
+      ? html`
+        <span class="mdc-list-item__meta${orNot}">
+          <mwc-icon tabindex="${tab}">${moreorless}</mwc-icon>
+        </span>
+      `: html`
+        <span class="mdc-list-item__meta${orNot}">
+          <slot name='meta' tabindex="${tab}"></slot>
+        </span>
+      `;
+  }
+
+  public renderContent() {
+    const classes = {
+      "mdc-list-item__content": true,
+      "mdc-list-item__content--expanded": this.expanded,
+    }
+    return html`
+      <div class="${classMap(classes)}">
+        <slot name='content'></slot>
       </div>
     `;
   }
 
-  _renderLeading(): TemplateResult | string {
-    if (this.leading) {
-      return html`
-        <span class="mdc-list-item__graphic">
-          <slot name="graphic"></slot>
-        </span>
-      `;
-    }
-
-    if (this.icon) {
-      return html`
-        <span class="mdc-list-item__graphic material-icons">
-          ${this.icon}
-        </span>
-      `;
-    }
-
-    return "";
+  protected handleFocusOut(_) {
+    this.focused = false;
   }
 
-  protected toggleList() {
-    if (this.expandable) {
-      this.listIsExpanded = !this.listIsExpanded;
-      this.mdcRoot.classList.toggle("mdc-list-item--expanded");
+  public addClass(className) {
+    this.mdcRoot.classList.add(className)
+  }
+
+  public removeClass(className) {
+    this.mdcRoot.classList.remove(className)
+  }
+
+  public getAttribute(attr) {
+    return this[attr];
+  }
+
+  public setAttribute(attr, value) {
+    this[attr] = value;
+  }
+
+  public setFocused(focus: boolean) {
+    if (focus) {
+      this.focused = true;
+      this.tabindex = 0;
+    } else {
+      this.tabindex = -1;
+      this.focused = false;
     }
   }
+
+  public setParentType(parentElement = this.parentElement) {
+    if (parentElement instanceof MWCList) {
+      this._lines = parentElement.lines;
+      this._ripple = parentElement.ripple;
+      this._avatarList = parentElement.avatarList;
+      this._nonInteractive = parentElement.nonInteractive;
+      this._inputType = parentElement.inputType;
+      this._inputAction = parentElement.inputAction;
+      this.requestUpdate();
+    }
+  }
+
+  public removeEmptySlots() {
+    Array
+      .from( this.shadowRoot!.querySelectorAll( "slot" ) )
+      .forEach( ( slot ) => {
+        let nodes = slot.assignedNodes();
+        if (nodes.length) {
+        } else {
+          this[ `_slot_${slot.name}` ] = false;
+          this.requestUpdate()
+        }
+      } );
+  }
+
+  public focus() {
+    this.mdcRoot.focus();
+    this.setFocused(true);
+  }
+
+  public blur() {
+    this.mdcRoot.blur();
+    this.setFocused(false);
+  }
+
 }

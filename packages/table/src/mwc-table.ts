@@ -14,13 +14,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { LitElement, customElement, query, property, html, TemplateResult } from 'lit-element';
+import {
+  LitElement,
+  customElement,
+  query,
+  property,
+  html,
+  TemplateResult
+} from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { findAssignedElement } from '@material/mwc-base/utils';
+import { findAssignedElement, emit } from '@material/mwc-base/utils';
 import { observer } from '@material/mwc-base/observer';
 import { cssClasses } from './constants';
-import { Checkbox as MWCCheckbox } from '@material/mwc-checkbox';
 
 import { style } from './mwc-table-css';
 
@@ -98,7 +104,7 @@ export class Table extends LitElement {
   public data;
 
   protected get templateEl() {
-    return this.slotEl && findAssignedElement(this.slotEl, 'template') as HTMLTemplateElement;
+    return this.slotEl && findAssignedElement(this.slotEl, '*') as HTMLScriptElement;
   }
 
   protected get _bodyRows(): HTMLTableRowElement[] {
@@ -108,7 +114,7 @@ export class Table extends LitElement {
       : [];
   }
 
-  protected get _headerRow(): MWCCheckbox|null {
+  protected get _headerRow(): HTMLTableRowElement|null {
     return this.mdcRoot.querySelector('thead tr');
   }
 
@@ -172,12 +178,14 @@ export class Table extends LitElement {
   protected _loadData(value: Function): Promise<ICellItem[]> {
     this._isLoading = true;
     this.requestUpdate();
+    emit(this, 'beforeload');
 
     return value()
       .then(response => {
         setTimeout(() => {
           this._isLoading = false;
           this.requestUpdate();
+          emit(this, 'load');
         }, 0);
 
         return response;
@@ -195,9 +203,16 @@ export class Table extends LitElement {
     return html`
       <table>
         ${head}
-        ${body || this._getEmptyBody(columnsCount)}
+        <tbody>${body || this._getEmptyBody(columnsCount)}</tbody>
       </table>
     `;
+  }
+
+  _getTemplateContent(templateEl: HTMLScriptElement) {
+    const content = templateEl.text; 
+    const target = document.createElement("TABLE")
+    target.innerHTML = content
+    return target
   }
 
   /**
@@ -205,10 +220,10 @@ export class Table extends LitElement {
    */
   protected _getElementsFromTemplate(): ITableElements {
     const headEl = this.templateEl
-      ? this.templateEl.content.querySelector('thead')
+      ? this._getTemplateContent(this.templateEl).querySelector('thead')
       : undefined;
     const columns = headEl ? headEl.querySelectorAll('tr') : [];
-    const bodyEl = this.templateEl ? this.templateEl.content.querySelector('tbody') : undefined;
+    const bodyEl = this.templateEl ? this._getTemplateContent(this.templateEl).querySelector('tbody') : undefined;
 
     const head = this._shouldDisplayHeader && headEl && columns
       ? this._getHeadFromElement(headEl)
@@ -283,15 +298,13 @@ export class Table extends LitElement {
     const rows = [...element.querySelectorAll('tr')];
 
     return html`
-      <tbody>
-        ${rows.map(item => {
-          return html`
-            <tr tabindex="-1">
-              ${unsafeHTML(item!.innerHTML)}
-            </tr>
-          `;
-        })}
-      </thead>
+      ${rows.map(item => {
+        return html`
+          <tr tabindex="-1">
+            ${unsafeHTML(item!.innerHTML)}
+          </tr>
+        `;
+      })}
     `;
   }
 
@@ -302,27 +315,25 @@ export class Table extends LitElement {
    */
   protected _getBody(data: IDataItem[]): TemplateResult {
     return html`
-      <tbody>
-        ${data.map(item => {
-          const row = this._parsedColumns
-            ? this._parsedColumns
-              .map(col => ({
-                  field: col.field,
-                  value: item[col.field],
-                  align: col.align
-              }))
-            : Object.keys(item)
-              .map(key => ({
-                field: key,
-                value: item[key]
-              }))
-          return html`
-            <tr tabindex="-1">
-              ${this._getCells(row)}
-            </tr>
-          `;
-        })}
-      </tbody>
+      ${data.map(item => {
+        const row = this._parsedColumns
+          ? this._parsedColumns
+            .map(col => ({
+                field: col.field,
+                value: item[col.field],
+                align: col.align
+            }))
+          : Object.keys(item)
+            .map(key => ({
+              field: key,
+              value: item[key]
+            }))
+        return html`
+          <tr tabindex="-1">
+            ${this._getCells(row)}
+          </tr>
+        `;
+      })}
     `;
   }
 
@@ -333,13 +344,11 @@ export class Table extends LitElement {
    */
   protected _getEmptyBody(cols: number) {
     return html`
-      <tbody>
-        <tr>
-          <td align="center" colspan="${cols}">
-            ${this._getEmptyDataMessage()}
-          </td>
-        </tr>
-      </tbody>
+      <tr>
+        <td align="center" colspan="${cols}">
+          ${this._getEmptyDataMessage()}
+        </td>
+      </tr>
     `;
   }
 

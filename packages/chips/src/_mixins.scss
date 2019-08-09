@@ -1,0 +1,135 @@
+//
+// Copyright 2017 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+@import "@material/rtl/mixins";
+@import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/feature-targeting/functions";
+@import "./variables";
+
+@mixin mdc-chip-avatar-shape-radius($radius, $rtl-reflexive: false) {
+  .mdc-chip__avatar {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-chip-avatar-size-default, $radius), $rtl-reflexive);
+  }
+}
+
+@mixin mdc-chip-avatar-fill-color($color) {
+  .mdc-chip__avatar {
+    @include mdc-theme-prop(background-color, $color);
+
+    &:after {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+@mixin mdc-chip-avatar-ink-color($color) {
+  .mdc-chip__avatar {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-chip-avatar-size($size) {
+  .mdc-chip__avatar {
+    height: $size;
+    width: $size;
+  }
+}
+
+@mixin mdc-chip-avatar-margin(
+  $top: $mdc-chip-avatar-margin-top,
+  $right: $mdc-chip-avatar-margin-right,
+  $bottom: $mdc-chip-avatar-margin-bottom,
+  $left: $mdc-chip-avatar-margin-left) {
+  .mdc-chip__avatar {
+    @include mdc-rtl-reflexive-property(margin, $left, $right);
+
+    margin-top: $top;
+    margin-bottom: $bottom;
+  }
+}
+
+@mixin mdc-chip-avatar-icon-size($size, $query: mdc-feature-all()) {
+  .mdc-chip__avatar-icon {
+    @include mdc-chip-icon-size_($size, $query);
+  }
+}
+
+@mixin mdc-chip-avatar-icon-margin(
+  $top: $mdc-chip-avatar-icon-margin-top,
+  $right: $mdc-chip-avatar-icon-margin-right,
+  $bottom: $mdc-chip-avatar-icon-margin-bottom,
+  $left: $mdc-chip-avatar-icon-margin-left) {
+  .mdc-chip__avatar-icon {
+    @include mdc-rtl-reflexive-property(margin, $left, $right);
+
+    margin-top: $top;
+    margin-bottom: $bottom;
+  }
+}
+
+@mixin mdc-chip-checkmark-stroke-color() {
+  .mdc-chip__checkmark {
+    .mdc-chip__checkmark-path {
+      stroke: black;
+    }
+  }
+
+  .mdc-chip__avatar:not(.mdc-chip__avatar--light) {
+    & + .mdc-chip__checkmark {
+      .mdc-chip__checkmark-path {
+        stroke: white;
+      }
+    }
+  }
+}
+
+@mixin mdc-chip-spacing($gap-size) {
+  margin: $gap-size / 2;
+}
+
+// Overrides
+
+@mixin mdc-chip-leading-icon-margin-override(
+  $top: $mdc-chip-leading-icon-margin-top,
+  $right: $mdc-chip-leading-icon-margin-right,
+  $bottom: $mdc-chip-leading-icon-margin-bottom,
+  $left: $mdc-chip-leading-icon-margin-left) {
+  .mdc-chip__checkmark,
+  .mdc-chip__icon--leading {
+    @include mdc-rtl-reflexive-property(margin, $left, $right);
+
+    margin-top: $top;
+    margin-bottom: $bottom;
+  }
+}
+
+@keyframes mdc-chip-entry {
+  from {
+    transform: scale(.8);
+    opacity: .4;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

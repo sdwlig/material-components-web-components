@@ -19,89 +19,37 @@ limitations under the License.
 <head>
   <title>drawer demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.entries%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.reduce%2CArray.prototype.map%2CCustomEvent%2CArray.prototype.every%2CArray.isArray%2CArray.of%2CElement%2CElement.prototype.matches%2CEvent%2CMutationObserver%2CPromise%2CPromise.prototype.finally%2CString.prototype.includes%2CString.prototype.startsWith%2CString.prototype.trim%2Cconsole.error%2Cconsole.log%2Cconsole.info%2Cconsole.warn%2Cconsole.trace%2Cfetch%2CElement.prototype.classList%2CElement.prototype.append%2CElement.prototype.prepend%2CElement.prototype.remove%2CElement.prototype.toggleAttribute%2CElement.prototype.replaceWith%2CElement.prototype.closest%2CElement.prototype.cloneNode%2CElement.prototype.before%2CElement.prototype.after%2CElement.prototype.placeholder%2CElement.prototype.dataset%2CJSON%2CNode.prototype.contains%2CNodeList.prototype.forEach%2CNumber.isInteger%2CNumber.isNaN%2CObject.assign%2CObject.entries%2CObject.freeze%2CObject.values%2CObject.keys"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../node_modules/@material/mwc-drawer/mwc-drawer.js"></script>
-  <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
-    .drawerView {
-      border: 1px solid gray;
-      display: flex;
-      margin-bottom: 36px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .drawerContent {
-      padding: 24px 8px;
-    }
-
-    .mainContent {
-      min-height: 300px;
-      padding: 8px;
-      position: relative;
-      flex: 1;
-    }
-
-    [type=dismissible][open] + .mainContent {
-      margin-left: 256px;
-    }
-  </style>
+      iframe {
+        border: 1px solid gray;
+        height: 300px;
+        width: 100%;
+      }
+    </style>
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Drawer</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Drawer</span>
   </header>
 
-  <main>
-    <div class="drawerView">
+  <div class='main'>
+    <h2>Standard Drawer</h2>
+    <iframe src="drawer/standard.html"></iframe>
 
-      <mwc-drawer hasHeader>
-        <span slot="title">Title!</span>
-        <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">Drawer Content!</div>
-      </mwc-drawer>
-      <div class="mainContent">Main Content!</div>
-    </div>
-
-    <div class="drawerView">
-
-      <mwc-drawer hasHeader type="dismissible">
-        <span slot="title">Title!</span>
-        <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">Drawer Content!</div>
-      </mwc-drawer>
-      <div class="mainContent">Main Content!</div>
-    </div>
-
-    <div class="drawerView">
-
-      <mwc-drawer hasHeader type="modal">
-        <span slot="title">Title!</span>
-        <span slot="subtitle">subtitle</span>
-        <div class="drawerContent">Drawer Content!</div>
-      </mwc-drawer>
-      <div class="mainContent">Main Content!</div>
-    </div>
-  </main>
+    <h2>Dismissible Drawer</h2>
+    <iframe src="drawer/dismissible.html"></iframe>
+    
+    <h2>Modal Drawer</h2>
+    <iframe src="drawer/modal.html"></iframe>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));
-
-    Array.from(document.querySelectorAll('mwc-drawer[type]')).forEach((drawer) => {
-      const container = drawer.parentNode;
-      container.addEventListener('click', (e) => {
-        drawer.open = !drawer.open;
-      });
-      drawer.addEventListener('MDCDrawer:opened', (e) => {
-        e.target.nextElementSibling.style.marginLeft = e.g
-      });
-
-      drawer.addEventListener('MDCDrawer:closed', (e) => {
-
-      });
-    });
   </script>
 </body>
 </html>

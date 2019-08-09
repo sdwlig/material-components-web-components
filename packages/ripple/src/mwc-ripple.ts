@@ -14,26 +14,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {LitElement, html, property, customElement, classMap} from '@material/mwc-base/base-element';
-import {ripple, RippleOptions} from './ripple-directive.js';
-import {style} from './mwc-ripple-css.js';
+import { LitElement, html, property, customElement, classMap } from '@material/mwc-base/base-element';
+import { ripple, RippleOptions } from './ripple-directive';
+import { style } from './mwc-ripple-css';
 
 @customElement('mwc-ripple' as any)
 export class Ripple extends LitElement {
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   primary = false;
 
-  @property({type: Boolean})
-  active: boolean|undefined;
+  @property({ type: Boolean })
+  active: boolean | undefined;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   accent = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   unbounded = false;
 
-  @property({type: Boolean})
+  @property({ type: Boolean })
   disabled = false;
 
   @property()
@@ -42,8 +42,9 @@ export class Ripple extends LitElement {
   static styles = style;
 
   connectedCallback() {
-    super.connectedCallback();
-    this.interactionNode = this.parentNode as HTMLElement;
+    if (this.interactionNode === this) {
+      this.interactionNode = this.parentNode as HTMLElement;
+    }
     super.connectedCallback();
   }
 
@@ -53,14 +54,13 @@ export class Ripple extends LitElement {
       'mdc-ripple-surface--primary': this.primary,
       'mdc-ripple-surface--accent': this.accent,
     };
-    const {disabled, unbounded, active, interactionNode} = this;
-    const rippleOptions: RippleOptions = {disabled, unbounded, interactionNode};
+    const { disabled, unbounded, active, interactionNode } = this;
+    const rippleOptions: RippleOptions = { disabled, unbounded, interactionNode };
     if (active !== undefined) {
       rippleOptions.active = active;
     }
     return html`
-      <div .ripple="${ripple(rippleOptions)}"
-          class="mdc-ripple-surface ${classMap(classes)}"></div>`;
+      <div .ripple="${ripple(rippleOptions)}" class="mdc-ripple-surface ${classMap(classes)}"></div>`;
   }
 
 }

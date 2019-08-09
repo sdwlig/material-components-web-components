@@ -14,19 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {html, BaseElement, Foundation, Adapter, property, query, observer, classMap} from '@material/mwc-base/base-element.js';
-import {FormElement} from '@material/mwc-base/form-element.js';
-import {findAssignedElement} from '@material/mwc-base/utils.js';
-import {style} from './mwc-formfield-css.js';
-import MDCFormFieldFoundation from '@material/form-field/foundation.js';
+import { FormElement, html, BaseElement, property, query, observer, classMap, findAssignedElement } from '@material/mwc-base/form-element';
+import MDCFormFieldFoundation from '@material/form-field/foundation';
+import { MDCFormFieldAdapter } from '@material/form-field/adapter';
 
-export interface FormFieldFoundation extends Foundation {
-}
-
-export declare var FormFieldFoundation: {
-  prototype: FormFieldFoundation;
-  new(adapter: Adapter): FormFieldFoundation;
-}
+import { style } from './mwc-formfield-css';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -35,11 +27,18 @@ declare global {
 }
 
 export class Formfield extends BaseElement {
-  @property({type: Boolean})
+  
+  /**
+   * Optional. Default value is false. Use this property to put the input after the label
+   */
+  @property({ type: Boolean })
   alignEnd = false;
 
-  @property({type: String})
-  @observer(async function(this: Formfield, label: string) {
+  /**
+   * Recommended. Indicates the element containing the formfield's text label
+   */
+  @property({ type: String })
+  @observer(async function (this: Formfield, label: string) {
     const input = this.input;
     if (input) {
       if (input.localName === 'input') {
@@ -52,20 +51,26 @@ export class Formfield extends BaseElement {
   })
   label = '';
 
+  /**
+   * Root element for formfield component.
+   */
   @query('.mdc-form-field')
   protected mdcRoot!: HTMLElement;
 
-  protected mdcFoundation!: FormFieldFoundation;
+  protected mdcFoundation!: MDCFormFieldFoundation;
 
-  protected readonly mdcFoundationClass: typeof FormFieldFoundation = MDCFormFieldFoundation;
+  protected readonly mdcFoundationClass = MDCFormFieldFoundation;
 
-  protected createAdapter() {
+  /**
+   * Create the adapter for the `mdcFoundation`.
+   * Override and return an object with the Adapter's functions implemented
+   */
+  protected createAdapter(): MDCFormFieldAdapter {
     return {
-      ...super.createAdapter(),
-      registerInteractionHandler: (type: string, handler: EventListener) => {
+      registerInteractionHandler: (type: string, handler: any) => {
         this.labelEl.addEventListener(type, handler);
       },
-      deregisterInteractionHandler: (type: string, handler: EventListener) => {
+      deregisterInteractionHandler: (type: string, handler: any) => {
         this.labelEl.removeEventListener(type, handler);
       },
       activateInputRipple: () => {
@@ -95,14 +100,20 @@ export class Formfield extends BaseElement {
 
   static styles = style;
 
+  /**
+   * Used to render the lit-html TemplateResult to the element's DOM
+   */
   render() {
     return html`
-      <div class="mdc-form-field ${classMap({'mdc-form-field--align-end': this.alignEnd})}">
+      <div class="mdc-form-field ${classMap({ 'mdc-form-field--align-end': this.alignEnd })}">
         <slot></slot>
         <label class="mdc-label" @click="${this._labelClick}">${this.label}</label>
       </div>`;
   }
 
+  /**
+   * Handles the click event on label
+   */
   private _labelClick() {
     const input = this.input;
     if (input) {

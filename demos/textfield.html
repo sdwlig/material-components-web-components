@@ -19,105 +19,193 @@ limitations under the License.
 <head>
   <title>textfield demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.entries%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.reduce%2CArray.prototype.map%2CCustomEvent%2CArray.prototype.every%2CArray.isArray%2CArray.of%2CElement%2CElement.prototype.matches%2CEvent%2CMutationObserver%2CPromise%2CPromise.prototype.finally%2CString.prototype.includes%2CString.prototype.startsWith%2CString.prototype.trim%2Cconsole.error%2Cconsole.log%2Cconsole.info%2Cconsole.warn%2Cconsole.trace%2Cfetch%2CElement.prototype.classList%2CElement.prototype.append%2CElement.prototype.prepend%2CElement.prototype.remove%2CElement.prototype.toggleAttribute%2CElement.prototype.replaceWith%2CElement.prototype.closest%2CElement.prototype.cloneNode%2CElement.prototype.before%2CElement.prototype.after%2CElement.prototype.placeholder%2CElement.prototype.dataset%2CJSON%2CNode.prototype.contains%2CNodeList.prototype.forEach%2CNumber.isInteger%2CNumber.isNaN%2CObject.assign%2CObject.entries%2CObject.freeze%2CObject.values%2CObject.keys"></script>
   <script  src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
   <script type="module" src="../node_modules/@material/mwc-textfield/mwc-textfield.js"></script>
   <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
   <link rel="stylesheet" href="demo-component.css">
   <style>
-  h4 { margin-top: 4em; }
+    h4 { margin-top: 4em; }
   </style>
 </head>
 <body class="unresolved">
   <header>
-    <a href="index.html"><mwc-icon>arrow_back</mwc-icon>
-    <span>Text Field</span></a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Text Field</span>
   </header>
 
-  <main>
+  <div class='main'>
+    </br>
+    <h3>Examples with floatLabel default value sets to false</h3>
+    </br>
     <div class="demo-group-spaced">
-
-      <mwc-textfield placeholder="placeholder"></mwc-textfield>
-      <mwc-textfield placeholder="placeholder" label="Say something..."></mwc-textfield>
-      <mwc-textfield label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield icon="event" label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield icon="mail" iconTrailing label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield label="AdjacentLabel" persistentHelperText helperTextContent="helperTextContent"></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" maxLength="10" helperTextContent="Say something"></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" label="Say something..." maxLength="10"></mwc-textfield>
+        <mwc-textfield  label="Say something..." value="hi" maxLength="10"></mwc-textfield>
+        <mwc-textfield  leadingIconContent="event" label="Say something..." value="hi" maxLength="10"></mwc-textfield>
+        <mwc-textfield  trailingIconContent="mail" label="Say something..." value="hi" maxLength="10"></mwc-textfield>
+      </div>
+  
+      <h4>filled - placeholder</h4>
+      <div class="demo-group-spaced">
+  
+        <mwc-textfield  placeholder="placeholder"></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" label="Say something..."></mwc-textfield>
+        <mwc-textfield  label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  trailingIconContent="mail" label="Say something..." value="hi"></mwc-textfield>
+  
+      </div>
+  
+      <h4>filled - required</h4>
+      <div class="demo-group-spaced">
+  
+        <mwc-textfield  placeholder="placeholder" required></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" required label="Say something..."></mwc-textfield>
+        <mwc-textfield  required label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  required leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  required trailingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+      </div>
+  
+      <h4>outlined - placeholder</h4>
+      <div class="demo-group-spaced">
+  
+        <mwc-textfield  placeholder="placeholder" outlined></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" outlined label="Say something..."></mwc-textfield>
+        <mwc-textfield  outlined label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  outlined leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  outlined trailingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+      </div>
+  
+      <h4>outlined - required - email - helperText</h4>
+      <div class="demo-group-spaced">
+  
+        <mwc-textfield  placeholder="placeholder" outlined required type="email" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" outlined required type="email" label="Enter email..." persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+        <mwc-textfield  outlined required type="email"  label="Enter email..." value="hi" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+        <mwc-textfield  outlined required type="email" leadingIconContent="event" label="Say something..." value="hi" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+        <mwc-textfield  outlined iconTrailing required type="email" leadingIconContent="event" label="Say something..." value="hi" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+      </div>
+  
+      <h4>box disabled</h4>
+      <div class="demo-group-spaced">
+  
+        <mwc-textfield  placeholder="placeholder" disabled></mwc-textfield>
+        <mwc-textfield  placeholder="placeholder" disabled label="Say something..."></mwc-textfield>
+        <mwc-textfield  disabled label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  disabled leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+        <mwc-textfield  disabled trailingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+  
+      </div>
+  
+      <h4>fullWidth</h4>
+      <mwc-textfield  placeholder="placeholder" fullwidth></mwc-textfield>
+      <mwc-textfield  fullwidth required type="email" placeholder="placeholder" helperTextContent="Make sure to include an @"></mwc-textfield>
+      <mwc-textfield  fullwidth value="hi" placeholder="placeholder"></mwc-textfield>
+      <br></br>
+      <mwc-textfield  type="textarea" placeholder="placeholder" fullwidth label="Say something..."></mwc-textfield>
+  
+      <h4>Textarea - placeholder</h4>
+      <div class="demo-group-spaced">
+        <mwc-textfield  type="textarea" placeholder="placeholder" maxLength="10"></mwc-textfield>
+        <mwc-textfield  type="textarea" placeholder="placeholder" label="Say something..." maxLength="10"></mwc-textfield>
+        <mwc-textfield  type="textarea" placeholder="placeholder" label="Say something..." maxLength="10"></mwc-textfield>
+      </div>
+  
+      <h4>Textarea - required - helperTextContent</h4>
+      <div class="demo-group-spaced">
+        <mwc-textfield  type="textarea" required placeholder="placeholder" validationMessage="Error" helperTextContent="Make sure you fill this field"></mwc-textfield>
+        <mwc-textfield  type="textarea" required placeholder="placeholder" label="Say something..." validationMessage="Error" helperTextContent="Make sure you fill this field"></mwc-textfield>
+        <mwc-textfield  type="textarea" required placeholder="placeholder" label="Say something..." helperTextContent="Make sure you fill this field" validationMessage="Error"></mwc-textfield>
+      </div>
+    </br>
+    </th>
+    <h3>Examples with floatLabel set to true</h3>
+    </br>
+    <div class="demo-group-spaced">
+      <mwc-textfield floatLabel placeholder="placeholder" maxLength="10" helperTextContent="Say something"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" label="Say something..." maxLength="10"></mwc-textfield>
+      <mwc-textfield floatLabel label="Say something..." value="hi" maxLength="10"></mwc-textfield>
+      <mwc-textfield floatLabel leadingIconContent="event" label="Say something..." value="hi" maxLength="10"></mwc-textfield>
+      <mwc-textfield floatLabel trailingIconContent="mail" label="Say something..." value="hi" maxLength="10"></mwc-textfield>
     </div>
 
-    <h4>box - placeholder</h4>
+    <h4>filled - placeholder</h4>
     <div class="demo-group-spaced">
 
-      <mwc-textfield box placeholder="placeholder"></mwc-textfield>
-      <mwc-textfield box placeholder="placeholder" label="Say something..."></mwc-textfield>
-      <mwc-textfield box label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield box icon="event" label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield box icon="event" iconTrailing label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" label="Say something..."></mwc-textfield>
+      <mwc-textfield floatLabel label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel trailingIconContent="mail" label="Say something..." value="hi"></mwc-textfield>
 
     </div>
 
-    <h4>box - required</h4>
+    <h4>filled - required</h4>
     <div class="demo-group-spaced">
 
-      <mwc-textfield placeholder="placeholder" required box></mwc-textfield>
-      <mwc-textfield placeholder="placeholder" required box label="Say something..."></mwc-textfield>
-      <mwc-textfield required box label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield required box icon="event" label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield required box iconTrailing icon="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" required></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" required label="Say something..."></mwc-textfield>
+      <mwc-textfield floatLabel required label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel required leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel required trailingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
     </div>
 
     <h4>outlined - placeholder</h4>
     <div class="demo-group-spaced">
 
-      <mwc-textfield placeholder="placeholder" outlined placeholder="placeholder"></mwc-textfield>
-      <mwc-textfield placeholder="placeholder" outlined placeholder="placeholder" label="Say something..."></mwc-textfield>
-      <mwc-textfield outlined label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield outlined icon="event" label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield outlined iconTrailing icon="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" outlined></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" outlined label="Say something..."></mwc-textfield>
+      <mwc-textfield floatLabel outlined label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel outlined leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel outlined trailingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
     </div>
 
     <h4>outlined - required - email - helperText</h4>
     <div class="demo-group-spaced">
 
-      <mwc-textfield placeholder="placeholder" outlined required type="email" helperText="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
-      <mwc-textfield placeholder="placeholder" outlined required type="email" label="Enter email..." helperText="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
-      <mwc-textfield outlined required type="email"  label="Enter email..." value="hi" helperText="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
-      <mwc-textfield outlined required type="email" icon="event" label="Say something..." value="hi" helperText="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
-      <mwc-textfield outlined iconTrailing required type="email" icon="event" label="Say something..." value="hi" helperText="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" outlined required type="email" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" outlined required type="email" label="Enter email..." persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+      <mwc-textfield floatLabel outlined required type="email"  label="Enter email..." value="hi" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+      <mwc-textfield floatLabel outlined required type="email" leadingIconContent="event" label="Say something..." value="hi" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
+      <mwc-textfield floatLabel outlined iconTrailing required type="email" leadingIconContent="event" label="Say something..." value="hi" persistentHelperText helperTextContent="Make sure to include an @" validationMessage="Email not valid"></mwc-textfield>
     </div>
 
     <h4>box disabled</h4>
     <div class="demo-group-spaced">
 
-      <mwc-textfield placeholder="placeholder" box disabled></mwc-textfield>
-      <mwc-textfield placeholder="placeholder" box disabled label="Say something..."></mwc-textfield>
-      <mwc-textfield box disabled label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield box disabled icon="event" label="Say something..." value="hi"></mwc-textfield>
-      <mwc-textfield box disabled iconTrailing icon="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" disabled></mwc-textfield>
+      <mwc-textfield floatLabel placeholder="placeholder" disabled label="Say something..."></mwc-textfield>
+      <mwc-textfield floatLabel disabled label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel disabled leadingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
+      <mwc-textfield floatLabel disabled trailingIconContent="event" label="Say something..." value="hi"></mwc-textfield>
 
     </div>
 
     <h4>fullWidth</h4>
-    <mwc-textfield placeholder="placeholder" fullwidth></mwc-textfield>
-    <mwc-textfield placeholder="placeholder" fullwidth placeholder="Say something.." ></mwc-textfield>
-    <mwc-textfield fullwidth label="Say something..."></mwc-textfield>
-    <mwc-textfield fullwidth label="Say something..." value="hi"></mwc-textfield>
+    <mwc-textfield floatLabel placeholder="placeholder" fullwidth></mwc-textfield>
+    <mwc-textfield floatLabel fullwidth required type="email" placeholder="placeholder" helperTextContent="Make sure to include an @"></mwc-textfield>
+    <mwc-textfield floatLabel fullwidth value="hi" placeholder="placeholder"></mwc-textfield>
     <br></br>
-    <mwc-textfield type="textarea" fullwidth label="Say something..."></mwc-textfield>
+    <mwc-textfield floatLabel type="textarea" placeholder="placeholder" fullwidth label="Say something..."></mwc-textfield>
 
     <h4>Textarea - placeholder</h4>
     <div class="demo-group-spaced">
-      <mwc-textfield type="textarea" placeholder="placeholder"></mwc-textfield>
-      <mwc-textfield type="textarea" placeholder="placeholder" label="Say something..."></mwc-textfield>
-      <mwc-textfield type="textarea" label="Say something..."></mwc-textfield>
+      <mwc-textfield floatLabel type="textarea" placeholder="placeholder" maxLength="10"></mwc-textfield>
+      <mwc-textfield floatLabel type="textarea" placeholder="placeholder" label="Say something..." maxLength="10"></mwc-textfield>
+      <mwc-textfield floatLabel type="textarea" placeholder="placeholder" label="Say something..." maxLength="10"></mwc-textfield>
     </div>
 
-    <h4>Textarea - required - helperText</h4>
+    <h4>Textarea - required - helperTextContent</h4>
     <div class="demo-group-spaced">
-      <mwc-textfield type="textarea" required placeholder="placeholder" validationMessage="Error" helperText="Make sure you fill this field"></mwc-textfield>
-      <mwc-textfield type="textarea" required placeholder="placeholder" label="Say something..." validationMessage="Error" helperText="Make sure you fill this field"></mwc-textfield>
-      <mwc-textfield type="textarea" required label="Say something..." helperText="Make sure you fill this field" validationMessage="Error"></mwc-textfield>
+      <mwc-textfield floatLabel type="textarea" required placeholder="placeholder" validationMessage="Error" helperTextContent="Make sure you fill this field"></mwc-textfield>
+      <mwc-textfield floatLabel type="textarea" required placeholder="placeholder" label="Say something..." validationMessage="Error" helperTextContent="Make sure you fill this field"></mwc-textfield>
+      <mwc-textfield floatLabel type="textarea" required placeholder="placeholder" label="Say something..." helperTextContent="Make sure you fill this field" validationMessage="Error"></mwc-textfield>
     </div>
 
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

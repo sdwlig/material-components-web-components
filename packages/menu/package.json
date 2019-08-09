@@ -1,21 +1,22 @@
 {
   "name": "@material/mwc-menu",
-  "version": "0.3.6",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-menu.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web-components.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/mwc-base": "^0.3.6",
-    "@material/mwc-list": "^0.3.6",
-    "@material/list": "^0.40.1",
-    "@material/menu": "^0.40.1",
-    "@material/menu-surface": "^0.40.1",
-    "@material/typography": "^0.35.0",
-    "lit-element": "^2.0.1"
+    "@material/menu": "~2.3.0",
+    "@material/menu-surface": "~2.3.0",
+    "@material/mwc-base": "~0.6.0",
+    "@material/mwc-list": "~0.6.0"
   },
   "publishConfig": {
     "access": "public"

@@ -20,37 +20,116 @@ limitations under the License.
 <head>
   <title>dialog demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Array.prototype.entries%2CArray.prototype.find%2CArray.prototype.findIndex%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.forEach%2CArray.prototype.reduce%2CArray.prototype.map%2CCustomEvent%2CArray.prototype.every%2CArray.isArray%2CArray.of%2CElement%2CElement.prototype.matches%2CEvent%2CMutationObserver%2CPromise%2CPromise.prototype.finally%2CString.prototype.includes%2CString.prototype.startsWith%2CString.prototype.trim%2Cconsole.error%2Cconsole.log%2Cconsole.info%2Cconsole.warn%2Cconsole.trace%2Cfetch%2CElement.prototype.classList%2CElement.prototype.append%2CElement.prototype.prepend%2CElement.prototype.remove%2CElement.prototype.toggleAttribute%2CElement.prototype.replaceWith%2CElement.prototype.closest%2CElement.prototype.cloneNode%2CElement.prototype.before%2CElement.prototype.after%2CElement.prototype.placeholder%2CElement.prototype.dataset%2CJSON%2CNode.prototype.contains%2CNodeList.prototype.forEach%2CNumber.isInteger%2CNumber.isNaN%2CObject.assign%2CObject.entries%2CObject.freeze%2CObject.values%2CObject.keys"></script>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
   <script type="module" src="../node_modules/@material/mwc-button/mwc-button.js"></script>
   <script type="module" src="../node_modules/@material/mwc-dialog/mwc-dialog.js"></script>
-  <script type="module" src="../node_modules/@material/mwc-icon/mwc-icon.js"></script>
+  <script type="module" src="../node_modules/@material/mwc-icon-button/mwc-icon-button.js"></script>
   <link rel="stylesheet" href="demo-component.css">
 
   <style>
     body {
       min-height: calc(100vh - 4em);
     }
-
-    body {
+    /* body {
       --mwc-dialog-maxHeight: calc(100vh - 200px);
-    }
+    } */
 
   </style>
 </head>
 
 <body class="unresolved">
   <header>
-    <a href="index.html">
-      <mwc-icon>arrow_back</mwc-icon>
-      <span>Dialog</span>
-    </a>
+    <a href="index.html"><mwc-icon-button icon="arrow_back"></mwc-icon-button></a>
+    <span>Dialog</span>
   </header>
 
-  <main>
+  <div class='main'>
     <div class="demo-group">
+      <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. 
+      Lorem ipsum dolor sit amet, <mwc-button id="popoverBtn1" raised label="OPEN POPOVER 1 (NO FORMAT)"></mwc-button>      adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. 
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua. 
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+    dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Enim nec dui nunc <span style="color: red" id="popoverBtn2">OPEN POPOVER 2</span>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua. 
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.
+      <mwc-dialog id="popoverDialog1" popover noFormatContent>
+          <p>Posuere ac ut consequat semper viverra nam libero. Arcu ac tortor dignissim
+            convallis aenean et tortor at risus.</p>
+        </mwc-dialog>
+      <mwc-dialog for="popoverBtn2" id="popoverDialog2" popoverSize="small" popover headerLabel="Popover Dialog 2">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Enim nec dui nunc mattis enim ut tellus elementum. Bibendum enim facilisis gravida neque
+            convallis a cras semper. Posuere ac ut consequat semper viverra nam libero. Arcu ac tortor dignissim
+            convallis aenean et tortor at risus.</p>
+        </mwc-dialog>
+      </div>
+      <script type="module">
+        popoverDialog1.setAnchorElement(popoverBtn1);
+        popoverBtn1.addEventListener('mouseover', (e) => {
+          popoverDialog1.open();
+        });
+        popoverBtn2.addEventListener('mouseover', (e) => {
+          popoverDialog2.open();
+        });
+
+        popoverBtn1.addEventListener('mouseout', (e) => {
+          popoverDialog1.close();
+        });
+        popoverBtn2.addEventListener('mouseout', (e) => {
+          popoverDialog2.close();
+        });
+      </script>
+
 
       <mwc-button id="button" raised label="Dialog"></mwc-button>
-      <mwc-dialog id="dialog" headerLabel="Dialog Title" acceptLabel="OK" declineLabel="Cancel">
+      <mwc-dialog for="button" id="dialog" headerLabel="Dialog Title" acceptLabel="OK" declineLabel="Cancel">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
           dolore magna aliqua. Enim nec dui nunc mattis enim ut tellus elementum. Bibendum enim facilisis gravida neque
           convallis a cras semper. Posuere ac ut consequat semper viverra nam libero. Arcu ac tortor dignissim
@@ -60,16 +139,16 @@ limitations under the License.
       </mwc-dialog>
       <script type="module">
         button.addEventListener('click', (e) => {
-          dialog.opened = !dialog.opened;
+          dialog.open();
         });
 
-        dialog.addEventListener('MDCDialog:closed', e => {
+        dialog.addEventListener('closed', e => {
           console.log(e.type, e.detail);
         });
       </script>
 
       <mwc-button id="scrollingButton" raised label="Scrolling Dialog"></mwc-button>
-      <mwc-dialog id="scrollingDialog" scrollable headerLabel="Scrolling Dialog Title" acceptLabel="OK" declineLabel="Cancel">
+      <mwc-dialog for="scrollingButton" id="scrollingDialog" scrollable headerLabel="Scrolling Dialog Title" acceptLabel="OK" declineLabel="Cancel">
         <span slot="header">More header stuff</span>
         <span slot="footer">More footer stuff&nbsp;&nbsp;</span>
         <mwc-button slot="footer" compact ripple label="Button" icon="mail"></mwc-button>
@@ -151,14 +230,14 @@ limitations under the License.
     </div>
     <script type="module">
       scrollingButton.addEventListener('click', (e) => {
-        scrollingDialog.opened = !scrollingDialog.opened;
+        scrollingDialog.open();
       });
 
-      scrollingDialog.addEventListener('MDCDialog:closed', e => {
+      scrollingDialog.addEventListener('closed', e => {
         console.log(e.type, e.detail);
       });
     </script>
-  </main>
+  </div>
 
   <script>
     addEventListener('load', () => document.body.classList.remove('unresolved'));

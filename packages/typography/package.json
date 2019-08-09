@@ -1,22 +1,23 @@
 {
   "name": "@material/mwc-typography",
-  "version": "0.3.6",
+  "version": "0.6.0",
   "description": "",
   "main": "mwc-typography-css.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web-components.git"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@material/mwc-base": "^0.3.6",
-    "@material/mwc-icon": "^0.3.6",
-    "@material/typography": "^0.40.1",
-    "lit-element": "^2.0.1"
+    "@material/typography": "~2.3.0"
   },
   "devDependencies": {},
   "publishConfig": {
     "access": "public"
-  },
-  "private": false
+  }
 }

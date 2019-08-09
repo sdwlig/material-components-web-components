@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import '@material/tab/mdc-tab.scss';
-@import "@material/mwc-icon/src/_mwc-icon.scss";
+@import '@material/tab/mdc-tab';
+@import "@material/mwc-icon/src/mwc-icon";
 
 .material-icons {
   @extend %material-icons;
@@ -57,4 +57,110 @@ limitations under the License.
 /* Declare rule from mdc-tab again to pick up mixin override. */
 .mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
+}
+
+/* Adding mdc-tab styles to see mouse over on IE 11 */
+$background_color_default: #6200ee;
+
+.mdc-tab {
+  --mdc-ripple-fg-size: 0;
+  --mdc-ripple-left: 0;
+  --mdc-ripple-top: 0;
+  --mdc-ripple-fg-scale: 1;
+  --mdc-ripple-fg-translate-end: 0;
+  --mdc-ripple-fg-translate-start: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  &::before {
+    position: absolute;
+    border-radius: 0;
+    opacity: 0;
+    pointer-events: none;
+    content: "";
+    transition: opacity 15ms linear, background-color 15ms linear;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $background_color_default;
+  }
+  &::after {
+    position: absolute;
+    border-radius: 0;
+    opacity: 0;
+    pointer-events: none;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $background_color_default;
+  }
+  &:not(.mdc-ripple-upgraded) {
+    &:focus {
+      &::before {
+        transition-duration: 75ms;
+        opacity: 0.12;
+      }
+    }
+    &::after {
+      transition: opacity 150ms linear;
+    }
+    &:active {
+      &::after {
+        transition-duration: 75ms;
+        opacity: 0.12;
+      }
+    }
+  }
+  &:hover {
+    &::before {
+      opacity: 0.04;
+    }
+  }
+  &.mdc-ripple-upgraded {
+    &::before {
+      transform: scale(var(--mdc-ripple-fg-scale, 1));
+    }
+    &::after {
+      top: 0;
+      left: 0;
+      transform: scale(0);
+      transform-origin: center center;
+      width: var(--mdc-ripple-fg-size, 100%);
+      height: var(--mdc-ripple-fg-size, 100%);
+    }
+    --mdc-ripple-fg-opacity: 0.12;
+  }
+  &.mdc-ripple-upgraded--background-focused {
+    &::before {
+      transition-duration: 75ms;
+      opacity: 0.12;
+    }
+  }
+  &.mdc-ripple-upgraded--unbounded {
+    &::after {
+      top: var(--mdc-ripple-top, 0);
+      left: var(--mdc-ripple-left, 0);
+    }
+  }
+  &.mdc-ripple-upgraded--foreground-activation {
+    &::after {
+      animation: mdc-ripple-fg-radius-in 225ms forwards, mdc-ripple-fg-opacity-in 75ms forwards;
+    }
+  }
+  &.mdc-ripple-upgraded--foreground-deactivation {
+    &::after {
+      animation: mdc-ripple-fg-opacity-out 150ms;
+      transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
+    }
+  }
+}
+@supports not (-ms-ime-align: auto) {
+  .mdc-tab {
+    &::before, &::after {
+      /* @alternate */
+      background-color: var(--mdc-theme-primary, $background_color_default);
+    }
+  }
 }

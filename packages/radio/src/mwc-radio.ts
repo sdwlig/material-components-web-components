@@ -14,25 +14,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {FormElement, query, customElement, Foundation, Adapter, property, html, observer, HTMLElementWithRipple} from '@material/mwc-base/form-element.js';
-import {style} from './mwc-radio-css.js';
-import {SelectionController} from './selection-controller.js';
-import {ripple} from '@material/mwc-ripple/ripple-directive.js';
-import MDCRadioFoundation from '@material/radio/foundation.js';
+import {
+  FormElement,
+  query,
+  customElement,
+  property,
+  html,
+  observer,
+  HTMLElementWithRipple,
+  addHasRemoveClass
+} from '@material/mwc-base/form-element';
+import { ripple } from '@material/mwc-ripple/ripple-directive';
+import MDCRadioFoundation from '@material/radio/foundation';
+import { MDCRadioAdapter } from '@material/radio/adapter';
+import { SelectionController } from './selection-controller';
+
+import { style } from './mwc-radio-css';
 
 declare global {
   interface HTMLElementTagNameMap {
     'mwc-radio': Radio;
   }
-}
-
-export interface RadioFoundation extends Foundation {
-  setDisabled(disabled: boolean): void;
-}
-
-export declare var RadioFoundation: {
-  prototype: RadioFoundation;
-  new (adapter: Adapter): RadioFoundation;
 }
 
 @customElement('mwc-radio' as any)
@@ -44,30 +46,30 @@ export class Radio extends FormElement {
   @query('input')
   protected formElement!: HTMLInputElement
 
-  @property({type: Boolean})
-  @observer(function(this: Radio, checked: boolean) {
+  @property({ type: Boolean })
+  @observer(function (this: Radio, checked: boolean) {
     this.formElement.checked = checked;
   })
   checked = false;
 
-  @property({type: Boolean})
-  @observer(function(this: Radio, disabled: boolean) {
+  @property({ type: Boolean })
+  @observer(function (this: Radio, disabled: boolean) {
     this.mdcFoundation.setDisabled(disabled);
   })
   disabled = false;
 
-  @property({type: String})
-  @observer(function(this: Radio, value: string) {
+  @property({ type: String })
+  @observer(function (this: Radio, value: string) {
     this.formElement.value = value;
   })
   value = '';
 
-  @property({type: String})
+  @property({ type: String })
   name = '';
 
-  protected mdcFoundationClass: typeof RadioFoundation = MDCRadioFoundation;
+  protected mdcFoundationClass = MDCRadioFoundation;
 
-  protected mdcFoundation!: RadioFoundation;
+  protected mdcFoundation!: MDCRadioFoundation;
 
   private _selectionController: SelectionController | null = null;
 
@@ -81,9 +83,6 @@ export class Radio extends FormElement {
 
   connectedCallback() {
     super.connectedCallback();
-    if (this._selectionController) {
-      this._selectionController.register(this);
-    }
   }
 
   disconnectedCallback() {
@@ -102,9 +101,9 @@ export class Radio extends FormElement {
     return this.mdcRoot.ripple;
   }
 
-  protected createAdapter(): Adapter {
+  protected createAdapter(): MDCRadioAdapter {
     return {
-      ...super.createAdapter(),
+      ...addHasRemoveClass(this.mdcRoot),
       setNativeControlDisabled: (disabled: boolean) => {
         this.formElement.disabled = disabled;
       }
@@ -132,15 +131,8 @@ export class Radio extends FormElement {
   render() {
     return html`
       <div class="mdc-radio" .ripple="${ripple()}">
-        <input
-          class="mdc-radio__native-control"
-          type="radio"
-          name="${this.name}"
-          .checked="${this.checked}"
-          .value="${this.value}"
-          @change="${this._changeHandler}"
-          @focus="${this._focusHandler}"
-          @click="${this._clickHandler}">
+        <input class="mdc-radio__native-control" type="radio" name="${this.name}" .checked="${this.checked}" .value="${this.value}"
+          @change="${this._changeHandler}" @focus="${this._focusHandler}" @click="${this._clickHandler}">
         <div class="mdc-radio__background">
           <div class="mdc-radio__outer-circle"></div>
           <div class="mdc-radio__inner-circle"></div>
@@ -151,6 +143,7 @@ export class Radio extends FormElement {
   firstUpdated() {
     super.firstUpdated();
     if (this._selectionController) {
+      this._selectionController.register(this);
       this._selectionController.update(this);
     }
   }

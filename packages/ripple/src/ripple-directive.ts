@@ -14,19 +14,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import {directive, PropertyPart, noChange, NodePart, templateFactory} from 'lit-html';
-import {Adapter, Foundation} from '@material/mwc-base/base-element.js';
-import MDCRippleFoundation from '@material/ripple/foundation.js';
-import {style} from './mwc-ripple-global-css.js';
-import * as util from '@material/ripple/util.js';
+import { directive, PropertyPart, noChange, NodePart, templateFactory } from 'lit-html';
+import { SpecificEventListener } from '@material/mwc-base/base-element';
+import MDCRippleFoundation from '@material/ripple/foundation';
+import { MDCRippleAdapter } from '@material/ripple/adapter';
+import * as util from '@material/ripple/util';
+import { matches } from '@material/dom/ponyfill';
 
-const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
+import { style } from './mwc-ripple-global-css';
 
 const supportsCssVariables = util.supportsCssVariables(window);
 
 type Handler = EventListenerOrEventListenerObject;
 
 export interface RippleOptions {
+  adapter?: any;
   interactionNode?: HTMLElement;
   unbounded?: boolean;
   disabled?: boolean;
@@ -37,17 +39,6 @@ export interface RippleNodeOptions extends RippleOptions {
   surfaceNode: HTMLElement;
 }
 
-export interface RippleFoundation extends Foundation {
-  setUnbounded(value: boolean): void;
-  activate(): void;
-  deactivate(): void;
-}
-
-export declare var RippleFoundation: {
-  prototype: RippleFoundation;
-  new(adapter: Adapter): RippleFoundation;
-}
-
 // NOTE: This is a workaround for https://bugs.webkit.org/show_bug.cgi?id=173027.
 // Since keyframes on pseudo-elements (:after) are not supported in Shadow DOM,
 // we put the keyframe style into the <head> element.
@@ -55,7 +46,7 @@ const isSafari = navigator.userAgent.match(/Safari/);
 let didApplyRippleStyle = false;
 const applyRippleStyle = () => {
   didApplyRippleStyle = true;
-  const part = new NodePart({templateFactory});
+  const part = new NodePart({ templateFactory });
   part.appendInto(document.head!);
   part.setValue(style);
   part.commit();
@@ -80,11 +71,11 @@ export const rippleNode = (options: RippleNodeOptions) => {
       interactionNode.style.position = 'relative';
     }
   }
-  const adapter: Adapter = {
+  const adapter: MDCRippleAdapter = {
     browserSupportsCssVars: () => supportsCssVariables,
     isUnbounded: () =>
       options.unbounded === undefined ? true : options.unbounded,
-    isSurfaceActive: () => interactionNode![MATCHES](':active'),
+    isSurfaceActive: () => matches(interactionNode, ':active'),
     isSurfaceDisabled: () => Boolean(options.disabled),
     addClass: (className: string) => surfaceNode.classList.add(className),
     removeClass: (className: string) =>
@@ -96,20 +87,21 @@ export const rippleNode = (options: RippleNodeOptions) => {
       interactionNode.removeEventListener(type, handler, util.applyPassive()),
     registerDocumentInteractionHandler: (evtType: string, handler: Handler) =>
       document.documentElement!.addEventListener(
-          evtType, handler, util.applyPassive()),
+        evtType, handler, util.applyPassive()),
     deregisterDocumentInteractionHandler: (evtType: string, handler: Handler) =>
       document.documentElement!.removeEventListener(
-          evtType, handler, util.applyPassive()),
-    registerResizeHandler: (handler: Handler) =>
+        evtType, handler, util.applyPassive()),
+    registerResizeHandler: (handler: SpecificEventListener<'resize'>) =>
       window.addEventListener('resize', handler),
-    deregisterResizeHandler: (handler: Handler) =>
+    deregisterResizeHandler: (handler: SpecificEventListener<'resize'>) =>
       window.removeEventListener('resize', handler),
     updateCssVariable: (varName: string, value: string) =>
       surfaceNode.style.setProperty(varName, value),
-    computeBoundingRect: () => interactionNode.getBoundingClientRect(),
-    getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
+    computeBoundingRect: () => surfaceNode.getBoundingClientRect(),
+    getWindowPageOffset: () => ({ x: window.pageXOffset, y: window.pageYOffset }),
+    ...options.adapter
   };
-  const rippleFoundation: RippleFoundation = new MDCRippleFoundation(adapter);
+  const rippleFoundation = new MDCRippleFoundation(adapter);
   rippleFoundation.init();
   return rippleFoundation;
 }
@@ -133,10 +125,10 @@ export const ripple = directive((options: RippleOptions = {}) => (part: Property
   }
   // make the ripple, if needed
   if (rippleFoundation === noChange) {
-    rippleFoundation = rippleNode(Object.assign({}, options, {surfaceNode}));
+    rippleFoundation = rippleNode(Object.assign({}, options, { surfaceNode }));
     rippleInteractionNodes.set(rippleFoundation, interactionNode);
     part.setValue(rippleFoundation);
-  // otherwise update settings as needed.
+    // otherwise update settings as needed.
   } else {
     if (options.unbounded !== undefined) {
       rippleFoundation.setUnbounded(options.unbounded);

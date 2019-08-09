@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@import '@material/icon-button/mdc-icon-button.scss';
-@import '@material/mwc-icon/src/_mwc-icon.scss';
+@import '@material/icon-button/mdc-icon-button';
+@import '@material/mwc-icon/src/mwc-icon';
 
 :host {
   display: inline-block;
@@ -25,4 +25,13 @@ limitations under the License.
 
 .material-icons {
   @extend %material-icons;
+}
+
+// hack for top-app-bar ripple coloring of icon-buttons
+.mdc-ripple-upgraded {
+  &:focus::before, &:focus::after {
+    background-color: currentColor;
+    background-color: var(--mdc-theme-on-primary, currentColor);
+    opacity: var(--mdc-icon-button-ripple-opacity, 0.12);
+  }
 }
